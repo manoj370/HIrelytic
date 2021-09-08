@@ -1,0 +1,249 @@
+<simple-notifications> </simple-notifications>
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Login | ThemeKit - Admin Template</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
+
+</head>
+
+<body>
+    <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <ngx-spinner bdOpacity="0.9" size="medium" color="#fff" type="line-scale" fullScreen="true">
+    </ngx-spinner>
+
+    <div class="auth-wrapper">
+        <div class="container-fluid h-100">
+            <div class="row flex-row h-100 bg-white">
+                <div class="col-xl-5 col-lg-5 col-md-4 p-0 d-md-block d-lg-block d-sm-none d-none">
+                    <div class="lavalite-bg" style="background-image: url('./assets/login/auth/login-bg.jpg')">
+                        <div class="lavalite-overlay"></div>
+                    </div>
+                </div>
+                <div class="col-xl-7 col-lg-7 col-md-8 my-auto p-0">
+                    <div class="authentication-form mx-auto" style="padding-top:0px;width:95%">
+                        <div class="logo-centered" id="update_logo">
+                            <img src="./assets/img/logosmall.png" alt="Hirelytic Logo" class="img-fluid" style="max-width: 80px">
+                        </div>
+                        <h3>New To Hirelytic</h3>
+                        <p>Join us today! It takes only few steps</p>
+                        <form [formGroup]="userRegisterForm" #f="ngForm" novalidate autocomplete="off">
+                            <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <!-- <label>First Name *</label> -->
+                                    <input class="form-control input-rounded" formControlName="firstName" type="text" placeholder="First Name *" maxlength="255" id="firstName" name="firstName" [(ngModel)]="model.firstName" style="text-transform: capitalize;">
+                                    <i class="fa fa-user" style="left:30px;text-transform: capitalize;"></i>
+                                    <div *ngIf="userRegisterForm.controls['firstName'].hasError('required') && userRegisterForm.controls['firstName'].touched" class="failed-validation">
+                                        First Name Required
+                                    </div>
+                                    <div *ngIf="userRegisterForm.controls['firstName'].hasError('pattern')" class="failed-validation">
+                                        Invalid First Name
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <!-- <label>Last Name *</label> -->
+                                    <input class="form-control input-rounded" formControlName="lastName" placeholder="Last Name *" id="lastName" maxlength="255" name="lastName" [(ngModel)]="model.lastName" style="text-transform: capitalize;">
+                                    <i class="fa fa-user" style="left:30px;"></i>
+                                    <div *ngIf="userRegisterForm.controls['lastName'].hasError('required') && userRegisterForm.controls['lastName'].touched" class="failed-validation">
+                                        Last Name Required
+                                    </div>
+                                    <div *ngIf="userRegisterForm.controls['lastName'].hasError('pattern')" class="failed-validation">
+                                        Invalid Last Name
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <!-- <label>Contact Number *</label> -->
+                                    <input class="form-control input-rounded" placeholder="Contact Number *" formControlName="phoneNumber" id="contact_number" name="phoneNumber" [(ngModel)]="model.phoneNumber" (keypress)="keyPress($event)" maxlength="10">
+                                    <i style="left:20px"><b>{{countryCode}}</b></i>
+
+                                    <div *ngIf="userRegisterForm.controls['phoneNumber'].hasError('required') && userRegisterForm.controls['phoneNumber'].touched" class="failed-validation">
+                                        Contact Number Required
+                                    </div>
+                                    <div *ngIf="userRegisterForm.controls['phoneNumber'].hasError('maxlength')" class="failed-validation">
+                                        Contact number should have minimum 10 characters
+                                    </div>
+                                    <div *ngIf="userRegisterForm.controls['phoneNumber'].hasError('minlength')" class="failed-validation">
+                                        Contact number should have minimum 10 characters
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <!-- <label>Email Id *</label> -->
+                                    <input class="form-control input-rounded" type="text" placeholder="Email Id *" id="userEmail" formControlName="emailId" name="emailId" disabled>
+                                    <i class="fa fa-envelope" style="left:30px"></i>
+                                    <!-- <div *ngIf="userRegisterForm.controls['emailId'].hasError('required') && userRegisterForm.controls['emailId'].touched" class="failed-validation">
+                                        Email Id Required
+                                    </div>
+                                    <div *ngIf="userRegisterForm.controls['emailId'].hasError('pattern')" class="failed-validation">
+                                        Invalid Email Id
+                                    </div> -->
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <show-hide-password icon="fa fa-lock" class="showHideClass" [btnOutline]="true">
+                                        <input class="form-control input-rounded" placeholder="Password *" formControlName="password" type="password" id="user_password" name="password" [(ngModel)]="model.password">
+                                        <i class="fa fa-lock"></i>
+                                    </show-hide-password>
+                                    <div *ngIf="userRegisterForm.controls['password'].hasError('required') && userRegisterForm.controls['password'].touched" class="failed-validation">
+                                        Password Required
+                                    </div>
+                                    <div *ngIf="userRegisterForm.controls['password'].hasError('minlength')" class="failed-validation">
+                                        Password must have 8 to 16 characters
+                                    </div>
+                                    <div *ngIf="userRegisterForm.controls['password'].hasError('maxlength')" class="failed-validation">
+                                        Password must have 8 to 16 characters
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <!-- <label>Confirm Password *</label> -->
+                                    <show-hide-password icon="fa fa-lock" class="showHideClass" [btnOutline]="true">
+                                        <input class="form-control input-rounded" type="password" placeholder="Confirm Password *" formControlName="cnfPassword" id="confirm_password" name="confirmpassword" [(ngModel)]="model.confirmpassword" (keyup)="checkPasswords()">
+                                        <i class="fa fa-lock"></i>
+                                    </show-hide-password>
+                                    <div *ngIf="userRegisterForm.controls['cnfPassword'].hasError('required') && userRegisterForm.controls['cnfPassword'].touched" class="failed-validation">
+                                        Password Required
+                                    </div>
+                                    <div *ngIf="userRegisterForm.controls['cnfPassword'].hasError('minlength')" class="failed-validation">
+                                        Password must have 8 to 16 characters
+                                    </div>
+                                    <div *ngIf="userRegisterForm.controls['cnfPassword'].hasError('maxlength')" class="failed-validation">
+                                        Password must have 8 to 16 characters
+                                    </div>
+                                    <div *ngIf="passerror" class="help-block"><span style="color:rgb(221, 33, 33);font-family:Roboto">&nbsp;<i>{{passerrorMsg}}</i></span></div>
+                                </div>
+                            </div>
+                            <!-- <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <select class="form-control input-rounded" id="selectDepartment" formControlName="dept">
+                                            <option value="" disabled selected>Department *</option>
+                                            <option  *ngFor="let c of DepartmentList" [value]="c.label">{{c.label}}</option>
+                                        </select>
+                                    <i class="fa fa-book" style="left:30px"></i>
+                                    <div *ngIf="userRegisterForm.controls['dept'].hasError('required') && userRegisterForm.controls['dept'].touched" class="failed-validation">
+                                        Select Department
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 form-group">
+                                    <input class="form-control input-rounded" formControlName="designation" maxlength="255" id="user_designation" placeholder="Designation *">
+                                    <div *ngIf="userRegisterForm.controls['designation'].hasError('required') && userRegisterForm.controls['designation'].touched" class="failed-validation">
+                                        Designation Required
+                                    </div>
+                                    <div *ngIf="userRegisterForm.controls['designation'].hasError('pattern')" class="failed-validation">
+                                        Invalid Designation
+                                    </div>
+                                </div>
+
+
+                            </div> -->
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <input class="form-control input-rounded" type="text" id="address" maxlength="255" formControlName="address1" placeholder="Address Line 1 *" [(ngModel)]="model.address1">
+                                    <i class="fa fa-address-card" style="left:30px;"></i>
+                                    <div *ngIf="userRegisterForm.controls['address1'].hasError('required') && userRegisterForm.controls['address1'].touched" class="failed-validation">
+                                        Address Line 1 Required
+                                    </div>
+                                    <div *ngIf="userRegisterForm.controls['address1'].hasError('pattern')" class="failed-validation">
+                                        Invalid Address Line 1
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <input class="form-control input-rounded" type="text" id="Address" maxlength="255" formControlName="address2" placeholder="Address Line 2 " [(ngModel)]="model.address2">
+                                    <i class="fa fa-address-card" style="left:30px;"></i>
+                                    <!-- <div *ngIf="userRegisterForm.controls['address2'].hasError('required') && userRegisterForm.controls['address2'].touched" class="failed-validation">
+                                                    address Line 2 required
+                                                </div> -->
+                                    <div *ngIf="userRegisterForm.controls['address2'].hasError('pattern')" class="failed-validation">
+                                        Invalid Address Line 2
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <!-- <label>Country *</label> -->
+                                    <select class="form-control input-rounded" placeholder="Country" name="country" id="select_country" formControlName="country" (change)="onCountryChange($event.target.value)">
+                                                <option value="" disabled selected>Country *</option>
+                                                <option *ngFor="let c of countryList" [value]="c.countryId">{{c.countryName}}</option>
+                                                </select>
+                                    <i class="fa fa-globe" style="left:30px"></i>
+                                    <div *ngIf="userRegisterForm.controls['country'].hasError('required') && userRegisterForm.controls['country'].touched" class="failed-validation">
+                                        Select Country
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <!-- <label>State *</label> -->
+                                    <select class="form-control input-rounded" formControlName="state" id="select_state">
+                                                <option value="" disabled selected>State *</option>
+                                            <option *ngFor="let c of stateList" [value]="c">{{c}}</option>
+                                        </select>
+                                    <i class="fa fa-globe" style="left:30px"></i>
+                                    <div *ngIf="userRegisterForm.controls['state'].hasError('required') && userRegisterForm.controls['state'].touched" class="failed-validation">
+                                        Select State
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <!-- <label>City *</label> -->
+                                    <input class="form-control input-rounded" formControlName="city" maxlength="255" type="text" id="select_city" placeholder="City *" name="city">
+                                    <i class="fa fa-home" style="left:30px"></i>
+                                    <div *ngIf="userRegisterForm.controls['city'].hasError('required') && userRegisterForm.controls['city'].touched" class="failed-validation">
+                                        City Required
+                                    </div>
+                                    <div *ngIf="userRegisterForm.controls['city'].hasError('pattern')" class="failed-validation">
+                                        Invalid City
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-4 form-group">
+
+                                    <input class="form-control input-rounded" formControlName="zipCode" type="text" id="zip_code" placeholder="Zip Code *" maxlength="6" (keypress)="keyPress($event)">
+                                    <i class="fa fa-file-archive-o" style="left:30px"></i>
+
+
+
+                                    <div *ngIf="userRegisterForm.controls['zipCode'].hasError('required') && userRegisterForm.controls['zipCode'].touched" class="failed-validation">
+                                        Zip Code Required
+                                    </div>
+                                    <div *ngIf="userRegisterForm.controls['zipCode'].hasError('pattern')" class="failed-validation">
+                                        Invalid Zip Code
+                                    </div>
+                                    <!-- <div *ngIf="userRegisterForm.controls['zipCode'].hasError('pattern')" class="failed-validation">
+                                             Zip Code Required
+                                         </div>
+                                         <div *ngIf="userRegisterForm.controls['ZipCode'].hasError('minlength')" class="failed-validation">
+                                                ZipCode must contain 6 numbers
+                                           </div>
+                                           <div *ngIf="userRegisterForm.controls['ZipCode'].hasError('maxlength')" class="failed-validation">
+                                                ZipCode must contain 6 numbers
+                                           </div> -->
+
+
+                                </div>
+                            </div>
+                            <div class="sign-btn text-center">
+                                <button class="btn btn-info" type="submit" id="user_submit" [disabled]="!userRegisterForm.valid" (click)="submit()">Submit</button>
+                                <!-- <button type="submit" class="theme-btn btn-style-one" id="signInBtn"  
+                                    [disabled]="!userRegisterForm.valid">Sign In</button> -->
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

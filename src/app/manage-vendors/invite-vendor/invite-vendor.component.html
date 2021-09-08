@@ -1,0 +1,1104 @@
+<simple-notifications></simple-notifications>
+<ngx-spinner bdOpacity="0.9" size="medium" color="#fff" type="line-scale" fullScreen="true">
+</ngx-spinner>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card-header">
+            <label i18n="@@userListTitle">
+                <h4 *ngIf="showvendorPayments">Manage Vendors
+                    <!-- <span class="addVendor"> <i class="fas fa-plus-circle" style="cursor:pointer" title="Invite Vendor"
+                            id="invite" data-toggle="modal" data-target="#inviteVendorModal"
+                            (click)="inviteVendorReset()"></i></span> -->
+                </h4>
+                <h4 *ngIf="!showvendorPayments">Vendor Payments
+                    <!-- <span class="addVendor"> <i class="fas fa-plus-circle" style="cursor:pointer" title="Invite Vendor"
+                            id="invite" data-toggle="modal" data-target="#inviteVendorModal"
+                            (click)="inviteVendorReset()"></i></span> -->
+                </h4>
+            </label>
+            <ul class="jobsearch">
+
+                <li>
+                    <form>
+                        <input type="text" style="border-radius:15px" class="form-control" id="inputValidation"
+                            placeholder="Search" [ngModelOptions]="{standalone: true}" (keyup)="quickSearch()"
+                            [(ngModel)]="searchValue" />
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </form>
+
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="ibox page-content fade-in-up" style="top: 10px;">
+    <ul class="nav nav-tabs" role="tablist" style="border: none;">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#tabs-2" role="tab">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link  " data-toggle="tab" href="#tabs-1" role="tab" *ngIf="showvendorPayments">List Of
+                Vendors</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab" (click)="getPaymentPoliciesList()"
+                *ngIf="showvendorPayments">Vendor Payment
+                Settings</a>
+        </li>
+        <!-- <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab" *ngIf="showvendorPayments">Vendor Reports
+            </a>
+        </li> -->
+    </ul>
+
+
+    <div class="tab-content" style="position: relative;
+    bottom: 10px;">
+        <div class="tab-pane " id="tabs-1" role="tabpanel">
+            <span class="addVendor">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#inviteVendorModal"
+                    *ngIf="showvendorPayments">Invite
+                    Vendor</button></span>
+            <div class="container-fluid" style="height: 589px;" *ngIf="showvendorPayments">
+                <ag-grid-angular style="height: 500px" class="ag-theme-balham" [rowData]="listOfVendors"
+                    [columnDefs]="vendorDataColumns" (gridReady)="onGridReadyList($event)" [rowSelection]="rowSelection"
+                    (selectionChanged)="onSelectionChanged($event)" (cellClicked)="editStatus($event)" enableColResize
+                    enableFilter enableSorting [gridOptions]='gridOptions'>
+                </ag-grid-angular><br>
+                <div class="col-md-12 float-right" *ngIf="totalCount>15">
+                    <div class="float-right" style="position: relative;
+                    bottom: -18px;">
+
+                        <button (click)="onBtPrevious()" class="btn btn-outline-primary"
+                            [disabled]="disablePreviousButton"><i class="fa fa-angle-left"
+                                aria-hidden="true"></i></button>
+                        <b>{{pageid+1}}/{{responsePageCount}}&nbsp;</b>
+                        <button (click)="onBtNext()" class="btn btn-outline-primary" [disabled]="disableNextButton"><i
+                                class="fa fa-angle-right" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane  active " id="tabs-2" role="tabpanel">
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <span *ngIf="statusValue.value ==='Date Range'">
+                        <input type="text" placeholder="Please Choose Date" ngxDaterangepickerMd
+                            (change)="datePicker($event)" [(ngModel)]="filterName" name="filterName"
+                            class="form-control calendarrange"
+                            style=" border-radius: 15px;cursor: pointer;position: absolute;width: 45%;right: -270px;bottom: 0px;" />
+                    </span>
+                </div>
+
+                <div class="col-lg-6">
+                    <select id="daterange"
+                        style=" border-radius: 15px;cursor: pointer;position: absolute;width: 45%;margin-left: 270px;bottom: 0px;"
+                        class="form-control input-rounded" tabindex="14" (change)="dateOption($event.target.value)"
+                        maxlength="255" #statusValue>
+                        <option selected disabled>Select Period</option>
+                        <option>1 Month</option>
+                        <option>3 Months</option>
+                        <option>6 Months</option>
+                        <option>1 Year</option>
+                        <option>Date Range</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="container-fluid" style="height: 589px;" *ngIf="showvendorPayments">
+                <div class="col-md-12">
+                    <div class="ibox">
+                        <div style="padding: 40px;margin-top: 20px;">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md">
+                                        <div class="count">
+                                            <h3 class="m-b-5  font-strong " style="text-align: center;color:#559DE5">
+                                                {{admindashboarddetails.activeVendorCount}}
+                                            </h3>
+                                        </div>
+                                        <div class="padding">
+                                            <div class="m-b-2" style=" text-align: center;color: #535353"><b>Active
+                                                    Vendors</b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <span class="border-right"></span>
+                                    <div class="col-md">
+                                        <div class="count">
+                                            <h3 class="m-b-5  font-strong " style="text-align: center;color:#559DE5">
+                                                {{admindashboarddetails.inActiveVendorCount}}
+                                            </h3>
+                                        </div>
+                                        <div class="padding">
+                                            <div class="m-b-2" style=" text-align: center;color: #535353"><b>InActive
+                                                    Vendors</b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="border-right"></span>
+
+
+                                    <div class="col-md">
+                                        <div class="count">
+                                            <h3 class="m-b-5  font-strong " style="text-align: center;color:#0593A1">
+                                                {{admindashboarddetails.paymentApprovals}}
+                                            </h3>
+                                        </div>
+                                        <div class="padding">
+                                            <div style=" text-align: center;color: #535353"><b>Payment Approvals</b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="border-right"></span>
+                                    <div class="col-md">
+                                        <div class="count">
+                                            <h3 class="m-b-5  font-strong " style="text-align: center; color:#E94E1B">
+                                                {{admindashboarddetails.paymentPending}}
+                                            </h3>
+                                        </div>
+                                        <div class="padding">
+                                            <div class="m-b-2 font-strong" style=" text-align: center;color: #535353">
+                                                <b>Pending Payments</b></div>
+                                        </div>
+                                    </div>
+                                    <span class="border-right"></span>
+                                    <div class="col-md">
+                                        <div class="count">
+                                            <h3 class="m-b-5  font-strong " style="text-align: center;color:#FDAC42">
+                                                {{admindashboarddetails.referredCandidates}}
+                                            </h3>
+                                        </div>
+                                        <div class="padding">
+                                            <div class="m-b-2" style=" text-align: center;color: #535353"><b>Reffered
+                                                    Candidates
+                                                </b></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="ibox" style="padding:27px">
+                        <div style="padding:0px;">
+                            <div class="container">
+
+                                <div class="row">
+
+                                    <div class="col-md">
+                                        <div class="row">
+
+                                            <h6>SuccessRate/Failure Rate</h6><br><br><br><br><br><br>
+                                            <div class="col-md-6">
+                                                <div id="successrate"></div>
+                                                <div class="licences"></div>
+                                            </div><br>
+                                            
+                                            <div class="col-md-6">
+                                                <h6>Vendor Assigned Jobs</h6><br>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="count">
+                                                            <h3 class="m-b-5  font-strong "
+                                                                style="text-align: center;color:#559DE5">
+                                                                {{admindashboarddetails.assignedJobsCount}}
+                                                            </h3>
+                                                        </div>
+                                                        <div class="padding">
+                                                            <div class="m-b-2"
+                                                                style=" text-align: center;color: #535353"><b>Assigned
+                                                                    Jobs</b>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="count">
+                                                            <h3 class="m-b-5  font-strong "
+                                                                style="text-align: center;color:#FDAC42">
+                                                                {{admindashboarddetails.selectedCandidatesCount}}
+                                                            </h3>
+                                                        </div>
+                                                        <div class="padding">
+                                                            <div class="m-b-2"
+                                                                style=" text-align: center;color: #535353"><b>Selected
+                                                                    Candidates</b></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <!-- <div class="row">
+                                            <h6>Vendor Assigned Jobs</h6><br>
+                                            <div class="col-md-12">
+                                                <div id="vendorbarchart">
+
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+                                        <!-- <br>
+
+                                        <div style="text-align: left;">
+                                            <span>Candidate Statistics</span>
+                                        </div>
+                                        <br>
+                                        <div id="barchart"></div>
+                                        <span class="noData"> {{candidateNodata}}</span>
+                                        <div class="licence">
+                                        </div> -->
+                                    </div>
+
+
+                                    <span class="border-right"></span>
+                                    <div class="col-md">
+
+                                        <div style="text-align: left;">
+                                            <span><b>Vendor Statistics</b>
+                                                <div class="float-right">
+                                                    <select id="clientname" class="form-control input-rounded"
+                                                        style="width:200px" tabindex="14" maxlength="255"
+                                                        (change)="vendorChangeEvent($event.target.value)">
+                                                        <option *ngFor="let vendor of  vendornames;let i=index;"
+                                                            [value]="vendor.vendorId">
+                                                            {{vendor.vendorName}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+                                            </span>
+
+                                        </div>
+                                        <!-- </form> -->
+                                        <br>
+                                        <div id="piechartdiv"> </div>
+                                        <span class="noData" style="margin-left: 238px;"> {{noData}}</span><br>
+                                        <div class="licence">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="tabs-3" role="tabpanel">
+            <span class="addVendor">
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#assigntoVendorModal"
+                    style="cursor: pointer;" [disabled]="assignPaymentButton" *ngIf="showvendorPayments"
+                    (click)="getAllVendorNames()"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;Assign Payment</button>
+            </span>
+            <span class="addVendor">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#addPaymentModal"
+                    (click)="buttonupdate()" *ngIf="showvendorPayments"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add New
+                    Payment</button></span>
+
+
+            <div class="container-fluid" style="height: 589px;" *ngIf="showvendorPayments">
+                <ag-grid-angular style="height: 500px" class="ag-theme-balham" [rowData]="policylist"
+                    [columnDefs]="vendorSettingColumns" (gridReady)="onGridReadySettings($event)"
+                    [rowSelection]="rowSelection" (selectionChanged)="onSelectionChangedSettings($event)"
+                    (cellClicked)="editPaymentDetails($event)" enableColResize enableFilter enableSorting
+                    [gridOptions]='gridOptions'>
+                </ag-grid-angular><br>
+                <div class="col-md-12 float-right">
+                    <!-- <div class="float-right" *ngIf="totalCount>15">
+    
+                            <button (click)="onBtPrevious()" class="btn btn-outline-primary"
+                                [disabled]="disablePreviousButton"><i class="fa fa-angle-left"
+                                    aria-hidden="true"></i></button>
+                            <b>{{pageid+1}}/{{responsePageCount}}&nbsp;</b>
+                            <button (click)="onBtNext()" class="btn btn-outline-primary" [disabled]="disableNextButton"><i
+                                    class="fa fa-angle-right" aria-hidden="true"></i></button>
+                        </div> -->
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="tabs-4" role="tabpanel">
+
+            <div class="container-fluid" style="height: 589px;" *ngIf="showvendorPayments">
+                <ag-grid-angular style="height: 500px" class="ag-theme-balham" [rowData]="listOfJobsForVendors"
+                    [columnDefs]="getallCandidateJoinedcolumnDef" (gridReady)="onGridReadyReport($event)"
+                    [rowSelection]="rowSelection" (selectionChanged)="onSelectionChanged($event)"
+                    (cellClicked)="editStatus($event)" enableColResize enableFilter enableSorting
+                    [gridOptions]='gridOptions'>
+                </ag-grid-angular><br>
+                <div class="col-md-12 float-right">
+                    <!-- <div class="float-right" *ngIf="totalCount>15">
+    
+                            <button (click)="onBtPrevious()" class="btn btn-outline-primary"
+                                [disabled]="disablePreviousButton"><i class="fa fa-angle-left"
+                                    aria-hidden="true"></i></button>
+                            <b>{{pageid+1}}/{{responsePageCount}}&nbsp;</b>
+                            <button (click)="onBtNext()" class="btn btn-outline-primary" [disabled]="disableNextButton"><i
+                                    class="fa fa-angle-right" aria-hidden="true"></i></button>
+                        </div> -->
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="ibox page-content fade-in-up" *ngIf="!showvendorPayments">
+        <section>
+
+            <div class="container-fluid" style="padding-top:15px">
+                <ag-grid-angular style="height: 500px;" [rowHeight]="rowHeight" class="ag-theme-balham"
+                    [rowData]="JoinedCandidates" [columnDefs]="getallCandidateJoinedcolumnDef"
+                    [rowClassRules]="rowClassRules" [rowSelection]="rowSelection" enableFilter enableSorting>
+                </ag-grid-angular>
+            </div>
+            <div class="float-right" *ngIf="totalCount>15">
+                <button (click)="onBtPrevious()" class="btn btn-outline-primary" [disabled]="disablePreviousButton"><i
+                        class="fa fa-angle-left" aria-hidden="true"></i></button>
+                <b>{{pageid+1}}/{{responsePageCount}}&nbsp;</b>
+                <button (click)="onBtNext()" class="btn btn-outline-primary" [disabled]="disableNextButton"><i
+                        class="fa fa-angle-right" aria-hidden="true"></i></button>
+            </div>
+        </section>
+    </div>
+
+
+
+
+
+
+</div>
+
+
+
+<!-- 
+<div class="page-content fade-in-up">
+    <div class="ibox" style="top:5px">
+
+        <div class="ibox-body">
+
+            <ag-grid-angular style="height: 500px" class="ag-theme-balham" [rowData]="listOfVendors"
+                [columnDefs]="vendorDataColumns" (gridReady)="onGridReady($event)" [rowSelection]="rowSelection"
+                (selectionChanged)="onSelectionChanged($event)" (cellClicked)="editStatus($event)" enableColResize
+                enableFilter enableSorting [gridOptions]='gridOptions'>
+            </ag-grid-angular><br>
+            <div class="col-md-12 float-right">
+                <div class="float-right" *ngIf="totalCount>15">
+
+                    <button (click)="onBtPrevious()" class="btn btn-outline-primary"
+                        [disabled]="disablePreviousButton"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+                    <b>{{pageid+1}}/{{responsePageCount}}&nbsp;</b>
+                    <button (click)="onBtNext()" class="btn btn-outline-primary" [disabled]="disableNextButton"><i
+                            class="fa fa-angle-right" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div> -->
+
+
+
+<!-- INVITE VENDOR -->
+<div class="modal fade" id="inviteVendorModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Invite vendor </h4>
+                <button type="button" class="close" (click)="inviteVendorReset()" data-dismiss="modal"
+                    #vendorBtn>&times;</button>
+
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="inviteVendorForm">
+                    <div class="col-sm-12 form-group">
+                        <input class="form-control input-rounded" type="text" placeholder="Email Id *" id="userEmail"
+                            formControlName="emailId" name="emailId">
+
+                        <div *ngIf="inviteVendorForm.controls['emailId'].hasError('required') && inviteVendorForm.controls['emailId'].touched"
+                            class="failed-validation">
+                            Email Id Required
+                        </div>
+                        <div *ngIf="inviteVendorForm.controls['emailId'].hasError('pattern')" class="failed-validation">
+                            Invalid Email Id
+                        </div>
+                    </div>
+
+
+
+                    <div class="modal-footer">
+                        <button type="submit" data-dismiss="modal" (click)="inviteVendor(inviteVendorForm.value)"
+                            class="btn btn-primary" [disabled]="!inviteVendorForm.valid">Invite</button>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- Add Vendor payment modal starts -->
+<div class="modal fade" id="addPaymentModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" *ngIf="editpayment">Vendor Payment </h4>
+                <h4 class="modal-title" *ngIf="!editpayment"> Edit Vendor Payment </h4>
+                <button type="button" class="close" (click)="inviteVendorReset()" data-dismiss="modal"
+                    #vendorBtn>&times;</button>
+
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="vendorPaymentForm">
+
+                    <div class="col-sm-12 form-group">
+                        <label>Policy Name:</label>
+
+                        <input id="policyname" class="form-control input-rounded" type="text"
+                            formControlName="policyname" placeholder="Policy Name *">
+
+                        <div *ngIf="vendorPaymentForm.controls['policyname'].hasError('pattern')"
+                            class="failed-validation">
+                            Invalid Policy Name
+                        </div>
+                        <div *ngIf="vendorPaymentForm.controls['policyname'].hasError('required') && vendorPaymentForm.controls['policyname'].touched"
+                            class="failed-validation">
+                            Policy Name Required
+                        </div>
+                    </div>
+                    <div class="col-sm-12 form-group">
+                        <label>Invoicing days :</label>
+
+                        <input id="paymentperiod" class="form-control input-rounded" type="text"
+                            formControlName="paymentperiod" placeholder="Invoicing days  *" maxlength=2>
+
+                        <div *ngIf="vendorPaymentForm.controls['paymentperiod'].hasError('pattern')"
+                            class="failed-validation">
+                            Invoicing days  is only in numbers
+                        </div>
+                        <div *ngIf="vendorPaymentForm.controls['paymentperiod'].hasError('required') && vendorPaymentForm.controls['paymentperiod'].touched"
+                            class="failed-validation">
+                            Invoicing days  Required
+                        </div>
+                    </div>
+                    <div class="col-sm-12 form-group">
+                        <label>Payment Days:</label>
+
+                        <input id="paymentsettlementperiod" class="form-control input-rounded" type="text"
+                            formControlName="paymentsettlementperiod" placeholder="Payment Days*" maxlength=2>
+
+                        <div *ngIf="vendorPaymentForm.controls['paymentsettlementperiod'].hasError('pattern')"
+                            class="failed-validation">
+                            Payment Days is only in numbers
+                        </div>
+                        <div *ngIf="vendorPaymentForm.controls['paymentsettlementperiod'].hasError('required') && vendorPaymentForm.controls['paymentsettlementperiod'].touched"
+                            class="failed-validation">
+                            Payment Days Required
+                        </div>
+                    </div>
+                    <div class="col-sm-12 form-group">
+                        <label>Placement Fee:</label>
+
+                        <input id="paymentamount" class="form-control input-rounded" type="text"
+                            formControlName="paymentamount" placeholder="Placement Fee(%) *" maxlength=5>
+
+                        <div *ngIf="vendorPaymentForm.controls['paymentamount'].hasError('pattern')"
+                            class="failed-validation">
+                            Placement Fee is only in numbers(%)
+                        </div>
+                        <div *ngIf="vendorPaymentForm.controls['paymentamount'].hasError('required') && vendorPaymentForm.controls['paymentamount'].touched"
+                            class="failed-validation">
+                            Placement Fee Required
+                        </div>
+                    </div>
+                    <!-- <div class="col-sm-12 form-group">
+                        <label>Number Of Installments :</label>
+
+                        <input id="installment" class="form-control input-rounded" type="text"
+                            formControlName="installments" placeholder="No.of Installments *">
+
+                        <div *ngIf="vendorPaymentForm.controls['installments'].hasError('pattern')"
+                            class="failed-validation">
+                            Installments are only in numbers
+                        </div>
+                        <div *ngIf="vendorPaymentForm.controls['installments'].hasError('required') && vendorPaymentForm.controls['installments'].touched"
+                            class="failed-validation">
+                            Installments Required
+                        </div>
+                    </div> -->
+
+
+
+                    <div class="modal-footer">
+                        <button type="submit" data-dismiss="modal"
+                            (click)="submitPaymentDetails(vendorPaymentForm.value)" *ngIf="editpayment"
+                            class="btn btn-primary" [disabled]="!vendorPaymentForm.valid">Save</button>
+                        <button type="submit" data-dismiss="modal"
+                            (click)="updatePaymentPolicy(vendorPaymentForm.value)" *ngIf="!editpayment"
+                            class="btn btn-primary" [disabled]="!vendorPaymentForm.valid">Update</button>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!-- Add payment modal ends -->
+
+
+<!-- Edit Modal Starts -->
+<div class="modal fade" id="editModal" role="dialog">
+    <div class="modal-dialog  modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Vendor</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body ">
+                <form [formGroup]="vendorEditForm">
+                    <div class="row">
+
+                        <div class="col-sm-4 form-group">
+                            <label>Vendor Name *</label>
+                            <input class="form-control input-rounded" formControlName="vendorName"
+                                placeholder="Vendor Name *" id="vendorName" maxlength="255" name="vendorName">
+                            <div *ngIf="vendorEditForm.controls['vendorName'].hasError('required') && vendorEditForm.controls['vendorName'].touched"
+                                class="failed-validation">
+                                Vendor Name Required
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['vendorName'].hasError('pattern')"
+                                class="failed-validation">
+                                Invalid Vendor Name
+                            </div>
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <label>GST Number *</label>
+                            <input class="form-control input-rounded" placeholder="GST Number *" type="text"
+                                id="gsTNumber" formControlName="gsTNumber">
+                            <!-- <i class="fa fa-calculator" style="left:30px;font-weight: bold"></i> -->
+                            <div *ngIf="vendorEditForm.controls['gsTNumber'].hasError('required') && vendorEditForm.controls['gsTNumber'].touched"
+                                class="failed-validation">
+                                GST Number Required
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['gsTNumber'].hasError('pattern')"
+                                class="failed-validation">
+                                Invalid GST Number
+                            </div>
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <label>TAN Number *</label>
+                            <input class="form-control input-rounded" placeholder="TAN Number *" type="text"
+                                id="tanNumber" formControlName="tanNumber">
+                            <!-- <i class="fa fa-calculator" style="left:30px;font-weight: bold"></i> -->
+                            <div *ngIf="vendorEditForm.controls['tanNumber'].hasError('required') && vendorEditForm.controls['tanNumber'].touched"
+                                class="failed-validation">
+                                TAN Number Required
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['tanNumber'].hasError('pattern')"
+                                class="failed-validation">
+                                Invalid TAN Number
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-4 form-group">
+                            <label>Email Id *</label>
+                            <input class="form-control input-rounded" type="text" placeholder="Email Id *"
+                                id="vendorEmailId" formControlName="emailId" name="email Id" readonly>
+                            <!-- <i class="fa fa-envelope" style="left:30px"></i> -->
+                            <!-- <div
+                      *ngIf="vendorRegisterForm.controls['emailId'].hasError('required') && vendorRegisterForm.controls['emailId'].touched"
+                      class="failed-validation">
+                      Email Id Required
+                    </div>
+                    <div *ngIf="vendorRegisterForm.controls['emailId'].hasError('pattern')" class="failed-validation">
+                      Invalid Email Id
+                    </div> -->
+                        </div>
+
+                        <div class="col-sm-4 form-group">
+                            <label>Contact Person Email Id *</label>
+                            <input class="form-control input-rounded" formControlName="contactPerson" id="contactPerson"
+                                placeholder="Contact Person Email Id *">
+                            <!-- <i class="fa fa-user" style="left:30px"></i> -->
+
+                            <div *ngIf="vendorEditForm.controls['contactPerson'].hasError('required') && vendorEditForm.controls['contactPerson'].touched"
+                                class="failed-validation">
+                                Contact Person Required
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['contactPerson'].hasError('pattern')"
+                                class="failed-validation">
+                                Invalid Contact Person
+                            </div>
+
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <label>First Name *</label>
+                            <input id="firstName" class="form-control input-rounded" type="text"
+                                placeholder="First Name *" formControlName="firstName" maxlength="225">
+                            <!-- <i class="fa fa-user" style="left:30px"></i> -->
+                            <div *ngIf="vendorEditForm.controls['firstName'].hasError('required') && vendorEditForm.controls['firstName'].touched"
+                                class="failed-validation">
+                                First Name Required
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['firstName'].hasError('pattern')"
+                                class="failed-validation">
+                                Invalid First Name
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 form-group">
+                            <label>Last Name *</label>
+                            <input id="lastName" class="form-control input-rounded" type="text"
+                                placeholder="Last Name *" formControlName="lastName" maxlength="255">
+                            <!-- <i class="fa fa-user" style="left:30px"></i> -->
+                            <div *ngIf="vendorEditForm.controls['lastName'].hasError('required') && vendorEditForm.controls['lastName'].touched"
+                                class="failed-validation">
+                                Last Name Required
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['lastName'].hasError('pattern')"
+                                class="failed-validation">
+                                Invalid Last Name
+                            </div>
+
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <label>Contact Number *</label>
+                            <input class="form-control input-rounded" placeholder="Contact Number *"
+                                formControlName="phoneNumber" id="contact_number" name="contactNumber"
+                                (keypress)="keyPress($event)" maxlength="10">
+                            <!-- <i style="left:20px"><b>{{countryCode}}</b></i> -->
+
+                            <div *ngIf="vendorEditForm.controls['phoneNumber'].hasError('required') && vendorEditForm.controls['phoneNumber'].touched"
+                                class="failed-validation">
+                                Contact Number Required
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['phoneNumber'].hasError('pattern')"
+                                class="failed-validation">
+                                Invalid PhoneNumber
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['phoneNumber'].hasError('maxlength')"
+                                class="failed-validation">
+                                Contact Number should have minimum 10 characters
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['phoneNumber'].hasError('minlength')"
+                                class="failed-validation">
+                                Contact Number should have minimum 10 characters
+                            </div>
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <label>Alternate Number </label>
+                            <input class="form-control input-rounded" placeholder="Alternate Number"
+                                formControlName="alternateNumber" id="contact_number" name="alternateNumber"
+                                (keypress)="keyPress($event)" maxlength="10">
+                            <!-- <i style="left:20px"><b>{{countryCode}}</b></i> -->
+
+                            <div *ngIf="vendorEditForm.controls['alternateNumber'].hasError('maxlength')"
+                                class="failed-validation">
+                                Contact Number should have minimum 10 characters
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['alternateNumber'].hasError('minlength')"
+                                class="failed-validation">
+                                Contact Number should have minimum 10 characters
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 form-group">
+                            <label>Address Line 1 *</label>
+                            <input class="form-control input-rounded" type="text" id="address"
+                                formControlName="address1" maxlength="255" placeholder="Address Line 1  *">
+                            <!-- <i class="fa fa-address-card" style="left:30px;"></i> -->
+                            <div *ngIf="vendorEditForm.controls['address1'].hasError('required') && vendorEditForm.controls['address1'].touched"
+                                class="failed-validation">
+                                Address Line 1 Required
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['address1'].hasError('pattern')"
+                                class="failed-validation">
+                                Invalid Address Line 1
+                            </div>
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <label>Address Line 2</label>
+                            <input class="form-control input-rounded" type="text" id="address"
+                                formControlName="address2" maxlength="255" placeholder="Address Line 2">
+                            <!-- <i class="fa fa-address-card" style="left:30px;"></i> -->
+                            <div *ngIf="vendorEditForm.controls['address2'].hasError('pattern')"
+                                class="failed-validation">
+                                Invalid Address Line 2
+                            </div>
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <label>Bank Account Number *</label>
+                            <input id="accNumber" class="form-control input-rounded" type="text"
+                                placeholder="Bank Account Number *" formControlName="bankAccountNumber" maxlength="16"
+                                minlength="10" (keypress)="keyPress($event)">
+                            <!-- <i class="fa fa-calculator" style="left:30px;font-weight: bold"></i> -->
+                            <div *ngIf="vendorEditForm.controls['bankAccountNumber'].hasError('pattern')"
+                                class="failed-validation">
+                                Invalid Bank Account Number
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['bankAccountNumber'].hasError('required') && vendorEditForm.controls['bankAccountNumber'].touched"
+                                class="failed-validation">
+                                Bank Account Number Required
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['bankAccountNumber'].hasError('minlength')"
+                                class="failed-validation">
+                                Bank Account Number should contain minimum 10 numbers
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4 form-group">
+                            <label>IFSC Code *</label>
+                            <input id="ifscCode" class="form-control input-rounded" type="text"
+                                placeholder="IFSC Code *" formControlName="ifscCode">
+                            <!-- <i class="fa fa-calculator" style="left:30px;font-weight: bold"></i> -->
+                            <div *ngIf="vendorEditForm.controls['ifscCode'].hasError('pattern')"
+                                class="failed-validation">
+                                Invalid IFSC Code
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['ifscCode'].hasError('required') && vendorEditForm.controls['ifscCode'].touched"
+                                class="failed-validation">
+                                IFSC Code Required
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-4 form-group">
+                            <label>Bank Branch Details *</label>
+                            <input id="bankBranchDetails" class="form-control input-rounded" type="text"
+                                placeholder="Bank Branch Details *" formControlName="bankBranchDetails">
+                            <!-- <i class="fa fa-book" style="left:30px;font-weight: bold"></i> -->
+
+                            <div *ngIf="vendorEditForm.controls['bankBranchDetails'].hasError('pattern')"
+                                class="failed-validation">
+                                Invalid Bank Branch Details
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['bankBranchDetails'].hasError('required') && vendorEditForm.controls['bankBranchDetails'].touched"
+                                class="failed-validation">
+                                Bank Branch Details Required
+                            </div>
+
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <label>Country *</label>
+                            <select class="form-control input-rounded" placeholder="Select Country *" id="selectCountry"
+                                formControlName="country" (change)="onCountryChange($event.target.value)">
+                                <option value="" disabled selected> Select Country *</option>
+                                <option *ngFor="let c of countryList" [value]="c.countryId">{{c.countryName}}</option>
+                            </select>
+                            <!-- <i class="fa fa-globe" style="left:30px"></i> -->
+                            <div *ngIf="vendorEditForm.controls['country'].hasError('required') && vendorEditForm.controls['country'].touched"
+                                class="failed-validation">
+                                Select Country
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4 form-group">
+                            <label>State *</label>
+                            <select class="form-control input-rounded" value="" id="state_id" name="state"
+                                placeholder="Select State *" formControlName="state">
+                                <option value="" disabled selected>Select State *</option>
+                                <option *ngFor="let c of stateList" [value]="c">{{c}}</option>
+                            </select>
+                            <!-- <i class="fa fa-globe" style="left:30px"></i> -->
+                            <div *ngIf="vendorEditForm.controls['state'].hasError('required') && vendorEditForm.controls['state'].touched"
+                                class="failed-validation">
+                                Select State
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 form-group">
+                            <label>City *</label>
+                            <input class="form-control input-rounded" formControlName="city" id="city"
+                                placeholder=" City *" maxlength="255">
+                            <!-- <i class="fa fa-home" style="left:30px"></i> -->
+                            <div *ngIf="vendorEditForm.controls['city'].hasError('required') && vendorEditForm.controls['city'].touched"
+                                class="failed-validation">
+                                City Required
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['city'].hasError('pattern')" class="failed-validation">
+                                Invalid City
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="col-sm-4 form-group">
+                            <label>Zip Code *</label>
+                            <input class="form-control input-rounded" formControlName="pincode" id="pincode"
+                                placeholder="Zip Code *" minlength="6" maxlength="6" (keypress)="keyPress($event)">
+                            <!-- <i class="fa fa-file-archive-o" style="left:30px;"></i> -->
+                            <div *ngIf="vendorEditForm.controls['pincode'].hasError('required') && vendorEditForm.controls['pincode'].touched"
+                                class="failed-validation">
+                                Zip Code Required
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['pincode'].hasError('minlength')"
+                                class="failed-validation">
+                                Invalid Zip Code
+                            </div>
+                            <div *ngIf="vendorEditForm.controls['pincode'].hasError('pattern')"
+                                class="failed-validation">
+                                Invalid Zip Code
+                            </div>
+                        </div>
+
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal" (click)="updateVendor()"
+                    [disabled]=!vendorEditForm.valid>Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Edit Modal Ends -->
+
+
+<!-- Change Status Modal HTML -->
+<div id="deletModal" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="icon-box">
+                    <!-- <i class="fas fa-times"></i> -->
+                </div> <br>
+                <h4 class="modal-title"> Change Status</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+
+
+            <div class="modal-body">
+                <p>Are you sure To Change The Status?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal" (click)="activate()">Activate</button>
+                <button type="button" class="btn btn-danger" (click)="deactivate()"
+                    data-dismiss="modal">Deactivate</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Change status modal ends -->
+
+
+
+<!-- View Modal Starts -->
+
+<div class="modal fade" id="viewModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style=" padding: 5px;">
+                <h4 style=" padding-top: 10px;text-align: center;padding-left: 37%;">Vendor Details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            </div>
+            <div class="modal-body">
+
+                <table class="table table-borderless" *ngIf="viewVendors">
+                    <tr>
+                        <th>
+                            Vendor Name :
+                        </th>
+                        <td>
+                            {{viewVendors.vendor.vendorName}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            GST Number :
+                        </th>
+                        <td>
+                            {{viewVendors.vendor.taxId}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            TAN Number :
+                        </th>
+                        <td>
+                            {{viewVendors.vendor.tanNumber}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Email Id :
+                        </th>
+                        <td>
+                            {{viewVendors.vendor.emailId}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Address1 :
+                        </th>
+                        <td>
+                            {{viewVendors.address.line1}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Address2 :
+                        </th>
+                        <td>
+                            {{viewVendors.address.line2}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Name :
+                        </th>
+                        <td>
+                            {{viewVendors.firstName}}{{viewVendors.lastName}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Contact Person :
+                        </th>
+                        <td>
+                            {{viewVendors.vendor.contactPerson}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Phone Number :
+                        </th>
+                        <td>
+                            {{viewVendors.vendor.phoneNumber}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Account Number :
+                        </th>
+                        <td>
+                            {{viewVendors.vendor.bankAccountNumber}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Branch Details :
+                        </th>
+                        <td>
+                            {{viewVendors.vendor.bankBranchDetails}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            IFSC Code :
+                        </th>
+                        <td>
+                            {{viewVendors.vendor.ifscCode}}
+                        </td>
+                    </tr>
+
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- view modal ends -->
+
+
+
+
+<!-- Assign Payment Policy to vendor starts -->
+<div class="modal right fade" id="assigntoVendorModal" role="dialog">
+    <div class="modal-dialog  modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Assign Payment Policy To Vendor</h4>
+                <button type="button" class="close" data-dismiss="modal" #vendorBtn>&times;</button>
+            </div>
+            <div class="modal-body ">
+                <div class="card" style="width:100%;">
+                    <div class="card-header">
+                        <h6 class="m-0">Assign Payment to vendors</h6>
+                    </div>
+                    <div class="card-body" [formGroup]="vendorJobForm">
+                        <button id="submitJob" type="submit" (click)="assignPaymentPolicyToVendor()"
+                            class="btn btn-primary float-right" [disabled]="!vendorJobForm.valid" data-dismiss="modal">
+                            Assign
+                        </button>
+                        <br>
+                        <br>
+                        <form [formGroup]="vendorJobForm" name="form">
+                            <ng-multiselect-dropdown class="input-rounded" style="border-radius:50px"
+                                [(ngModel)]="vendorIds" [placeholder]="'Select Vendor'" [data]="dropdownListVendors"
+                                formControlName="vendorNames" [settings]="assignVendorDropdownSettings" required>
+                            </ng-multiselect-dropdown>
+
+                        </form><br>
+
+                    </div>
+                </div><br>
+                <div class="card" style="width:100%;">
+                    <div class="card-header">
+                        <h6 class="m-0">List Of Vendors already with this policy</h6>
+                    </div>
+                    <div class="card-body">
+                        <ag-grid-angular style="height: 500px" class="ag-theme-balham" [rowData]="vendorlist"
+                            [columnDefs]="colDefsVendors" (gridReady)="onGridReady($event)"
+                            [rowSelection]="rowSelection" enableColResize enableFilter enableSorting
+                            [gridOptions]='gridOptions'>
+                        </ag-grid-angular><br>
+
+                    </div>
+                </div><br>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Assign Payment Policy to vendor Ends -->

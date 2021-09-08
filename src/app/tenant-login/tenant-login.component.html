@@ -1,0 +1,105 @@
+<header >
+  <div class="overlay"></div>
+  <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+      <source src="./../../assets/img/video.mp4" type="video/mp4">
+  </video>
+  <div class="container h-100">
+      <div class="d-flex h-100  align-items-center">
+          <div class="">
+              <div class="global-container">
+                  <div class="card login-form">
+                      <div class="card-body">
+                          <div *ngIf="tenantLogo" class="text-center" style="padding: 15px 0;width: 100%;">                            <img [src]="tenantLogo" id="hirelyticLogo" alt="Organisation Logo" class="companylogo" style="height:70px;" />
+                          </div>
+                          <div *ngIf="!tenantLogo" class="text-center" style="padding: 15px 0;">
+                              <img id="hirelyticLogo" alt="NewOrg Logo" class="New companylogo" style="height:70px;" />
+                          </div>
+                          <div class="card-text">
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <form [formGroup]="loginForm" (ngSubmit)="Submit(loginForm.value)" *ngIf="(showLoginForm)">
+                                          <div class="input-group" style="pointer-events: none;" *ngIf="hostName !== 'hirelytic.com'">
+                                              <input type="text" class="input-group__field"  value="{{subDomainPlaceHolder}}" required style="text-transform: capitalize">
+                                              <label  class="input-group__label">Sub Domin</label>
+                                          </div>
+                                          <div class="input-group">
+                                              <input type="text" class="input-group__field" placeholder="Email" required formControlName="username">
+                                              <label for="email" class="input-group__label">Email</label>
+                                              <div style="text-align: left" *ngIf="loginForm.controls['username'].hasError('required') && loginForm.controls['username'].touched" class="failed-validation">
+                                                  Email Id Required
+                                              </div>
+                                              <div style="text-align: left" *ngIf="loginForm.controls['username'].hasError('pattern')" class="failed-validation">
+                                                  Invalid Email Id
+                                              </div>
+                                          </div>
+
+                                          <div class="input-group">
+                                              <input type="password" class="input-group__field" placeholder="Password" id="password" formControlName="password" required>
+                                              <label for="email" class="input-group__label">Password</label>
+                                              <div style="text-align: left" *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched" class="failed-validation">
+                                                  Password Required
+                                              </div>
+                                              <div style="text-align: left" *ngIf="loginForm.controls['password'].hasError('pattern')" class="failed-validation">
+                                                  Invalid Password
+                                              </div>
+                                          </div>
+                                          <div class="row">
+                                              <div class="offset-6 col-md-6 text-right" style="padding-bottom: 5px;" (click)="forgotPwd('forgot')">
+                                                  <a id="linkForgotPassword">Forgot
+                                                      Password?</a>
+                                              </div>
+                                              <div class="col-md-12">
+                                                  <button class="btn btn-primary btn-block" [disabled]="!loginForm.valid">Sign In</button>
+                                              </div>
+                                          </div>
+                                      </form>
+
+                                      <form [formGroup]="forgotPasswordForm" (ngSubmit)="Submit(forgotPasswordForm.value)" *ngIf="showForgotPwdForm">
+                                          <div class="input-group" style="pointer-events: none;" *ngIf="hostName !== 'hirelytic.com'">
+                                              <input type="text" class="input-group__field" placeholder="email" value="{{subDomainPlaceHolder}}" required style="  text-transform: capitalize">
+                                              <label for="email" class="input-group__label">Sub Domin</label>
+                                          </div>
+
+                                          <div style="padding-bottom: 30px;text-align: left;" >
+                                            Forgot Password
+                                          </div>
+                                          <div class="input-group">
+                                              <input type="text" class="input-group__field" placeholder="Email" required formControlName="emailId">
+                                              <label for="email" class="input-group__label">Email</label>
+                                              <div style="text-align: left" *ngIf="forgotPasswordForm.controls['emailId'].hasError('required') && forgotPasswordForm.controls['emailId'].touched" class="failed-validation">
+                                                  Email Id Required
+                                              </div>
+                                              <div style="text-align: left" *ngIf="forgotPasswordForm.controls['emailId'].hasError('pattern')" class="failed-validation">
+                                                  Invalid Email Id
+                                              </div>
+                                          </div>
+
+                                          <div class="row">
+                                              <div class="offset-6 col-md-6 text-right" style="padding-bottom: 5px;" (click)="forgotPwd('back')">
+                                                  <a id="linkForgotPassword">Sign In?</a>
+                                              </div>
+                                              <div class="col-md-12">
+                                                  <button class="btn btn-primary btn-block" [disabled]="!forgotPasswordForm.valid">Reset Password</button>
+
+                                              </div>
+                                          </div>
+                                      </form>
+
+                                  </div>
+                              </div>
+
+
+                              <div class="loginform3 text-center" style="padding-top: 15px;">
+                                  <p> <span style="padding:5px">Powered by</span>
+                                      <img src="./../../assets/images/logo_prutech2.png" style="width: 25%;" /></p>
+
+
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</header>

@@ -1,0 +1,769 @@
+<simple-notifications> </simple-notifications>
+
+<ngx-spinner bdOpacity="0.9" size="medium" color="#fff" type="line-scale" fullScreen="true">
+</ngx-spinner>
+<br>
+<div class="tab-content" *ngIf="userRole=='ADMIN'">
+    <div class="tab-pane active" id="tab-1-1">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- <div class="card"> -->
+                <div class="card-header">
+                    <label i18n="@@userListTitle">
+                        <h4>Profile</h4>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="page-content fade-in-up">
+            <div class="row">
+                <div class="col-lg-3 col-md-4">
+                    <div class="ibox">
+                        <div class="ibox-body text-center">
+                            <div class="m-t-20">
+                                <img *ngIf="!show" class="img__profile-picture" [src]="url" id="profilePicImage"
+                                    class="img-circle">
+                                <img *ngIf="show" class="img__profile-picture" [src]="tenantprofilePic"
+                                    class="img-circle">
+                                <!-- <img class="img__profile-picture" [src]="tenantprofilePic" id="profilePicImage"
+                                    class="img-circle"> -->
+                            </div>
+                            <!-- <h5 class="font-strong m-b-10 m-t-10">{{userName}}</h5>
+                            <div class="m-b-20 text-muted">{{userRole}}</div> -->
+                            <h5 class="font-strong m-b-10 m-t-10">Profile Pic</h5>
+                            <div>
+                                <input #file class="form-control input-rounded" type="file" [hidden]="true"
+                                    (change)="onTenantFileChanged($event)">
+                                <button class="btn btn-info btn-rounded m-b-5" (click)="file.click()"><i
+                                        class="fa fa-plus"></i> Select Pic</button>
+                                <button id="btnUpdateProfilePic" class="btn btn-success btn-rounded m-b-5" type="submit"
+                                    (click)="updateTenantProfilePic()">Upload</button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox">
+                        <div class="ibox-body text-center">
+                            <div class="m-t-20">
+                                <img *ngIf="!showlogo" class="img__profile-picture" [src]="urllogo" id="profilePicImage"
+                                    class="img-circle">
+                                <img *ngIf="showlogo" class="img__profile-picture" [src]="profileTenantLogo"
+                                    id="profilePicImage" class="img-circle">
+                            </div>
+                            <h5 class="font-strong m-b-10 m-t-10">Organisation Logo</h5>
+
+                            <div>
+                                <input #fileLogo class="form-control input-rounded" type="file" [hidden]="true"
+                                    (change)="onTenantLogoFileChanged($event)">
+                                <button class="btn btn-info btn-rounded m-b-5" (click)="fileLogo.click()"><i
+                                        class="fa fa-plus"></i> Select Pic</button>
+                                <button id="btnUpdateProfilePic" class="btn btn-success btn-rounded m-b-5" type="submit"
+                                    (click)="updateTenantLogo()">Upload</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-8">
+                    <div class="ibox">
+                        <div class="ibox-body">
+                            <ul class="nav nav-tabs tabs-line">
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link active" href="#tab-1" data-toggle="tab"><i
+                                            class="ti-bar-chart"></i> Overview</a>
+                                </li> -->
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#tab-2" data-toggle="tab"><i
+                                            class="ti-settings"></i>
+                                        Settings</a>
+                                </li>
+                                <li class="nav-item" (click)="getResumeSettings()">
+                                    <a class="nav-link" href="#tab-1-2-5" data-toggle="tab"><i class="ti-settings"></i>
+                                        Resume Settings</a>
+                                </li>
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" href="#tab-1-2-4" data-toggle="tab"><i
+                                            class="ti-configuration"></i>
+                                        Job Code Settings</a>
+                                </li>
+                               -->
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" href="#tab-1-2-5" data-toggle="tab"><i
+                                            class="ti-configuration"></i>
+                                        Client Creation</a>
+                                </li> -->
+                                <!-- <li class="nav-item">
+                              <a class="nav-link" href="#tab-3" data-toggle="tab"><i class="ti-announcement"></i> Feeds</a>
+                          </li> -->
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="tab-2">
+                                    <form [formGroup]="tenantProfileForm">
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <label>Organisation Name *</label>
+                                                <input id="organisationName" class="form-control input-rounded"
+                                                    type="text" placeholder="Organisation Name" readonly
+                                                    formControlName="organisationName">
+                                            </div>
+                                            <div class="col-sm-6 form-group">
+                                                <label>Organisation URL *</label>
+                                                <input id="organisationUrl" class="form-control input-rounded"
+                                                    type="text" placeholder="Organisation URL" readonly
+                                                    formControlName="tenantUrl">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <label>GST Number *</label>
+                                                <input id="tenantGst" class="form-control input-rounded" type="text"
+                                                    placeholder="GST Number" readonly formControlName="tenantGst">
+                                            </div>
+
+                                            <div class="col-sm-6 form-group">
+                                                <label>Organisation Email Id *</label>
+                                                <input id="organisationEmailId" class="form-control input-rounded"
+                                                    type="text" placeholder="Organisation Email Id" readonly
+                                                    formControlName="emailId">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <label>Company Code </label>
+                                                <input class="form-control input-rounded" type="text" id="company_Id"
+                                                    formControlName="companyCode" placeholder="Company Code">
+
+                                                <div *ngIf="tenantProfileForm.controls['companyCode'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid Company Code
+                                                </div>
+
+
+                                            </div>
+                                            <div class="col-sm-6 form-group">
+                                                <label>Contact Number *</label>
+                                                <input id="contactNumber" class="form-control input-rounded"
+                                                    (keypress)="keyPress($event)" maxlength="10" type="text"
+                                                    placeholder="Contact Number" formControlName="tenantPhone">
+                                                <div *ngIf="tenantProfileForm.controls['tenantPhone'].hasError('required') && tenantProfileForm.controls['tenantPhone'].touched"
+                                                    class="failed-validation">
+                                                    Contact Number Required
+                                                </div>
+                                                <div *ngIf="tenantProfileForm.controls['tenantPhone'].hasError('minlength')"
+                                                    class="failed-validation">
+                                                    Contact Number must contain 10 numbers
+                                                </div>
+                                                <div *ngIf="tenantProfileForm.controls['tenantPhone'].hasError('maxlength')"
+                                                    class="failed-validation">
+                                                    Contact Number must contain 10 numbers
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <label>Address Line 1 *</label>
+                                                <input id="tenantAddress" class="form-control input-rounded" type="text"
+                                                    placeholder=" Address Line 1" formControlName="address1">
+                                                <div *ngIf="tenantProfileForm.controls['address1'].hasError('required') && tenantProfileForm.controls['address1'].touched"
+                                                    class="failed-validation">
+                                                    Address Line 1 Required
+                                                </div>
+                                                <div *ngIf="tenantProfileForm.controls['address1'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid Address Line 1
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 form-group">
+                                                <label>Address Line 2 </label>
+                                                <input id="tenantAddressLine2" class="form-control input-rounded"
+                                                    type="text" placeholder="Address Line 2" formControlName="address2">
+
+                                                <div *ngIf="tenantProfileForm.controls['address2'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid Address Line 2
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <label>Country *</label>
+                                                <select class="form-control input-rounded"
+                                                    placeholder="Select Country *" id="selectCountry"
+                                                    formControlName="country"
+                                                    (change)="onCountryChange($event.target.value)">
+                                                    <option value="" disabled selected>Country *</option>
+                                                    <option *ngFor="let c of countryList" [value]="c.countryId">
+                                                        {{c.countryName}}</option>
+                                                </select>
+
+                                                <div *ngIf="tenantProfileForm.controls['country'].hasError('required') && tenantProfileForm.controls['country'].touched"
+                                                    class="failed-validation">
+                                                    Select a country
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 form-group">
+                                                <label>State *</label>
+                                                <select class="form-control input-rounded" value="" id="state_id"
+                                                    name="ostate" placeholder="Select State *" formControlName="state">
+                                                    <option value="" disabled selected>State *</option>
+                                                    <option *ngFor="let c of stateList" [value]="c">{{c}}</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <label>City *</label>
+                                                <input id="tenantCity" class="form-control input-rounded" type="text"
+                                                    placeholder="City" formControlName="city">
+                                                <div *ngIf="tenantProfileForm.controls['city'].hasError('required') && tenantProfileForm.controls['city'].touched"
+                                                    class="failed-validation">
+                                                    City Required
+                                                </div>
+                                                <div *ngIf="tenantProfileForm.controls['city'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid City
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 form-group">
+                                                <label>Zip Code *</label>
+                                                <input id="tenantZipCode" class="form-control input-rounded" type="text"
+                                                    placeholder="Zip code" maxlength="6" minlength="6"
+                                                    (keypress)="keyPress($event)" formControlName="ZipCode">
+                                                <div *ngIf="tenantProfileForm.controls['ZipCode'].hasError('required') && tenantProfileForm.controls['ZipCode'].touched"
+                                                    class="failed-validation">
+                                                    Zip Code Required
+                                                </div>
+                                                <div *ngIf="tenantProfileForm.controls['ZipCode'].hasError('minlength')"
+                                                    class="failed-validation">
+                                                    Invalid Zip Code
+                                                </div>
+                                                <div *ngIf="tenantProfileForm.controls['ZipCode'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid ZipCode
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-sm-12 form-group">
+                                                <label>About Company *</label>
+                                                <textarea class="form-control input-rounded" id="aboutCompany"
+                                                    formControlName="aboutCompany" rows="3" style="width:100%"
+                                                    id="aboutCompany" placeholder="About Company *"></textarea>
+
+                                                <div *ngIf="tenantProfileForm.controls['aboutCompany'].hasError('required') && tenantProfileForm.controls['aboutCompany'].touched"
+                                                    class="failed-validation">
+                                                    Company Details Required
+                                                </div>
+                                                <div *ngIf="tenantProfileForm.controls['aboutCompany'].hasError('minlength')"
+                                                    class="failed-validation">
+                                                    Please enter atlest 50 characters
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button id="btnUpdateTenantProfile" class="btn btn-success float-right"
+                                                type="submit" [disabled]="!tenantProfileForm.valid"
+                                                (click)="updateTenantProfile(tenantProfileForm.value)">Update</button>
+                                        </div><br>
+                                    </form>
+                                </div>
+                                <div class="tab-pane fade" id="tab-1-2-4">
+                                    <form [formGroup]="configForm">
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <label>Job Code Prefix *</label>
+                                                <input id="jobCodePrefix" class="form-control input-rounded" type="text"
+                                                    maxlength="255" placeholder="Job Code Prefix "
+                                                    formControlName="jobCodePrefix">
+
+                                                <div *ngIf="configForm.controls['jobCodePrefix'].hasError('required') && configForm.controls['jobCodePrefix'].touched"
+                                                    class="failed-validation">
+                                                    Job Code Required
+                                                </div>
+                                                <div *ngIf="configForm.controls['jobCodePrefix'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid Job Code
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 form-group">
+                                                <label>Job Code Length *</label>
+                                                <input id="jobCodeLength" class="form-control input-rounded" type="text"
+                                                    maxlength="9" (keypress)="keyPress($event)"
+                                                    placeholder="Job Code Length" formControlName="jobCodelength">
+                                                <div *ngIf="configForm.controls['jobCodelength'].hasError('required') && configForm.controls['jobCodelength'].touched"
+                                                    class="failed-validation">
+                                                    Job Code Length Required
+                                                </div>
+                                                <div *ngIf="configForm.controls['jobCodelength'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid Job Code Length
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <label>Number of Questions *</label>
+                                                <input id="numberOfQsns" class="form-control input-rounded" type="text"
+                                                    placeholder="Number  of Questions" maxlength="3"
+                                                    (keypress)="keyPress($event)" formControlName="onlineQsn">
+                                                <div *ngIf="configForm.controls['onlineQsn'].hasError('required') && configForm.controls['onlineQsn'].touched"
+                                                    class="failed-validation">
+                                                    Number of questions are required
+                                                </div>
+                                                <div *ngIf="configForm.controls['onlineQsn'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid Entry
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 form-group">
+                                                <label>Pass Percentage *</label>
+                                                <input id="passingPercentage" class="form-control input-rounded"
+                                                    type="text" maxlength=3 placeholder="Passing Percentage"
+                                                    formControlName="passingPercentage">
+                                                <div *ngIf="configForm.controls['passingPercentage'].hasError('required') && configForm.controls['passingPercentage'].touched"
+                                                    class="failed-validation">
+                                                    Percentage is required
+                                                </div>
+                                                <div *ngIf="configForm.controls['passingPercentage'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid Entry
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" id="btnUpdateConfigDetails"
+                                                class="btn btn-success float-right" type="submit"
+                                                [disabled]="!configForm.valid"
+                                                (click)="updateConfigDetails(configForm.value)">Update</button>
+                                        </div>
+                                    </form>
+                                    <br>
+
+                                </div>
+                                <div class="tab-pane fade" id="tab-1-2-5">
+                                    <form [formGroup]="resumeSettingForm">
+                                        <div class="row">
+                                            <div class="col-sm-6" form-group>
+                                                <label>Email Id
+                                                    *</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input type="checkbox" name="optradio" formControlName="email"
+                                                    (change)="changeEmail($event)">
+                                            </div>
+                                        </div><br>
+                                        <div class="row">
+                                            <div class="col-sm-6" form-group>
+                                                <label>Pan Number
+                                                    *</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input type="checkbox" name="optradio" formControlName="Phone"
+                                                    (change)="changePanNumber($event)">
+                                            </div>
+                                        </div><br>
+                                        <div class="row">
+                                            <div class="col-sm-6" form-group>
+                                                <label>Contact Number *</label>
+                                                &nbsp;&nbsp;
+                                                <input type="checkbox" name="optradio" formControlName="pannumber"
+                                                    (change)="changePhoneNumber($event)">
+                                            </div>
+                                        </div><br>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <label>Resume Valid Period * </label>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <input type="number" id="resumeperiod"
+                                                            class="form-control input-rounded"
+                                                            placeholder="Resume Period" formControlName="resumeperiod"
+                                                            maxlength=3 />
+                                                        <div *ngIf="resumeSettingForm.controls['resumeperiod'].hasError('pattern')"
+                                                            class="failed-validation">
+                                                            Invalid Resume Period
+                                                        </div>
+                                                        <div *ngIf="resumeSettingForm.controls['resumeperiod'].hasError('required') && resumeSettingForm.controls['resumeperiod'].touched"
+                                                            class="failed-validation">
+                                                            Resume Period Required
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <label>Resume Valid Duration Active * </label>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <input type="checkbox" name="optradio"
+                                                                    (change)="handleChange('yes')" formControlName="active" />Active
+
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <input type="checkbox" name="optradio"
+                                                                    (change)="handleChange('no')" formControlName="Inactive">In Active
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="float-right">
+                                        <button type="button" class="btn btn-success"
+                                            [disabled]="!resumeSettingForm.valid" (click)="update()">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style type="text/css">
+                .profile-social a {
+                    font-size: 16px;
+                    margin: 0 10px;
+                    color: #999;
+                }
+
+                .profile-social a:hover {
+                    color: #485b6f;
+                }
+
+                .profile-stat-count {
+                    font-size: 22px
+                }
+            </style>
+        </div>
+        <!-- new profile UI ends-->
+    </div>
+
+</div>
+<div class="tab-content" *ngIf="userRole!='ADMIN'">
+    <div class="tab-pane active" id="tab-1-1">
+        <!-- copy 1 -->
+        <!-- new profile UI -->
+        <div class="page-heading">
+            <h1 class="page-title">Profile</h1>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="index.html"><i class="la la-home font-20"></i></a>
+                </li>
+                <!-- <li class="breadcrumb-item">Profile</li> -->
+            </ol>
+        </div>
+        <div class="page-content fade-in-up">
+            <div class="row">
+                <div class="col-lg-3 col-md-4">
+                    <div class="ibox">
+                        <div class="ibox-body text-center">
+                            <div class="m-t-20">
+                                <img *ngIf="!showuser" class="img__profile-picture" [src]="urlluser"
+                                    id="profilePicImageusers" class="img-circle">
+                                <img *ngIf="showuser" class="img__profile-picture" [src]="tenantprofilePicuser"
+                                    class="img-circle">
+
+                            </div>
+                            <!-- <h5 class="font-strong m-b-10 m-t-10">{{userName}}</h5>
+                            <div class="m-b-20 text-muted">{{userRole}}</div> -->
+                            <h5 class="font-strong m-b-10 m-t-10">Profile Pic</h5>
+                            <div>
+                                <input #file class="form-control input-rounded" type="file" [hidden]="true"
+                                    (change)="onFileChanged($event)">
+                                <button class="btn btn-info btn-rounded m-b-5" (click)="file.click()"><i
+                                        class="fa fa-plus"></i> Select Pic</button>
+                                <button id="btnUpdateUserPic" class="btn btn-success btn-rounded m-b-5" type="submit"
+                                    (click)="updateUserProfilePic()">Upload</button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-9 col-md-8">
+                    <div class="ibox">
+                        <div class="ibox-body">
+                            <ul class="nav nav-tabs tabs-line">
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link active" href="#tab-1" data-toggle="tab"><i
+                                            class="ti-bar-chart"></i> Overview</a>
+                                </li> -->
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#tab-2" data-toggle="tab"><i
+                                            class="ti-settings"></i>
+                                        Settings</a>
+                                </li>
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" href="#tab-1-2-3" data-toggle="tab"><i
+                                            class="ti-configuration"></i>Configuration</a>
+                                </li> -->
+                                <!-- <li class="nav-item">
+                                  <a class="nav-link" href="#tab-3" data-toggle="tab"><i class="ti-announcement"></i> Feeds</a>
+                              </li> -->
+                            </ul>
+                            <div class="tab-content">
+
+                                <div class="tab-pane fade show active" id="tab-2">
+                                    <form [formGroup]="userProfileForm">
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <label>First Name *</label>
+                                                <input id="firstName" class="form-control input-rounded" type="text"
+                                                    placeholder="First Name" formControlName="firstName">
+                                                <div *ngIf="userProfileForm.controls['firstName'].hasError('required') && userProfileForm.controls['firstName'].touched"
+                                                    class="failed-validation">
+                                                    First Name Required
+                                                </div>
+                                                <div *ngIf="userProfileForm.controls['firstName'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid First Name
+                                                </div>
+
+                                            </div>
+                                            <div class="col-sm-6 form-group">
+                                                <label>Last Name *</label>
+                                                <input id="lastName" class="form-control input-rounded" type="text"
+                                                    placeholder="Last Name" formControlName="lastName">
+                                                <div *ngIf="userProfileForm.controls['lastName'].hasError('required') && userProfileForm.controls['lastName'].touched"
+                                                    class="failed-validation">
+                                                    Last Name Required
+                                                </div>
+                                                <div *ngIf="userProfileForm.controls['lastName'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid Last Name
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <label>Phone Number *</label>
+                                                <input id="phoneNumber" class="form-control input-rounded" type="text"
+                                                    placeholder="Phone Number" (keypress)="keyPress($event)"
+                                                    maxlength="10" formControlName="phoneNo">
+                                                <div *ngIf="userProfileForm.controls['phoneNo'].hasError('required') && userProfileForm.controls['phoneNo'].touched"
+                                                    class="failed-validation">
+                                                    Phone Number Required
+                                                </div>
+                                                <div *ngIf="userProfileForm.controls['phoneNo'].hasError('minlength')"
+                                                    class="failed-validation">
+                                                    Phone Number must contain 10 numbers
+                                                </div>
+                                                <div *ngIf="userProfileForm.controls['phoneNo'].hasError('maxlength')"
+                                                    class="failed-validation">
+                                                    Phone Number must contain 10 numbers
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 form-group">
+                                                <label> Email Id *</label>
+                                                <input id="userEmailId" class="form-control input-rounded" type="text"
+                                                    placeholder=" Email Id" readonly formControlName="emailId">
+                                            </div>
+
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <label>Address Line 1*</label>
+                                                <input id="Address" class="form-control input-rounded" type="text"
+                                                    placeholder="Address line 1" formControlName="address1">
+                                                <div *ngIf="userProfileForm.controls['address1'].hasError('required') && userProfileForm.controls['address1'].touched"
+                                                    class="failed-validation">
+                                                    Address Line 1 Required
+                                                </div>
+                                                <div *ngIf="userProfileForm.controls['address1'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid Address Line 1
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 form-group">
+                                                <label>Address Line 2</label>
+                                                <input id="Address" class="form-control input-rounded" type="text"
+                                                    placeholder="Address line 2" formControlName="address2">
+                                                <div *ngIf="userProfileForm.controls['address2'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid Address Line 2
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <label>Country *</label>
+                                                <select class="form-control input-rounded"
+                                                    placeholder="Select Country *" id="selectCountry"
+                                                    formControlName="country"
+                                                    (change)="onCountryChange($event.target.value)">
+                                                    <option value="" disabled selected>Country *</option>
+                                                    <option *ngFor="let c of countryList" [value]="c.countryId">
+                                                        {{c.countryName}}</option>
+                                                </select>
+
+                                                <div *ngIf="userProfileForm.controls['country'].hasError('required') && userProfileForm.controls['country'].touched"
+                                                    class="failed-validation">
+                                                    Select Country
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 form-group">
+                                                <label>State *</label>
+                                                <select class="form-control input-rounded" value="" id="state_id"
+                                                    name="ostate" placeholder="Select State *" formControlName="state">
+                                                    <option value="" disabled selected>State *</option>
+                                                    <option *ngFor="let c of stateList" [value]="c">{{c}}</option>
+                                                </select>
+
+                                            </div>
+
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <label>City *</label>
+                                                <input id="tenantCity" class="form-control input-rounded" type="text"
+                                                    placeholder="City" formControlName="city">
+                                                <div *ngIf="userProfileForm.controls['city'].hasError('required') && userProfileForm.controls['city'].touched"
+                                                    class="failed-validation">
+                                                    City Required
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 form-group">
+                                                <label>Zip Code *</label>
+
+
+                                                <input class="form-control input-rounded" formControlName="ZipCode"
+                                                    type="text" id="zip_code" placeholder="Zip Code *" maxlength="6"
+                                                    (keypress)="keyPress($event)">
+
+                                                <div *ngIf="userProfileForm.controls['ZipCode'].hasError('required') && userProfileForm.controls['ZipCode'].touched"
+                                                    class="failed-validation">
+                                                    Zip Code required
+                                                </div>
+                                                <div *ngIf="userProfileForm.controls['ZipCode'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid Zip Code
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <button id="btnUpdateUserProfile" class="btn btn-success float-right"
+                                                type="submit" [disabled]="!userProfileForm.valid"
+                                                (click)="updateUserProfile(userProfileForm.value)">Update</button>
+                                        </div><br>
+                                    </form>
+                                </div>
+                                <div class="tab-pane fade" id="tab-1-2-3">
+                                    <!-- <form [formGroup]="configForm">
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <label>Job Code Prefix *</label>
+                                                <input id="jobCodePrefix" class="form-control input-rounded" type="text"
+                                                    maxlength="255" placeholder="Job Code Prefix "
+                                                    formControlName="jobCodePrefix">
+
+                                                <div *ngIf="configForm.controls['jobCodePrefix'].hasError('required') && configForm.controls['jobCodePrefix'].touched"
+                                                    class="failed-validation">
+                                                    Job Code Required
+                                                </div>
+                                                <div *ngIf="configForm.controls['jobCodePrefix'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid Job Code
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 form-group">
+                                                <label>Job Code Length *</label>
+                                                <input id="jobCodeLength" class="form-control input-rounded" type="text"
+                                                    maxlength="20" (keypress)="keyPress($event)"
+                                                    placeholder="Job Code Length" formControlName="jobCodelength">
+                                                <div *ngIf="configForm.controls['jobCodelength'].hasError('required') && configForm.controls['jobCodelength'].touched"
+                                                    class="failed-validation">
+                                                    Job Code Length required
+                                                </div>
+                                                <div *ngIf="configForm.controls['jobCodelength'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid Job Code Length
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                <label>Number of Questions *</label>
+                                                <input id="numberOfQsns" class="form-control input-rounded" type="text"
+                                                    placeholder="Number  of Questions" maxlength="3"
+                                                    (keypress)="keyPress($event)" formControlName="onlineQsn">
+                                                <div *ngIf="configForm.controls['onlineQsn'].hasError('required') && configForm.controls['onlineQsn'].touched"
+                                                    class="failed-validation">
+                                                    Number of questions is required
+                                                </div>
+                                                <div *ngIf="configForm.controls['onlineQsn'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid Entry
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 form-group">
+                                                <label>Pass Percentage *</label>
+                                                <input id="passingPercentage" class="form-control input-rounded"
+                                                    type="text" maxlength=3 placeholder="Passing Percentage"
+                                                    formControlName="passingPercentage">
+                                                <div *ngIf="configForm.controls['passingPercentage'].hasError('required') && configForm.controls['passingPercentage'].touched"
+                                                    class="failed-validation">
+                                                    Percentage is required
+                                                </div>
+                                                <div *ngIf="configForm.controls['passingPercentage'].hasError('pattern')"
+                                                    class="failed-validation">
+                                                    Invalid Entry
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <button id="btnUpdateConfigDetails" class="btn btn-success float-right"
+                                                type="submit" [disabled]="!configForm.valid"
+                                                (click)="updateConfigDetails(configForm.value)">Update</button>
+                                        </div>
+                                        <br>
+                                    </form> -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style type="text/css">
+                .profile-social a {
+                    font-size: 16px;
+                    margin: 0 10px;
+                    color: #999;
+                }
+
+                .profile-social a:hover {
+                    color: #485b6f;
+                }
+
+                .profile-stat-count {
+                    font-size: 22px
+                }
+            </style>
+        </div>
+        <!-- new profile UI ends-->
+    </div>
+</div>

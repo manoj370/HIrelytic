@@ -1,0 +1,480 @@
+<simple-notifications></simple-notifications>
+<ngx-spinner bdOpacity="0.9" size="medium" color="#fff" type="line-scale" fullScreen="true">
+</ngx-spinner>
+<div >
+
+<div class="card-header">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="ibox-head">
+          <div class="ibox-title">
+            <h4>Roles & Privileges</h4>
+          </div>
+        </div>
+      </div>     
+    </div>
+  </div>
+<!--  -->
+
+<ul class="nav nav-tabs" role="tablist" style="background-color: white;padding-bottom: 10px;">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" (click)="getuser()">Users</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Roles</a>
+    </li>
+    <li class="nav-item" (click)="getUnregister()">
+        <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab" style="font-size: 1.25rem;">Unregistered
+            Users</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">Resume Status</a>
+    </li>
+
+</ul>
+<!-- Tab panes  [rowHeight]="rowHeight"-->
+<div class="tab-content">
+    <div class="tab-pane active" id="tabs-1" role="tabpanel">
+        <section>
+            <span class="addButton">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#inviteUser">Invite User</button>
+            </span>
+            <div class="container-fluid">
+                <ag-grid-angular #agGrid style="height: 550px;" [rowHeight]="rowHeight" class="ag-theme-balham" 
+                [rowClassRules]="rowClassRules" [rowData]="list" [columnDefs]="columnDefs"
+                 enableColResize enableFilter enableSorting [suppressRowClickSelection]="true"
+                    (cellClicked)="getData($event)">
+                </ag-grid-angular>
+            </div>
+            <div class="float-right" style="margin-top:4pc;" *ngIf="totalCount>15">
+                <button (click)="onBtPrevious()" class="btn btn-outline-primary" [disabled]="disablePreviousButton"><i
+                        class="fa fa-angle-left" aria-hidden="true"></i></button>
+                <b>{{pageid+1}}/{{responsePageCount}}&nbsp;</b>
+                <button (click)="onBtNext()" class="btn btn-outline-primary" [disabled]="disableNextButton"><i
+                        class="fa fa-angle-right" aria-hidden="true"></i></button>
+            </div>
+        </section>
+    </div>
+    <div class="tab-pane" id="tabs-2" role="tabpanel">
+        <section>
+            <span class="addButton" style="right: 30px;">
+                <button class="btn btn-primary" (click)="clearValidations()" data-toggle="modal"
+                    data-target="#addRole">Add Role</button>
+            </span>
+            <div class="container-fluid">
+                <div class="row" style="width: 100%; margin: 0;padding: 0;">
+                    <div class="col-md-4" *ngFor="let item of userList" style="cursor: pointer;">
+                        <div class="card" (click)="editData(item)">
+                            <span>{{item.roleName}}
+                                <i class="fas fa-pencil-square-o roleEdit" title="Edit Role" data-toggle="modal"
+                                    data-target="#addRole"></i> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="tab-pane" id="tabs-3" role="tabpanel">
+        <section>
+            <span class="addButton">
+                <!-- <button class="btn btn-primary text-right" (click)="resendUser()">Resend
+                    Invitation</button> -->
+            </span>
+            <div class="container-fluid">
+                <ag-grid-angular style="width: 100%; height: 500px;margin-top:45px" (paginationChanged)="onPaginationChanged($event)" [pagination]="true" class="ag-theme-balham" [rowData]="unregisterData" paginationPageSize="15" [columnDefs]="unRegistercolumnDefs" enableFilter
+                    enableSorting (gridReady)="onGridReady($event)" rowSelection="single" [suppressPaginationPanel]="true" [suppressScrollOnNewData]="true" (rowClicked)='onRowClicked($event)'>
+                </ag-grid-angular>
+            </div>
+            <div class="float-right" style="position: relative;top: 40px;right: 12px;">
+                <button (click)="onBtPreviousag()" class="btn btn-outline-primary"><i class="fa fa-angle-left"
+                        aria-hidden="true"></i></button>
+                <b>{{changePage}}/{{totalPages}}&nbsp;</b>
+                <button (click)="onBtNextag()" class="btn btn-outline-primary"><i class="fa fa-angle-right"
+                        aria-hidden="true"></i></button>
+            </div>
+        </section>
+
+    </div>
+
+
+
+    <div class="tab-pane" id="tabs-4" role="tabpanel">
+        <section>
+            <span class="addButton">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#addStatusModal"
+                    (click)="buttonupdate()">Add Status</button>
+            </span>
+            <div class="container-fluid">
+                <ag-grid-angular style="height: 600px;" (paginationChanged)="onPaginationChanged($event)" [suppressPaginationPanel]="true" [suppressScrollOnNewData]="true" [rowHeight]="rowHeight" class="ag-theme-balham" [rowData]="allResumeStatus" [columnDefs]="ColumnDefsToStatus"
+                    pagination="true" paginationPageSize="15" enableFilter enableSorting (gridReady)="onGridReady($event)" (cellClicked)="editStatus($event)">
+                </ag-grid-angular>
+            </div>
+            <div class="float-right" style="position: relative;top: 40px;right: 12px;">
+                <button (click)="onBtPreviousag()" class="btn btn-outline-primary"><i class="fa fa-angle-left"
+                        aria-hidden="true"></i></button>
+                <b>{{changePage}}/{{totalPages}}&nbsp;</b>
+                <button (click)="onBtNextag()" class="btn btn-outline-primary"><i class="fa fa-angle-right"
+                        aria-hidden="true"></i></button>
+            </div>
+        </section>
+    </div>
+</div>
+
+</div>
+
+<!-- Add users modal starts -->
+<!-- The Modal -->
+<div class="modal" id="inviteUser">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Invite User</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)=inviteuserform()>&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form [formGroup]="inviteuserForm">
+                    <div class="form-group">
+                        <label for="usr">Email Id:</label>
+                        <input type="text" class="form-control" placeholder="Email Id" formControlName="inviteEmilId">
+                        <div *ngIf="inviteuserForm.controls['inviteEmilId'].hasError('pattern')" class="failed-validation">
+                            Valid Email Id Is Required
+                        </div>
+                        <div *ngIf=" inviteuserForm.controls['inviteEmilId'].hasError('required') && inviteuserForm.controls['inviteEmilId'].touched " class="failed-validation">
+                            Email Id is Required
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Select Role</label>
+                        <select class="form-control input-rounded" formControlName="userRole">
+                            <option value="" disabled selected>Select Role</option>
+                            <option *ngFor="let c of userList;let i = index;" [value]="c.roleId">{{ c.roleName}}
+                            </option>
+                        </select>
+                        <div *ngIf=" inviteuserForm.controls['userRole'].hasError('required') && inviteuserForm.controls['userRole'].touched " class="failed-validation">
+                            Please Select One Role
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-dismiss="modal" data-dismiss="modal" [disabled]="!inviteuserForm.valid" (click)="inviteuser()">Submit</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- //addRole -->
+<div class="modal" id="addRole">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="width: 1050px;position: relative;right: 100px;">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add Role</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)="clearValidations()">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form [formGroup]="addRoleForm">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="Add Role" style="margin-top:5px">Role Name:</label>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Role" formControlName="addRole" (change)="checkCreateRoleName($event.target.value)">
+                                    </div>
+                                    <div *ngIf=" addRoleForm.controls['addRole'].hasError('required') && addRoleForm.controls['addRole'].touched " class="failed-validation">
+                                        Role name is Required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p> <b>Assign atleast one privilege to the role</b></p>
+
+                        <div class="row" *ngIf="(updateBtn) && (modulesList)">
+                            <div class="col-md-12" *ngFor="let item of modulesList | keyvalue">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label style="color:#276eb5;margin-top:15px; text-align: justify;">
+                                            {{item.key}}
+                                        </label>
+                                    </div>
+                                    <div class="col-md-9" style="border:1px solid #6e777e63;margin:2px auto;">
+                                        <div class="row">
+                                            <div class="col-sm-4 gridmod" (click)="selectAuthority(rec)" *ngFor="let rec of item.value">
+                                                <div class="card calenderrange" style="margin:5px 0px" id={{rec.authorityId}}>
+                                                    <div class=" cardmodf overflow">
+                                                        <span>{{rec.authority}}</span>
+                                                        <i class="fas fa-info-circle tooltipValue">
+                                                            <span class="right">
+                                                                <h6>{{rec.authority}}</h6>
+                                                                <p>{{rec.comments}}</p>
+                                                            </span>
+                                                        </i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="(!updateBtn) && (modulesList)">
+
+                            <div class="col-md-12" *ngFor="let item of modulesList | keyvalue">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label style="color:#276eb5;margin-top:15px; text-align: justify;">
+                                            {{item.key}}
+                                        </label>
+                                    </div>
+                                    <div class="col-md-8" style="border:1px solid #6e777e63;margin:2px auto;">
+                                        <div class="row">
+                                            <div class="col-sm-4 gridmod " (click)="selectUserPrivelege(rec)" *ngFor="let rec of item.value">
+                                                <div class="card calenderrange" style="margin:5px 0px" id={{rec.authority}}>
+                                                    <div class=" cardmodf overflow">
+                                                        <span>{{rec.authority}}</span>
+                                                        <i class="fas fa-info-circle tooltipValue">
+                                                            <span class="right">
+                                                                <h6>{{rec.authority}}</h6>
+                                                                <p>{{rec.comments}}</p>
+                                                            </span>
+                                                        </i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-dismiss="modal" data-dismiss="modal" [disabled]="!addRoleForm.valid" (click)="updateRoles()" *ngIf="!updateBtn">Update</button>
+                <button type="submit" class="btn btn-primary" data-dismiss="modal" data-dismiss="modal" [disabled]="!addRoleForm.valid" (click)="addRole()" *ngIf="updateBtn">Create</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Status modal starts -->
+<!-- The Modal -->
+<div class="modal fade" id="addStatusModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title" *ngIf="editstatus">Add Status </h4>
+                <h4 class="modal-title" *ngIf="!editstatus">Edit Status </h4>
+                <button type="button" class="close" data-dismiss="modal" (click)=statusFormClose()>&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="addStatusForm">
+                    <div class="row">
+                        <div class="col-sm-12 form-group">
+                            <label>Status *</label>
+                            <input id="status" class="form-control input-rounded" required type="text" formControlName="status" placeholder="Enter Status" (blur)="checkResumeStatus($event.target.value)" />
+                            <span *ngIf="addStatusForm.controls['status'].hasError('pattern')" class="failed-validation">
+                                No Spaces are allowed
+                            </span>
+                            <span *ngIf=" addStatusForm.controls['status'].hasError('required') && addStatusForm.controls['status'].touched " class="failed-validation">
+                                Status Required
+                            </span>
+                        </div>
+                    </div>
+                    <span><b>Note:Only UnderScores are Allowed</b></span>
+                </form>
+                <br />
+            </div>
+            <div class="modal-footer">
+                <button type="text" class="btn btn-primary float-right;margin: 15px !important;" type="button" id="newUser" data-dismiss="modal" *ngIf="editstatus" [disabled]="!addStatusForm.valid" (click)="createStatus()">
+                    Add
+                </button>
+                <button type="text" class="btn btn-primary float-right;margin: 15px !important;" type="button" id="newUser" data-dismiss="modal" *ngIf="!editstatus" [disabled]="!addStatusForm.valid" (click)="statusEdit()">
+                    Update
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add Status Modal Ends -->
+
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editStatusModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Status </h4>
+                <button type="button" class="close" data-dismiss="modal" (click)=statusFormClose()>&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="editStatusForm">
+                    <div class="row">
+                        <div class="col-sm-12 form-group">
+                            <label>Status *</label>
+                            <input id="status" class="form-control input-rounded" required type="text" formControlName="status" placeholder="Enter Status" />
+                            <span *ngIf="editStatusForm.controls['status'].hasError('pattern')" class="failed-validation">
+                                No Spaces are allowed
+                            </span>
+                            <span *ngIf=" editStatusForm.controls['status'].hasError('required') && editStatusForm.controls['status'].touched " class="failed-validation">
+                                Status Required
+                            </span>
+                        </div>
+                    </div>
+                </form>
+                <br />
+            </div>
+            <div class="modal-footer">
+                <button type="text" class="btn btn-primary float-right;margin: 15px !important;" type="button" id="newUser" data-dismiss="modal" [disabled]="!editStatusForm.valid" (click)="statusEdit()">
+                    Update
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Status Modal Ends -->
+<div class="modal" id="gridicon">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="width:120%">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="padding:25px;">
+                <h4 class="modal-title" style="position: absolute;left:5px;top:10px;">User Details</h4>
+                <button type="button" class="close" data-dismiss="modal" style="position: absolute;right: 5px;top:10px;">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form [formGroup]="editUserForm">
+                    <div class="row">
+                        <div class="col-sm-12 form-group" id="name">
+                            <input id="name" class="form-control input-rounded" required type="text" formControlName="roleName" placeholder="name" readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 form-group">
+                            <input id="editUserEmailId" data-container="body" tabindex="12" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Enter emails separated by semi-colon." class="form-control input-rounded" required type="text" formControlName="editUserEmail"
+                                placeholder="Enter emails" readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 form-group">
+                            <input class="form-control input-rounded" placeholder="Contact Number *" formControlName="phoneNumber" id="contact_number" name="phoneNumber" maxlength="10" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 form-group" id="select_Role">
+                            <select class="form-control input-rounded" formControlName="roleId" (change)="getPriveliges($event.target.value)">
+                                <option value="" disabled selected>Select Role</option>
+                                <option *ngFor="let c of userList;let i = index;" [value]="c.roleId">{{ c.roleName}}
+                                </option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-12 form-group">
+                        <label><b>Manage Privileges</b></label>
+                        <div class="row">
+
+
+                            <div class="col-md-12" *ngFor="let item of modulesList | keyvalue">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label style="color:#276eb5;margin-top:15px; text-align: justify;">
+                                            {{item.key}}
+                                        </label>
+                                    </div>
+                                    <div class="col-md-8" style="border:1px solid #6e777e63;margin:2px auto;">
+                                        <div class="row">
+                                            <div class="col-sm-4 gridmod " (click)="selectUserPrivelege(rec)" *ngFor="let rec of item.value">
+                                                <div class="card calenderrange" style="margin:5px 0px" id={{rec.authority}}>
+                                                    <div class=" cardmodf overflow">
+                                                        <span>{{rec.authority}}</span>
+                                                        <i class="fas fa-info-circle tooltipValue">
+                                                            <span class="right">
+                                                                <h6>{{rec.authority}}</h6>
+                                                                <p>{{rec.comments}}</p>
+                                                            </span>
+                                                        </i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="col-sm-3 gridmod " (click)="selectUserPrivelege(item)" *ngFor="let item of roles">
+                                <div class="card calenderrange" style="margin:5px 0px" id={{item.authority}}>
+                                    <div class=" cardmodf overflow">
+                                        <span>{{item.authority}}</span>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </form>
+            </div><br>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="updateData()">Update</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal HTML -->
+<div id="deletModal" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="icon-box">
+                    <i class="fas fa-user-times remove" *ngIf="statusUser==='active'"></i>
+
+                    <i class="fas fa-user-check add" *ngIf="statusUser!=='active'"></i>
+
+                </div> <br>
+            </div>
+            <h4 class="modal-title">Are you sure?</h4>
+            <div class="modal-body">
+                <p *ngIf="statusUser==='active'">Do you really want to delete <b style="color:#f15e5e">{{userName}}</b> records?
+                </p>
+                <p *ngIf="statusUser!=='active'">Do you really want to Active <b style="color:#29b765">{{userName}}</b> records?
+                </p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                <button *ngIf="statusUser==='active'" type="button" class="btn btn-danger" (click)="removeUser()" data-dismiss="modal">Deactivate</button>
+                <button *ngIf="statusUser!=='active'" type="button" class="btn btn-danger" (click)="removeUser()" data-dismiss="modal">Activate</button>
+            </div>
+        </div>
+    </div>
+</div>

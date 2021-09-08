@@ -1,0 +1,318 @@
+<!-- [(ngModel)]="filterName" name="filterName" -->
+<div class="card-header">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="ibox-head">
+                <div class="ibox-title">
+                    <h4>Resumes Bank</h4>
+                </div>
+            </div>
+        </div>
+        <div class="float-right" style="position: absolute;
+        right: 64px;">
+            <div class="row">
+                <div class="col-lg-3">
+                    <span *ngIf="statusValue.value ==='Date Range'">
+                        <input type="text" placeholder="Please Choose Date" ngxDaterangepickerMd
+                            (change)="datePicker($event)" 
+                            class="form-control calendarrange" style=" border-radius: 15px;
+                            cursor: pointer;
+                            position: absolute;
+                            width: 119%;
+                            right: -11px;
+                            bottom: 0px;" />
+                    </span>
+                </div>
+                <div class="col-lg-3">
+                    <select id="daterange" style=" border-radius: 15px;cursor: pointer;border-radius: 15px;
+                        cursor: pointer;
+                        position: relative;
+                        margin-right: 146px;" class="form-control input-rounded" tabindex="14"
+                        (change)="dateOption($event.target.value)" maxlength="255" #statusValue>
+                        <option selected disabled>Select Period</option>
+                        <option>1 Month</option>
+                        <option>3 Months</option>
+                        <option>6 Months</option>
+                        <option>1 Year</option>
+                        <option>Date Range</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <span>
+                        <form [formGroup]="searchForm">
+                            <input type="text" class="form-control" id="inputValidation" placeholder="Search"
+                                style=" border-radius: 15px;" formControlName="searchinput" (keyup)="searchinput()" />
+                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                        </form>
+                    </span>
+                </div>
+                <div class="col-lg-3">
+                    <select class="form-control" id="types" Placeholder="Select Type" style="border-radius: 20px;"
+                        (change)="RoleType($event.target.value)">
+                        <option value="" disabled selected>Select Type</option>
+                        <option *ngFor="let roles of rolesList">{{roles}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" style="cursor: pointer;cursor: pointer;
+                top: -37px;
+                left: -116px;" [disabled]="sendEmailButton" (click)=" getTemplateData()"><i class="fa fa-envelope"
+                        aria-hidden="true"></i>&nbsp;&nbsp;Send
+                    Email</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ibox page-content fade-in-up" style="top: 10px;padding:0px 0 30px 0">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <h5 style="padding: 10px 0;">{{headerValue}}</h5>
+                </div>
+                <div class="col-md-12">
+                    <ag-grid-angular style="width: 100%; height: 500px; margin-top:10px" [rowData]="databasedetails"
+                        [pagination]="true" class="ag-theme-balham" paginationPageSize="15" [columnDefs]="columnDefs"
+                        enableFilter enableSorting (gridReady)="onGridReady($event)" [suppressPaginationPanel]="true"
+                        (selectionChanged)="onSelectionChanged($event)" [suppressScrollOnNewData]="true"
+                        (cellClicked)='onRowClicked($event)'>
+                    </ag-grid-angular>
+                </div>
+                <div class="float-right">
+                    <button (click)="onBtPrevious()" class="btn btn-outline-primary"
+                        [disabled]="disablePreviousButton"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+                    <b>{{pageid+1}}/{{responsePageCount}}&nbsp;</b>
+                    <button (click)="onBtNext()" class="btn btn-outline-primary" [disabled]="disableNextButton"><i
+                            class="fa fa-angle-right" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- INVITE VENDOR -->
+<div class="modal fade" id="viewModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content" style="width: 166%;">
+            <div class="modal-header">
+                <h4 class="modal-title">Resume Details</h4>
+                <button type="button" class="close" data-dismiss="modal" #vendorBtn>&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="offset-2 col-md-8">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th>Name :</th>
+                                    <td>{{this.name}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email Id :</th>
+                                    <td>{{emailid}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Phone Number :</th>
+                                    <td>{{phonenumber}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Experience :</th>
+                                    <td>{{experience}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Skills :</th>
+                                    <td>{{skills}}</td>
+                                </tr>
+                                <tr>
+                                    <th>CurrentLocation :</th>
+                                    <td>{{currentlocation}}</td>
+                                </tr>
+                                <tr>
+                                    <th>File Name :</th>
+                                    <td>{{filename}} &nbsp;<span (click)="resumedownload()">
+
+                                            <a style="text-decoration: none;cursor:pointer;color:#276EB5"
+                                                href="{{resumeurl}}"> <i class="fa fa-download"
+                                                    title="Download"></i></a>
+                                            <!-- </i> &nbsp; -->
+                                        </span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div><br>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Popup for Email Starts -->
+<div class="modal fade" id="myModal" role="dialog" #closemodal>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Send Email</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)="reset()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="emailTemplateForm" class="offset-1 col-md-11">
+                    <div class="row " *ngIf="existemail">
+                        <div class="col-sm-4" form-group>
+                            <label for="exampleInputEmail1"><b>Select an Email </b>:
+                            </label>
+                        </div>
+                        <div class="col-sm-4" form-group>
+                            <select class="form-control" id="sel1" aria-placeholder="Use Existing Mail"
+                                style="border-radius:2px;" formControlName="existingMail"
+                                (change)="getTemplateId($event.target.value)">
+                                <option [ngValue]="null" disabled>Use Existing Template</option>
+                                <option *ngFor="let templatedata of templatedata">{{templatedata.templateName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            OR &nbsp; <span style="color:#276EB5;cursor:pointer" (click)="newEmail()"><i
+                                    class="fa fa-envelope" aria-hidden="true"></i>&nbsp;<b>Create New
+                                    Template</b></span>
+                        </div>
+                    </div><br>
+                    <div class="row" *ngIf="!existemail">
+                        <div class="col-sm-4" form-group>
+                            <label for="exampleInputEmail1"><b>Create a Template </b>:
+                            </label>
+                        </div>
+                        <div class="col-sm-4" form-group>
+                            <input type="text" class="form-control input-rounded" id="exampleInputEmail1"
+                                aria-describedby="emailHelp" formControlName="templateName" placeholder="Template Name"
+                                style="border-radius: 2px;">
+                        </div>
+                        <div class="col-sm-4">
+                            OR &nbsp; <span style="color:#276EB5;cursor:pointer" (click)="existingMail()">
+                                <i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;<b>Use an
+                                    Existing
+                                    Email</b></span>
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-sm-4" form-group>
+                            <label for="sender"><b>Sender</b>:
+                            </label>
+                        </div>
+                        <div class="col-sm-4" form-group>
+                            <input class="form-control" type="email" id="sender" placeholder="Enter Email Id"
+                                style="border-radius: 2px;" formControlName="sender">
+                            <div *ngIf="emailTemplateForm.controls['sender'].hasError('required') && emailTemplateForm.controls['sender'].touched"
+                                class="failed-validation">
+                                Email Id Required
+                            </div>
+                            <div *ngIf="emailTemplateForm.controls['sender'].hasError('pattern')"
+                                class="failed-validation">
+                                Invalid Email Id
+                            </div>
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-sm-4" form-group>
+                            <label for="subject"><b>Subject</b>:
+                            </label>
+                        </div>
+                        <div class="col-sm-4" form-group>
+                            <input class="form-control" type="text" id="subject"
+                                placeholder="Enter Email Subject Line Here" style="border-radius: 2px;"
+                                formControlName="subject">
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-sm-4" form-group>
+                            <label for="mailbody"><b>Mail Body</b>:
+                            </label>
+                        </div>
+                        <div class="col-sm-4" form-group>
+                            <span>Dear {{candidateName}}</span>
+                            <textarea class="form-control input-rounded" id="exampleFormControlTextarea2" rows="3"
+                                placeholder="Enter Only Message Here" style="border-radius:2px;"
+                                formControlName="mailbody" minlength="25"></textarea>
+                            <div *ngIf="emailTemplateForm.controls['mailbody'].hasError('required') && emailTemplateForm.controls['mailbody'].touched"
+                                class="failed-validation">
+                                Mail Body Required
+                            </div>
+                            <div *ngIf="emailTemplateForm.controls['mailbody'].hasError('minlength')"
+                                class="failed-validation">
+                                Minimum 25 Characters
+                            </div>
+                        </div>
+                    </div><br>
+                    <div class="row ">
+                        <div class="col-sm-4" form-group>
+                            <label for="exampleInputEmail1"><b>Save</b>:
+                            </label>
+                        </div>
+                        <div class="col-sm-4" form-group>
+                            <div class="checkbox">
+                                <label><input type="checkbox" value="" formControlName="yes"
+                                        (change)="checkboxfunction('yes')">Yes</label>
+                            </div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" value="" formControlName="no"
+                                        (change)="checkboxfunction('no')">No</label>
+                            </div>
+                        </div>
+                    </div><br>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-toggle="modal"
+                    data-target="#previewModal">Preview</button>
+                <button type="button" class="btn btn-success" [disabled]="!emailTemplateForm.valid"
+                    (click)="sendMailTempalte()">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Popup for Email Ends -->
+
+<!-- Modal Pop up for preview starts -->
+<div class="modal" id="previewModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Template Details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <table class='table borderless'>
+                    <tbody>
+                        <tr *ngIf="!existemail">
+                            <td>Template Name :</td>
+                            <td>{{this.emailTemplateForm.get('templateName').value}}</td>
+                        </tr>
+                        <tr>
+                            <td>Sender :</td>
+                            <td>{{this.emailTemplateForm.get('sender').value}}</td>
+                        </tr>
+                        <tr>
+                            <td>Subject :</td>
+                            <td>{{this.emailTemplateForm.get('subject').value}}</td>
+                        </tr>
+                        <tr>
+                            <td>Mail Body:</td>
+                            <td>{{this.emailTemplateForm.get('mailbody').value}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pop up for preview ends -->

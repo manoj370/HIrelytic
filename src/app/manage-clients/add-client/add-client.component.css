@@ -1,0 +1,15 @@
+.plusIcon {
+    color: #2c79ac;
+    cursor: pointer;
+}
+
+.minusIcon {
+    color: #ed143dbf;
+    cursor: pointer;
+}
+
+.jobsearch {
+    display: flex;
+    list-style: none;
+    float: right;
+}

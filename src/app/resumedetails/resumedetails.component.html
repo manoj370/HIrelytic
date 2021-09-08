@@ -1,0 +1,319 @@
+<simple-notifications> </simple-notifications>
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
+
+</head>
+
+<body>
+    <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <ngx-spinner bdOpacity="0.9" size="medium" color="#fff" type="line-scale" fullScreen="true">
+    </ngx-spinner>
+    <!-- <button type="button" class="close" hidden data-target="#confirmBoxPan" data-dismiss="modal" #closeConfirmModelPan>&times;</button> -->
+    <button type="button" data-toggle="modal" data-target="#confirmBoxPan" [hidden]="true" #closeConfirmModelPan role="dialog">show</button>
+    <div class="auth-wrapper">
+        <div class="container-fluid h-100">
+            <div class="row flex-row h-100 bg-white">
+                <div class="col-xl-6 col-lg-6 col-md-4 p-0 d-md-block d-lg-block d-sm-none d-none">
+                    <div class="lavalite-bg">
+                        <div class="lavalite-overlay"></div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-8 my-auto p-0">
+                    <div class="authentication-form mx-auto">
+                        <div class="logo-centered">
+                            <a href="#"><img src="./assets/img/logosmall.png" id="hirelyticLogo" alt="Hirelytic Logo" class="img-fluid" style="max-width: 80px"></a>
+                        </div>
+                        <h3 class="mb-0">Applying for {{job.jobTitle}} position.(<a href="javascript:void(0)" (click)="jobdesc()" style="color: #339CFF">View Job</a>)</h3><br><br>
+
+                        <form [formGroup]="uploadResumeForm" (ngSubmit)="upload()">
+
+                            <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <label>Candidate First Name *</label>
+                                    <input id="firstName" class="form-control input-rounded" maxlength="100" type="text" placeholder="First Name" [(ngModel)]="candidateObj.user.firstName" formControlName="candidateName" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top"
+                                        data-content="Enter First Name as per PAN">
+                                    <div *ngIf="uploadResumeForm.controls['candidateName'].hasError('pattern')" class="failed-validation">
+                                        Invalid Candidate First Name
+                                    </div>
+                                    <div *ngIf="uploadResumeForm.controls['candidateName'].hasError('required') && uploadResumeForm.controls['candidateName'].touched" class="failed-validation">
+                                        Candidate First Name Required
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-4 form-group">
+                                    <label>Candidate Last Name *</label>
+                                    <input id="lastName" class="form-control input-rounded" type="text" maxlength="100" placeholder="Last Name" [(ngModel)]="candidateObj.user.lastName" formControlName="candidateLastName" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top"
+                                        data-content="Enter Last Name as per PAN">
+                                    <div *ngIf="uploadResumeForm.controls['candidateLastName'].hasError('pattern')" class="failed-validation">
+                                        Invalid Candidate Last Name
+                                    </div>
+                                    <div *ngIf="uploadResumeForm.controls['candidateLastName'].hasError('required') && uploadResumeForm.controls['candidateLastName'].touched" class="failed-validation">
+                                        Candidate Last Name Required
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-4 form-group">
+                                    <label>Email Id *</label>
+                                    <input id="emailId" class="form-control input-rounded" type="text" placeholder="Email Id" [(ngModel)]="candidateObj.user.emailId" formControlName="candidateEmail" maxlength="255">
+                                    <div *ngIf="uploadResumeForm.controls['candidateEmail'].hasError('pattern')" class="failed-validation">
+                                        Invalid Email Id
+                                    </div>
+                                    <div *ngIf="uploadResumeForm.controls['candidateEmail'].hasError('required') && uploadResumeForm.controls['candidateEmail'].touched" class="failed-validation">
+                                        Email Id Required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <label>Contact Number *</label>
+                                    <input id="contactNumber" class="form-control input-rounded" type="text" (keypress)="keyPress($event)" placeholder="Contact Number" [(ngModel)]="candidateObj.user.phoneNumber" formControlName="candidatePhone" maxlength="10">
+                                    <!-- <div *ngIf="uploadResumeForm.controls['candidatePhone'].hasError('pattern')" class="failed-validation">
+                                            Invalid Contact Number
+                                     </div> -->
+                                    <div *ngIf="uploadResumeForm.controls['candidatePhone'].hasError('maxlength')" class="failed-validation">
+                                        Invalid Contact Number
+                                    </div>
+                                    <div *ngIf="uploadResumeForm.controls['candidatePhone'].hasError('minlength')" class="failed-validation">
+                                        Invalid Contact Number
+                                    </div>
+                                    <div *ngIf="uploadResumeForm.controls['candidatePhone'].hasError('required') && uploadResumeForm.controls['candidatePhone'].touched" class="failed-validation">
+                                        Contact Number Required
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>Current Company *</label>
+                                    <input id="currentCompany" class="form-control input-rounded" maxlength="50" type="text" placeholder="Current Company" [(ngModel)]="candidateObj.currentCompany" formControlName="currentCompany">
+                                    <div *ngIf="uploadResumeForm.controls['currentCompany'].hasError('pattern')" class="failed-validation">
+                                        Invalid Current Company
+                                    </div>
+                                    <div *ngIf="uploadResumeForm.controls['currentCompany'].hasError('required') && uploadResumeForm.controls['currentCompany'].touched" class="failed-validation">
+                                        Current Company Required
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>Previous Company</label>
+                                    <input id="previousCompany" class="form-control input-rounded" maxlength="50" type="text" placeholder="Previous Company" [(ngModel)]="candidateObj.previousCompany" formControlName="prevCompany">
+                                    <div *ngIf="uploadResumeForm.controls['prevCompany'].hasError('pattern')" class="failed-validation">
+                                        Invalid Previous Company
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <label>Current Location *</label>
+                                    <input id="currentLocation" class="form-control input-rounded" maxlength="50" type="text" placeholder="Current Location" [(ngModel)]="candidateObj.currentLocation" formControlName="currentLocation">
+
+                                    <div *ngIf="uploadResumeForm.controls['currentLocation'].hasError('required') && uploadResumeForm.controls['currentLocation'].touched" class="failed-validation">
+                                        Current Location Required
+                                    </div>
+                                    <div *ngIf="uploadResumeForm.controls['currentLocation'].hasError('pattern')" class="failed-validation">
+                                        Invalid Current Location
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>Preferred Location *</label>
+                                    <input id="preferredLocation" class="form-control input-rounded" maxlength="50" type="text" placeholder="Preferred Location" [(ngModel)]="candidateObj.preferredLocation" formControlName="prefLocation">
+
+                                    <div *ngIf="uploadResumeForm.controls['prefLocation'].hasError('required') && uploadResumeForm.controls['prefLocation'].touched" class="failed-validation">
+                                        Preferred Location Required
+                                    </div>
+
+                                    <div *ngIf="uploadResumeForm.controls['prefLocation'].hasError('pattern')" class="failed-validation">
+                                        Invalid Preferred Location
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>Designation *</label>
+                                    <input id="designation" class="form-control input-rounded" type="text" maxlength="50" placeholder="Designation" [(ngModel)]="candidateObj.designation" formControlName="designation">
+                                    <div *ngIf="uploadResumeForm.controls['designation'].hasError('pattern')" class="failed-validation">
+                                        Invalid Designation
+                                    </div>
+                                    <div *ngIf="uploadResumeForm.controls['designation'].hasError('required') && uploadResumeForm.controls['designation'].touched" class="failed-validation">
+                                        Designation Required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <label>Current CTC per Annum*</label>
+                                    <input id="currentCTC" class="form-control input-rounded" type="text" placeholder="Current CTC in lacs" maxlength="4" (keypress)="keyPress($event)" [(ngModel)]="candidateObj.currentCTC" formControlName="currentCtc">
+
+                                    <div *ngIf="uploadResumeForm.controls['currentCtc'].hasError('required') && uploadResumeForm.controls['currentCtc'].touched" class="failed-validation">
+                                        Current CTC Required
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>Expected CTC per Annum*</label>
+                                    <input id="expectedCTC" class="form-control input-rounded" type="text" placeholder="Expected CTC in lacs" maxlength="4" (keypress)="keyPress($event)" [(ngModel)]="candidateObj.expectedCTC" formControlName="expectedCtc">
+
+                                    <div *ngIf="uploadResumeForm.controls['expectedCtc'].hasError('required') && uploadResumeForm.controls['expectedCtc'].touched" class="failed-validation">
+                                        Expected CTC Required
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>Notice Period *</label>
+                                    <input id="noticePeriod" class="form-control input-rounded" type="text" [(ngModel)]="candidateObj.noticePeriod" maxlength="3" name="NoticePeriod" formControlName="noticePeriod" placeholder="Notice Period In Days">
+                                    <div *ngIf="uploadResumeForm.controls['noticePeriod'].hasError('pattern')" class="failed-validation">
+                                        Invalid Notice Period
+                                    </div>
+                                    <div *ngIf="uploadResumeForm.controls['noticePeriod'].hasError('required') && uploadResumeForm.controls['noticePeriod'].touched" class="failed-validation">
+                                        Notice Period Required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <label>Qualification *</label>
+                                    <select id="qualification" class="form-control input-rounded" [(ngModel)]="candidateObj.educationalQualification" formControlName="qualification">
+                                        <option selected disabled value="">Select Qualification</option>
+                                        <option value="MBA">B.E/B.Tech</option>
+                                        <option value="MBA">MCA</option>
+                                        <option value="BE/B.Tech">MBA</option>
+                                        <option value="B.Com">M.Sc</option>
+                                        <option value="M.Tech">B.Sc</option>
+                                        <option value="MCA">B.Com</option>
+                                        <option value="MCA">M.Tech</option>
+                                        <option value="MCA">Any Degree</option>
+
+                                    </select>
+                                    <div *ngIf="uploadResumeForm.controls['qualification'].hasError('required') && uploadResumeForm.controls['qualification'].touched" class="failed-validation">
+                                        Qualification Required
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>PAN Number *</label>
+                                    <input id="panNumber" class="form-control input-rounded" type="text" placeholder="PAN Number" [(ngModel)]="candidateObj.user.panNumber" formControlName="panNumber">
+                                    <div *ngIf="uploadResumeForm.controls['panNumber'].hasError('pattern')" class="failed-validation">
+                                        Invalid PAN Number
+                                    </div>
+                                    <div *ngIf="uploadResumeForm.controls['panNumber'].hasError('required') && uploadResumeForm.controls['panNumber'].touched" class="failed-validation">
+                                        PAN Number Required
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>Upload Resume *</label>
+                                    <input id="uploadResume" class="form-control input-rounded" type="file" formControlName="uploadResume" placeholder="Upload Resume" style="padding-top: 9px;" (change)="selectFile($event)">
+                                    <div *ngIf="uploadResumeForm.controls['uploadResume'].hasError('required') && uploadResumeForm.controls['uploadResume'].touched" class="failed-validation">
+                                        Select a file
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <button id="btnUploadResumeSubmit" class="btn btn-default float-right" type="submit" [disabled]="!uploadResumeForm.valid">Submit</button>
+                            </div>
+
+                        </form>
+                        <div class="modal right fade" id="myModal">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h3 class="modal-title">Job details for {{job.jobTitle}} position (#{{job.JobCode}})
+                                        </h3>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <!-- Modal body -->
+                                    <div class="modal-body" id="viewJobDescription">
+
+                                        <form>
+                                            <fieldset disabled="disabled">
+                                                <h3>Hiring for {{job.jobTitle}} position.</h3>
+
+                                                <div><b>Minimum Job Experience : </b>{{job.minJobExperience}}</div><br>
+                                                <div><b>Maximum Job Experience : </b>{{job.maxJobExperience}}</div><br>
+                                                <div><b>Location : </b><span *ngFor="let location of job.keyLoc ; last as islast">
+                                                        {{location.item_text}}
+                                                        <span *ngIf="!islast">,</span>
+                                                    </span>
+                                                </div><br>
+                                                <p><b>Primary Skill Set :</b> &nbsp;<span [innerHtml]="job.jobDescription"></span></p>
+                                                <div><b>Notice Period : </b>{{job.maxNoticePeriod}} days</div><br>
+                                                <div><b>Salary : </b>{{job.minSalary}} - {{job.maxSalary}} lakhs</div>
+                                                <br>
+                                                <div><b>Functional Area : </b>{{job.jobFunctionalArea}}</div><br>
+                                                <div><b>No of Openings : </b>{{job.noOfOpenings}}</div><br>
+                                                <div><b>Department : </b>{{job.department}}</div><br>
+                                                <div><b>Employment Type : </b>{{job.grade}}</div><br>
+                                                <div><b>Key Skills:&nbsp;</b>{{job.skills}}</div><br>
+
+                                                <!-- <h4><b>Desired Candidate Profile</b></h4> -->
+                                                <!-- <p><b>Refer to the Job description above</b></p><br> -->
+                                                <h4>Company Profile</h4>
+                                                <div>{{job.aboutCompany}}</div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                    <div class="modal-body" id="confirmBox">
+                                        <p>Your resume already exist.Are you sure you want to upload your new resume?
+                                        </p>
+                                        <hr>
+                                        <div class="col-md-12 text-center">
+                                            <button id="btnYes" type="submit" class="btn btn-success" (click)="yes()">
+                                                <font face="Times New Roman" size="4">Yes</font>
+                                            </button>&nbsp;
+                                            <button id="btnNo" type="submit" class="btn btn-info" (click)="no()">
+                                                <font face="Times New Roman" size="4">No</font>
+                                            </button>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="confirmBoxPan" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirm Candidate Details</h4>
+
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <br> {{errorMsgOnMOdal}}
+                    <br>
+                </div>
+                <div class="modal-footer" id="panid">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+        <!-- 
+        </div> -->
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,184 @@
+<div class="card-header">
+  <div class="row" style="margin:0">
+      <div class="col-lg-6">
+          <div class="ibox-head">
+              <div class="ibox-title">
+                  <h4>Manage Tenant</h4>
+              </div>
+          </div>
+      </div>
+      <div class="col-lg-6 text-right">
+          <div class="ibox-head">
+              <div class="ibox-title" style="cursor: pointer;color: #015d9b;">
+                  <h4 [routerLink]="['/superAdmin/Tenants']" class="effctiveStyles"><i class="fas fa-arrow-circle-left"></i></h4>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container-fluid" *ngIf="tenanatDetails">
+  <div class="fade-in-up">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="ibox" style="padding: 20px;">
+                  <div class="row">
+                      <div class="col-md-6">
+                          <div class="ibox-head">
+                              <div class="ibox-title">
+                                  <h4 style="color: #015d9b;">{{tenanatDetails.orgName}}
+                                   ( <span *ngIf="tenanatDetails.status === 'Active'" style="color: green;">
+                                    {{tenanatDetails.status}}
+                                    </span>
+                                    <span *ngIf="tenanatDetails.status === 'InActive'" style="color: red;">
+                                      {{tenanatDetails.status}}
+                                      </span>
+                                      <span *ngIf="tenanatDetails.status === 'Pending'" style="color: black;">
+                                        {{tenanatDetails.status}}
+                                        </span>
+                                     )
+                                   </h4>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 text-right" style="margin-left: -25px;border-bottom: 1px solid #eee;">
+                        <button type="button" data-toggle="modal" data-target="#modalForchangeStatus" [hidden]="true" #modalForchangeStatus role="dialog">Change Status</button>
+                        <select class="btn btn-outline-default" id="change-status" (change)="changeTenantStatus($event.target.value)">
+                              <option selected value=''>Change Status</option>
+                              <option value="Activate">Active</option>
+                              <option value="Deactivate">InActive</option>
+                          </select>
+                      </div>
+                  </div>
+                  <div class="row" style="margin:25px  0 !important;">
+                          <div class="col-md-4">
+                              <h6>Organaization Name</h6>
+                              <label>{{tenanatDetails.orgName}}</label>
+                          </div>
+                          <div class="col-md-4">
+                            <h6>Organaization Name</h6>
+                            <label>{{tenanatDetails.url}}</label>
+                        </div>
+                  </div>
+                  <div class="row" style="margin:25px  0 !important;">
+                      <div class="col-md-4">
+                          <h6>Email Id</h6>
+                          <label>{{tenanatDetails.emailId}}</label>
+                      </div>
+                      <div class="col-md-4">
+                          <h6>Phone Number</h6>
+                          <label>{{tenanatDetails.phone}}</label>
+                      </div>
+                      <div class="col-md-4">
+                          <h6>GST Number</h6>
+                          <label>{{tenanatDetails.gstNumber}}</label>
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+          <div class="col-md-12">
+              <div class="ibox" style="padding: 3px !important;">
+                  <div class="row">
+                      <!-- <div class="col-md-12"> -->
+                      <div class="col-md-6">
+                          <div class="ibox-head">
+                              <div class="ibox-title">
+                                  <h4 style="color: #015d9b;">Settings</h4>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 text-right" style="margin-left: -25px;border-bottom: 1px solid #eee;">
+                          <button type="button" class="btn btn-outline-primary" (click)="updateModulesList()">Save</button>
+                      </div>
+                  </div>
+
+                  <div class="row" style="margin:0">
+                      <div class="col-md-4" *ngFor="let item of tenanatData" style="margin:20px 0 !important">
+
+
+                          <div class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input" id="{{item.moduleName}}" (change)="changeEvent($event)" [disabled]="item.moduleType === 'default'" value="{{item.moduleName}}" style="cursor: pointer;" [checked]="checked(item.moduleName)">
+                              <label class="custom-control-label" for="{{item.moduleName}}">  {{item.moduleName}}</label>
+                          </div>
+
+                          <!-- <div class="form-check-inline">
+                              <label class="form-check-label">
+                                  <input type="checkbox" class="form-check-input" [checked]="checked(item.moduleName)"
+                                      (change)="changeEvent($event)" [disabled]="item.moduleType === 'default'"
+                                      value="{{item.moduleName}}" style="cursor: pointer;">
+                                  <span *ngIf="item.moduleType !== 'default'">
+                                      {{item.moduleName}}
+                                  </span>
+                                  <span *ngIf="item.moduleType === 'default'">
+                                      {{item.moduleName}}
+                                  </span>
+                              </label>
+                          </div> -->
+                      </div>
+                  </div>
+
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="ibox-head">
+                              <div class="ibox-title">
+                                  <h4>Subscription Details</h4>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row" style="margin:25px  0 !important;">
+                      <div class="col-md-4">
+                          <h6>Subscription Type</h6>
+                          <label>Yearly</label>
+                      </div>
+                      <div class="col-md-4">
+                          <h6>Start Date</h6>
+                          <label>{{tenanatDetails.applicationModule.setOfSubscriptions[0].subscriptionDate}}</label>
+                      </div>
+                      <div class="col-md-4">
+                          <h6>End Date</h6>
+                          <label>{{tenanatDetails.applicationModule.setOfSubscriptions[0].subscriptionEndDate}}</label>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<div class="modal fade" id="modalForchangeStatus" role="dialog">
+  <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+          <div class="modal-header">
+
+              <h4 class="modal-title">Change Status</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+              <div class="card" style="width:100%;">
+
+                  <div class="card-body">
+
+                      <p class="card-text">Are you sure, you want to change the status ?</p>
+
+                      <button class="btn btn-secondary float-right" id="modal_close" type="submit" data-dismiss="modal">&nbsp;No</button>
+                      <button class="btn btn-info float-right" id="submitbtn" type="submit" data-dismiss="modal" (click)="submitStatus()">&nbsp;Yes</button>
+
+                  </div>
+              </div><br>
+
+          </div>
+
+      </div>
+
+  </div>
+</div>

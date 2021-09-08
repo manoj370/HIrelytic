@@ -1,0 +1,212 @@
+<!-- <ngx-spinner bdOpacity="0.9" size="medium" color="#fff" type="line-scale" fullScreen="true">
+</ngx-spinner> -->
+
+<div class="card-header">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="ibox-head">
+                <div class="ibox-title">
+                    <h4>Manage Tenants</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fade-in-up" style="padding: 5px;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ibox">
+                <div style="padding: 15px;">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md">
+                                <div class="count text-center">
+                                    <svg height="50" viewBox="0 0 512 512" width="50" xmlns="http://www.w3.org/2000/svg"><g id="Flat"><path d="m328 152v56l-16 16 16 16-16 16 16 16-16 16 16 16v24l-40 24-40-24v-176z" fill="#e4e4e3"/><g fill="#cacac9"><path d="m272 152h16v128h-16z"/><path d="m272 296h16v16h-16z"/><path d="m391.842 144.581-15.957-1.162c.076-1.054.115-2.126.115-3.187v-12.232h16v12.232c0 1.447-.053 2.91-.158 4.349z"/><path d="m392 112h-16v-28.231a44.021 44.021 0 0 0 -22.632-38.463l-29.253-16.252 7.77-13.987 29.253 16.252a60.03 60.03 0 0 1 30.862 52.45z"/></g><path d="m216 83.768v56.464a20 20 0 0 0 10.287 17.483l52 28.889a20 20 0 0 0 19.426 0l52-28.889a20 20 0 0 0 10.287-17.483v-56.464a20 20 0 0 0 -10.287-17.483l-52-28.889a20 20 0 0 0 -19.426 0l-52 28.889a20 20 0 0 0 -10.287 17.483z" fill="#0093b9"/><circle cx="288" cy="88" fill="#f3f2f2" r="16"/><rect fill="#067a98" height="16" rx="8" width="48" x="264" y="128"/><path d="m216 192h16v104h-16z" fill="#cacac9"/><path d="m120 360h28.278a178.893 178.893 0 0 1 80.006 18.887 48.44 48.44 0 0 0 21.66 5.113h62.056a20 20 0 0 1 20 20 20 20 0 0 1 -20 20h-.493a41.742 41.742 0 0 0 16.311-3.319l66.883-28.4a21.04 21.04 0 0 1 27.78 11.868 21.624 21.624 0 0 1 -12.215 28.131l-123.582 47.12a130.744 130.744 0 0 1 -95.943-1.06l-70.741-29.375-32-.965v-88z" fill="#f8caa8"/><path d="m16 352h104v112h-104z" fill="#0093b9"/><rect fill="#e99180" height="16" rx="8" width="95.507" x="216" y="416"/><path d="m80 424h16v16h-16z" fill="#5db9d2"/></g></svg>
+                                </div>
+                                <div class="padding">
+                                    <div class="m-b-2" style=" text-align: center;color: #535353"><b>
+                                            TENANTS</b></div>
+                                </div>
+                            </div>
+                            <br>
+                            <span class="border-right"></span>
+                            <div class="col-md">
+                                <div class="count">
+                                    <h3 class="m-b-5  font-strong " style="text-align: center;color:#5870B2">
+                                        {{getTenantStatusCount.TOTALTENANTS}}
+                                    </h3>
+                                </div>
+                                <div class="padding">
+                                    <div class="m-b-2" style=" text-align: center;color: #535353"><b>REGISTERED
+                                            TENANTS</b></div>
+                                </div>
+                            </div>
+                            <br>
+                            <span class="border-right"></span>
+                            <div class="col-md">
+                                <div class="count">
+                                    <h3 class="m-b-5  font-strong " style="text-align: center;color:#559DE5">
+                                        {{getTenantStatusCount.ACTIVETENANTS}}
+                                    </h3>
+                                </div>
+                                <div class="padding">
+                                    <div class="m-b-2" style=" text-align: center;color: #535353"><b>ACTIVE TENANTS</b>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="border-right"></span>
+                            <div class="col-md">
+                                <div class="count">
+                                    <h3 class="m-b-5  font-strong " style="text-align: center;color:#FDAC42">
+                                        {{getTenantStatusCount.INACTIVETENANTS}}
+                                    </h3>
+                                </div>
+                                <div class="padding">
+                                    <div class="m-b-2" style=" text-align: center;color: #535353"><b>INACTIVE
+                                            TENANTS</b></div>
+                                </div>
+                            </div>
+                            <span class="border-right"></span>
+                            <div class="col-md">
+                                <div class="count">
+                                    <h3 class="m-b-5  font-strong " style="text-align: center;color:#0593A1">
+                                        {{getTenantStatusCount.PENDINGFORACTIVATION}}
+                                    </h3>
+                                </div>
+                                <div class="padding">
+                                    <div style=" text-align: center;color: #535353"><b>PENDING TENANTS</b></div>
+                                </div>
+                            </div>
+                            <!-- <span class="border-right"></span> -->
+
+                        </div>
+                    </div>
+                    <!-- <span *ngIf="showContent">
+                        {{noData}}
+                    </span> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="ibox">
+    <div class="ibox-body">
+        <div class="page-content fade-in-up">
+            <ul class="nav nav-tabs tabs-line">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#registeredTenants" data-toggle="tab">
+                        Registered Tenants</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#unregisteredTenants" data-toggle="tab">
+                        UnRegistered Tenants</a>
+                </li>
+                <div class="form-group col-lg-4 float-right" style="padding-top: 2%;left: 45%;">
+                    <div class="form-group has-feedback" style="padding-left: 59%;">
+                        <input type="text" class="form-control" id="inputValidation" placeholder="Search" style="margin-top: -16px;border-radius: 40px;" (keyup)="quickSearch()" [(ngModel)]="searchvalue" />
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                </div>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane fade show active " id="registeredTenants">
+                    <div class="ibox  gridTopMargin">
+                        <div class="row" style="margin-top: 20px;">
+                            <div class="col-md-12">
+                                <ag-grid-angular style="height: 600px;" [rowData]="rowData" [columnDefs]="columnDefs" (paginationChanged)="onPaginationChanged($event)"  class="ag-theme-balham" [gridOptions]='gridOptions' (cellClicked)="cellClick($event)"   [pagination]="true" paginationPageSize="15" enableColResize
+                                    enableFilter enableSorting (selectionChanged)="onSelectionChanged($event)" (gridReady)="onGridReady($event)"  [suppressPaginationPanel]="true" [suppressScrollOnNewData]="true">
+                                </ag-grid-angular>
+                                <div class="float-right" style="position: relative;right: 12px;">
+                                    <button (click)="onBtPreviousag()" class="btn btn-outline-primary"><i class="fa fa-angle-left"
+                                            aria-hidden="true"></i></button>
+                                    <b>{{changePage}}/{{totalPages}}&nbsp;</b>
+                                    <button (click)="onBtNextag()" class="btn btn-outline-primary"><i class="fa fa-angle-right"
+                                            aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- <div class="ibox-body">
+
+            </div> -->
+                </div>
+
+                <div class="tab-pane fade show " id="unregisteredTenants">
+                    <div class="ibox  gridTopMargin">
+
+                        <div class="row" style="margin-top: 20px;">
+                            <div class="col-md-12">
+                                <ag-grid-angular style="height: 600px;" [rowData]="getAllUnregisteredTenants" [columnDefs]="unregisteredTenantsColumnDefs" (paginationChanged)="onunregPaginationChanged($event)"  class="ag-theme-balham" [gridOptions]='gridOptions' (cellClicked)="cellClick($event)"   [pagination]="true" paginationPageSize="15" enableColResize
+                                enableFilter enableSorting (selectionChanged)="onSelectionChanged($event)" (gridReady)="onGridReadyUnregisteredTenants($event)"  [suppressPaginationPanel]="true" [suppressScrollOnNewData]="true">
+                            </ag-grid-angular>
+                            <div class="float-right" style="position: relative;right: 12px;">
+                                <button (click)="onPrevious()" class="btn btn-outline-primary"><i class="fa fa-angle-left"
+                                        aria-hidden="true"></i></button>
+                                <b>{{changeregiPage}}/{{unregitotalPages}}&nbsp;</b>
+                                <button (click)="onNext()" class="btn btn-outline-primary"><i class="fa fa-angle-right"
+                                        aria-hidden="true"></i></button>
+                            </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- ACTIVATE ORGANISATION MODAL -->
+<div class="modal fade" id="activeOrganisation" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Activate Tenant</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to activate the selected tenant?</p>
+                <button class="btn btn-secondary float-right" id="modal_close" type="submit" data-dismiss="modal">&nbsp;No</button>
+                <button class="btn btn-info float-right" id="activeButton" type="submit" data-dismiss="modal" (click)="changeTenantStatus('Activate')">&nbsp;Yes</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ACTIVATE ORGANISATION MODAL ENDS -->
+
+
+<!-- DEACTIVATE ORGANISATION MODAL  -->
+<div class="modal fade" id="deactiveOrganisation" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Deactivate Tenant</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to deactivate the selected tenant?</p>
+                <button class="btn btn-secondary float-right" id="modal_close" type="submit" data-dismiss="modal">&nbsp;No</button>
+                <button class="btn btn-info float-right" id="activeButton" type="submit" data-dismiss="modal" (click)="changeTenantStatus('Deactivate')">&nbsp;Yes</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--DEACTIVATE ORGANISATION MODAL ENDS -->

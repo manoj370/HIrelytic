@@ -1,0 +1,117 @@
+<div class="card-header">
+  <div class="row">
+    <div class="col-lg-4">
+      <label>
+        <h4>Candidates Profiles</h4>
+      </label>
+    </div>
+    <div class="col-lg-8">
+      <!-- <form [formGroup]="resetForm"> -->
+      <div class="row" *ngIf="this.show">
+        <div class="col-lg-2">
+          <span>
+            <input type="text" class="form-control calenderrange" placeholder="Please Choose Date" ngxDaterangepickerMd
+              (change)="datePicker($event)" style="border-radius: 22px;" />
+          </span>
+        </div>
+        <div class="col-lg-2">
+          <select id="role" class="form-control input-rounded" style="border-radius: 22px;"
+            (change)="roleEvent($event.target.value)">
+            <option selected disabled>Select Role</option>
+            <option *ngFor="let role of roles" [ngValue]="role.roleName">{{role.roleName}}</option>
+            <option>ALL</option>
+          </select>
+        </div>
+        <div class="col-lg-2">
+          <select id="users" class="form-control input-rounded" style="border-radius: 22px;"
+            (change)="useDataId($event.target.value)">
+            <option selected disabled>Select Users</option>
+            <option *ngFor="let user of userslist">{{user.firstName}}</option>
+          </select>
+        </div>
+        <div class="col-lg-2">
+          <span>
+            <form [formGroup]="searchForm">
+              <input type="text" class="form-control" id="inputValidation" placeholder="Search"
+                style=" border-radius: 15px;" formControlName="searchinput" (keyup)="searchinput()" />
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </form>
+          </span>
+        </div>
+        <!-- <div class="col-lg-2">
+          <button class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
+            style="border-radius: 22px;">Export As
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="javascript:;" (click)="downlaodPdfReportCandidate()">PDF</a>
+            </li>
+            <li class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item" href="javascript:;" (click)="downloadExcelReportForCandidate()">Excel</a>
+            </li>
+          </ul>
+        </div> -->
+        <!-- <div class="col-lg-2">
+          <i class="fa fa-refresh" aria-hidden="true" title="Refresh" style="cursor:pointer" (click)="reset()"></i>
+        </div> -->
+      </div>
+      <div class="row" *ngIf="!this.show">
+        <div class="col-lg-3">
+          <span>
+            <input type="text" class="form-control calenderrange" placeholder="Please Choose Date" ngxDaterangepickerMd
+              (change)="datePicker($event)" style="border-radius: 22px;" />
+          </span>
+        </div>
+        <div class="col-lg-3">
+          <span>
+            <form [formGroup]="searchForm">
+              <input type="text" class="form-control" id="inputValidation" placeholder="Search"
+                style=" border-radius: 15px;" formControlName="searchinput" (keyup)="searchinput()" />
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </form>
+          </span>
+        </div>
+        <!-- <div class="col-lg-3">
+          <button class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
+            style="border-radius: 22px;">Export As
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="javascript:;" (click)="downlaodPdfReportCandidate()">PDF</a>
+            </li>
+            <li class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item" href="javascript:;" (click)="downloadExcelReportForCandidate()">Excel</a>
+            </li>
+          </ul>
+        </div> -->
+        <!-- <div class="col-lg-2">
+          <i class="fa fa-refresh" aria-hidden="true" title="Refresh" style="cursor:pointer" (click)="reset()"></i>
+        </div> -->
+      </div>
+      <!-- </form> -->
+    </div>
+  </div>
+</div>
+&nbsp;
+<div class="row">
+  <div class="col-sm-12">
+    <div class="ibox">
+      <div class="ibox-body" style="height:auto;padding-top: 0px;">
+        <ag-grid-angular style="width: 1400px; height: 500px;" class="ag-theme-balham" [rowData]="candidatesdetails"
+          [columnDefs]="columnDefs"  enableColResize enableFilter enableSorting>
+        </ag-grid-angular>
+        <div class="float-right">
+          <button (click)="onBtPrevious()" class="btn btn-outline-primary" [disabled]="disablePreviousButton"><i
+              class="fa fa-angle-left" aria-hidden="true" style="cursor:pointer"></i></button>
+          <b>{{pageid+1}}/{{responsePageCount}}&nbsp;</b>
+          <button (click)="onBtNext()" class="btn btn-outline-primary" [disabled]="disableNextButton"><i
+              class="fa fa-angle-right" aria-hidden="true" style="cursor:pointer"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

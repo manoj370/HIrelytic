@@ -1,0 +1,333 @@
+<simple-notifications></simple-notifications>
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
+</head>
+
+<body>
+    <ngx-spinner bdOpacity="0.9" size="medium" color="#fff" type="line-scale" fullScreen="true">
+    </ngx-spinner>
+
+
+    <div class="auth-wrapper">
+
+        <div class="container-fluid h-100">
+            <div class="row flex-row h-100 bg-white">
+                <div class="col-xl-3 col-lg-3 col-md-3 p-0 d-md-block d-lg-block d-sm-none d-none">
+                    <div class="lavalite-bg" style="background-image: url('./assets/login/auth/login-bg.jpg')">
+                        <div class="lavalite-overlay"></div>
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-9 col-md-9 my-auto p-0">
+                    <div class="authentication-form mx-auto" style="padding-top:0px;width:95%">
+                        <div class="logo-centered" id="select_logo">
+                            <img src="./assets/img/logosmall.png" alt="Hirelytic Logo" class="img-fluid" style="max-width: 80px">
+                        </div>
+                        <h3>New To Hirelytic</h3>
+                        <p>Join us today! It takes only few steps</p>
+
+
+
+                        <form [formGroup]="registerForm">
+                            <div class="row">
+                                <div class="col-sm-3 form-group">
+                                    <input class="form-control input-rounded" name="orgName" id="organisationID" formControlName="orgName" placeholder="Organisation Name *" readonly>
+                                    <i class="fa fa-briefcase" style="left:30px"></i>
+                                    <div *ngIf="registerForm.controls['orgName'].hasError('required') && registerForm.controls['orgName'].touched" class="failed-validation">
+                                        Organisation Name Required
+                                    </div>
+                                    <div *ngIf="registerForm.controls['orgName'].hasError('pattern')" class="failed-validation">
+                                        Invalid Organisation Name
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 form-group">
+                                    <input class="form-control input-rounded" placeholder="URL *" type="text" id="urlSection" formControlName="url" (blur)="onBlurMethod()" [(ngModel)]="tenantformdata" name="url" minlength="2" maxlength="40" (keydown.space)="$event.preventDefault()">
+                                    <i class="fa fa-at" style="left:30px;font-weight: bold"></i>
+                                    <div *ngIf="registerForm.controls['url'].hasError('required') && registerForm.controls['url'].touched" class="failed-validation">
+                                        URL Required
+                                    </div>
+                                    <div *ngIf="registerForm.controls['url'].hasError('pattern')" class="failed-validation">
+                                        Invalid URL
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 form-group">
+                                    <input class="form-control input-rounded" type="text" id="company_Id" formControlName="companyCode" maxlength="255" placeholder="Company Code ">
+                                    <i class="fa fa-building" style="left:30px"></i>
+                                    <div *ngIf="registerForm.controls['companyCode'].hasError('required') && registerForm.controls['companyCode'].touched" class="failed-validation">
+                                        Company Code Required
+                                    </div>
+                                    <div *ngIf="registerForm.controls['companyCode'].hasError('pattern')" class="failed-validation">
+                                        Invalid Company Code
+                                    </div>
+                                    <div *ngIf="registerForm.controls['companyCode'].hasError('maxlength')" class="failed-validation">
+                                        Company code must be less than 20 characters
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 form-group">
+                                  <input class="form-control input-rounded" formControlName="emailId" id="organisationEmail" maxlength="255" placeholder="Organisation Email *" readonly>
+                                  <i class="fa fa-envelope" style="left:30px;"></i>
+                                  <div *ngIf="registerForm.controls['emailId'].hasError('required') && registerForm.controls['emailId'].touched" class="failed-validation">
+                                      Email Id Required
+                                  </div>
+                                  <div *ngIf="registerForm.controls['emailId'].hasError('pattern')" class="failed-validation">
+                                      Invalid Email Id
+                                  </div>
+                              </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-sm-3 form-group">
+                                    <show-hide-password icon="fa fa-lock" class="showHideClass" [btnOutline]="true">
+                                        <input class="form-control input-rounded" type="password" id="password" formControlName="password" placeholder="Password *" [(ngModel)]="tenantPassword">
+                                        <i class="fa fa-lock" aria-hidden="true"></i>
+
+                                    </show-hide-password>
+                                    <div *ngIf="registerForm.controls['password'].hasError('required') && registerForm.controls['password'].touched" class="failed-validation">
+                                        Password Required
+                                    </div>
+                                    <div *ngIf="registerForm.controls['password'].hasError('minlength')" class="failed-validation">
+                                        Password must have 8 to 16 characters
+                                    </div>
+                                    <div *ngIf="registerForm.controls['password'].hasError('maxlength')" class="failed-validation">
+                                        Password must have 8 to 16 characters
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 form-group">
+                                    <show-hide-password icon="fa fa-lock" [btnOutline]="true">
+                                        <input class="form-control input-rounded" type="password" placeholder="Confirm Password *" id="confirmPassword" formControlName="confirmpassword" [(ngModel)]="tenantConfirmPassword" (keyup)="checkPasswords()">
+                                        <i class="fa fa-lock"></i>
+                                    </show-hide-password>
+                                    <div *ngIf="registerForm.controls['confirmpassword'].hasError('required') && registerForm.controls['confirmpassword'].touched" class="failed-validation">
+                                        Password Required
+                                    </div>
+                                    <div *ngIf="registerForm.controls['confirmpassword'].hasError('minlength')" class="failed-validation">
+                                        Password must have 8 to 16 characters
+                                    </div>
+                                    <div *ngIf="registerForm.controls['confirmpassword'].hasError('maxlength')" class="failed-validation">
+                                        Password must have 8 to 16 characters
+                                    </div>
+                                    <div *ngIf="passerror" class="help-block"><span style="color:rgb(221, 33, 33);font-family:Roboto">&nbsp;<i>{{passerrorMsg}}</i></span>
+                                    </div>
+                                </div>
+                            <div class="col-sm-3 form-group">
+                              <input class="form-control input-rounded" placeholder="GST Number *" maxlength="15" type="text" id="applyGST" formControlName="gSTNumber">
+                              <i class="fa fa-calculator" style="left:30px;font-weight: bold"></i>
+                              <div *ngIf="registerForm.controls['gSTNumber'].hasError('required') && registerForm.controls['gSTNumber'].touched" class="failed-validation">
+                                  GST Number Required
+                              </div>
+                              <div *ngIf="registerForm.controls['gSTNumber'].hasError('pattern')" class="failed-validation">
+                                  Invalid GST Number
+                              </div>
+                          </div>
+                          <div class="col-sm-3 form-group">
+                              <input class="form-control input-rounded" type="text" formControlName="phone" id="contactNo" placeholder="Contact Number *" (keypress)="keyPress($event)" maxlength="10">
+                              <i class="fa fa-address-book" style="left:30px"></i>
+
+                              <div *ngIf="registerForm.controls['phone'].hasError('required') && registerForm.controls['phone'].touched" class="failed-validation">
+                                  Contact Number Required
+                              </div>
+                              <div *ngIf="registerForm.controls['phone'].hasError('minlength')" class="failed-validation">
+                                  Invalid Contact Number
+                              </div>
+                          </div>
+                        </div>
+
+                            <div class="row">
+                              <div class="col-sm-3 form-group">
+                                <input class="form-control input-rounded" type="text" id="address" formControlName="address1" maxlength="255" placeholder="Address Line 1 *">
+                                <i class="fa fa-address-card" style="left:30px;"></i>
+                                <div *ngIf="registerForm.controls['address1'].hasError('required') && registerForm.controls['address1'].touched" class="failed-validation">
+                                    Address Line 1 Required
+                                </div>
+                                <div *ngIf="registerForm.controls['address1'].hasError('pattern')" class="failed-validation">
+                                    Invalid Address Line 1
+                                </div>
+                            </div>
+
+                                <div class="col-sm-3 form-group">
+                                    <input class="form-control input-rounded" type="text" id="Address" formControlName="address2" maxlength="255" placeholder="Address Line 2 ">
+                                    <i class="fa fa-address-card" style="left:30px;"></i>
+                                    <div *ngIf="registerForm.controls['address2'].hasError('pattern')" class="failed-validation">
+                                        Invalid Address Line 2
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 form-group">
+                                    <select class="form-control input-rounded" placeholder="Select Country *" id="selectCountry" formControlName="country" (change)=onCountryChange($event.target.value)>
+                                        <option value="" disabled selected>Country *</option>
+                                        <option *ngFor="let c of countryList" [value]="c.countryId">{{c.countryName}}
+                                        </option>
+                                    </select>
+                                    <i class="fa fa-globe" style="left:30px"></i>
+                                    <div *ngIf="registerForm.controls['country'].hasError('required') && registerForm.controls['country'].touched" class="failed-validation">
+                                        Select Country
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 form-group">
+                                    <select class="form-control input-rounded" value="" id="state_id" name="ostate" placeholder="Select State *" formControlName="state">
+                                        <option value="" disabled selected>State *</option>
+                                        <option *ngFor="let c of stateList" [value]="c">{{c}}</option>
+                                    </select>
+                                    <i class="fa fa-globe" style="left:30px"></i>
+                                    <div *ngIf="registerForm.controls['state'].hasError('required') && registerForm.controls['state'].touched" class="failed-validation">
+                                        Select State
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <input class="form-control input-rounded" formControlName="city" id="tenant_city" placeholder="City *" maxlength="189">
+                                    <i class="fa fa-home" style="left:30px"></i>
+                                    <div *ngIf="registerForm.controls['city'].hasError('required') && registerForm.controls['city'].touched" class="failed-validation">
+                                        City Required
+                                    </div>
+                                    <div *ngIf="registerForm.controls['address2'].hasError('pattern')" class="failed-validation">
+                                        Invalid City
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <!-- <label>Email Id *</label> -->
+                                    <input class="form-control input-rounded" formControlName="ZipCode" id="selectZipCode" placeholder="Zip Code *" minlength="6" maxlength="6" (keypress)="keyPress($event)">
+                                    <i class="fa fa-file-archive-o" style="left:30px;"></i>
+                                    <div *ngIf="registerForm.controls['ZipCode'].hasError('required') && registerForm.controls['ZipCode'].touched" class="failed-validation">
+                                        Zip Code Required
+                                    </div>
+                                    <div *ngIf="registerForm.controls['ZipCode'].hasError('pattern')" class="failed-validation">
+                                        Invalid ZipCode
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 form-group">
+                                    <textarea class="form-control input-rounded" id="aboutCompany" formControlName="aboutCompany" rows="3" style="width:100%" id="aboutCompany" placeholder="About Company *"></textarea>
+
+                                    <div *ngIf="registerForm.controls['aboutCompany'].hasError('required') && registerForm.controls['aboutCompany'].touched" class="failed-validation">
+                                        Company Details Required
+                                    </div>
+                                    <div *ngIf="registerForm.controls['aboutCompany'].hasError('minlength')" class="failed-validation">
+                                        Please enter atleast 50 characters
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="border-bottom: 1px solid #eee;">
+                                    <div class="ibox-head">
+                                        <div class="ibox-title">
+                                            <h4 style="color: #015d9b;">Module Settings</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin:0">
+                                <div class="col-md-3" *ngFor="let item of tenanatData" style="margin:20px 0 !important">
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" [checked]="item.moduleType == 'default'" [disabled]="item.moduleType == 'default'" (change)="changeEvent($event)"  value="{{item.moduleName}}" style="cursor: pointer;">
+                                            <span >
+                                                {{item.moduleName}}
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [disabled]="!jobForm.valid" -->
+                            <div class="sign-btn">
+                                <button class="btn btn-primary" type="submit" [disabled]="!registerForm.valid" id="submit_form" (click)="registerDetails()" data-toggle="modal" data-target="#myModal">Register</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Confirmation Details Model -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style=" padding: 5px;">
+                    <h4 style=" padding-top: 10px;text-align: center;padding-left: 37%;color: white;">Registration Form Details</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                </div>
+                <div class="modal-body">
+
+                    <table class="table table-borderless" *ngIf="registrationobj" >
+                      <tr>
+                        <th>
+                            Organization Name
+                        </th>
+                        <td>
+                            {{registrationobj.orgName}}
+                        </td>
+                    </tr>
+                    <tr>
+                      <th>
+                          GSTNumber
+                      </th>
+                      <td>
+                          {{registrationobj.gstNumber}}
+                      </td>
+                  </tr>
+                        <tr>
+                            <th>
+                                About Company
+                            </th>
+                            <td>
+                                {{registrationobj.aboutCompany}}
+                            </td>
+                        </tr>
+
+
+
+                        <tr>
+                            <th>
+                                Phone Number
+                            </th>
+                            <td>
+                                {{registrationobj.phone}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Address Line1
+                            </th>
+                            <td>
+                                {{registrationobj.organizationAddress.line1}} <br>
+                                {{registrationobj.organizationAddress.city}} <br>
+                                <span *ngFor="let item of countryList">
+                                  <span *ngIf="item.countryId===registrationobj.organizationAddress.country">
+                                      {{item.countryName}}
+                                  </span>
+                              </span> <br>
+                              {{registrationobj.organizationAddress.zipCode}}
+
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)="submit()" data-dismiss="modal">Confirm
+                        Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Confirmation Modal Ends -->
+
+</body>
+
+</html>

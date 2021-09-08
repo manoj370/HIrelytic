@@ -1,0 +1,74 @@
+#userEmail{
+    text-transform:lowercase
+}
+input::placeholder {
+    text-transform:capitalize;
+  }
+  .jobsearch {
+    display: flex;
+    list-style: none;
+    margin-top: 5px;
+    float: right;
+}
+.addVendor
+{
+    color: #ff7000;
+    cursor: pointer;
+    position: relative;
+    float: right;
+    bottom: 34px;
+    right: 12px;
+}
+.addVendor:hover{
+    /* color: #276EB5; */
+}
+.table tbody tr th,
+.table tbody tr td {
+    border: none !important;
+    font-size: 15px;
+    width: 50%;
+}
+.nav-tabs .nav-link {
+    border-color: white !important;
+    border: none !important;
+}
+.nav-tabs .nav-link:focus,
+.nav-tabs .nav-link.active {
+    color: #276EB5 !important;
+    border: none !important;
+}
+
+.licence {
+   /* height: 90px;;
+    position: absolute;
+    width: 20%;
+    bottom: 90px;
+    background: white; */
+    height: 78px;
+    position: absolute;
+    width: 43%;
+    bottom: 90px;
+    background: white;
+}
+.licences{
+    height: 20px;
+    position: relative;
+    width: 40%;
+    bottom: 20px;
+    background: white;
+}
+#piechartdiv
+{
+   
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    right: 150px;
+}
+#successrate
+{
+    position: relative;
+    height: 200px;
+}
+
+

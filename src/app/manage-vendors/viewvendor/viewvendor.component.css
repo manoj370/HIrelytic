@@ -1,0 +1,18 @@
+#header {
+    color: black;
+}
+
+.mngVendor {
+    color: #ff7000;
+    cursor: pointer;
+}
+
+.mngVendor:hover {
+    color: #276EB5;
+}
+.table tbody tr th,
+.table tbody tr td {
+    border: none !important;
+    font-size: 15px;
+    width: 50%;
+}

@@ -1,0 +1,123 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <img src="./../../assets/img/logo.png" style="width: 15%;">
+        </div>
+    </div>
+</div>
+
+<div class="container register">
+
+    <div class="row">
+        <div class="col-md-3 register-left">
+            <img src="./../../assets/img/employee.svg" />
+            <h3>Welcome</h3>
+            <p>Welcome to the <b>hirelytic</b> Employee Portal</p>
+        </div>
+        <div class="col-md-9 register-right">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <h3 class="register-heading">Employee Registration</h3>
+                    <form [formGroup]="employeeRegistaionForm" (ngSubmit)="Submit()">
+
+                        <div class="row register-form">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" tabindex="1" class="input-group__field" formControlName="fname" placeholder="First Name" [ngClass]="{ 'is-invalid': f.fname.errors }" required>
+                                    <label for="First Name" class="input-group__label">First Name</label>
+                                    <div *ngIf="f.fname.touched && f.fname.errors">
+                                        <div *ngIf="f.fname.errors.required" style="color:red">First Name is required</div>
+                                    </div>
+
+                                </div>
+                                <div class="input-group">
+                                    <input type="Email Id" class="input-group__field" formControlName="emailid" placeholder="Email ID" required>
+                                    <label for="email" class="input-group__label">Email ID</label>
+                                    <!-- <div *ngIf="f.emailid.touched && f.emailid.errors" >
+                                        <div *ngIf="f.emailid.errors.required"  style="color:red">EmailId is required</div>
+                                    </div> -->
+                                </div>
+                                <div class="input-group">
+                                    <select name="cars" tabindex="5" class="custom-select-sm" formControlName="deg" class="input-group__field" required>
+                                        <option [ngValue]="null" disabled>Choose your Designation *</option>
+                                        <option *ngFor="let c of designationList" [ngValue]="c.designationName">
+                                            {{c.designationName}}
+                                        </option>
+                                    </select>
+                                    <label for="email" class="input-group__label">Designation</label>
+                                    <div *ngIf="f.deg.touched && f.deg.errors">
+                                        <div *ngIf="f.deg.errors.required" style="color:red">Designation is required</div>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <input type="password" tabindex="7" class="input-group__field" formControlName="pwd" placeholder="Password" id="password" required>
+                                    <label for="email" class="input-group__label">Password</label>
+                                    <div *ngIf="f.pwd.touched && f.pwd.errors" style="color:red">
+                                        <div *ngIf="f.pwd.errors.required" style="color:red">Password is required</div>
+                                        <!-- <div *ngIf="f.pwd.errors.maxLength">10 Values ONly</div> -->
+
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" tabindex="9" class="input-group__field" formControlName="empId" placeholder="EmployeeId" required>
+                                    <label for="Employee Id" class="input-group__label">EmployeeId</label>
+                                    <div *ngIf="f.empId.touched && f.empId.errors" style="color:red">
+                                        <div *ngIf="f.empId.errors.required">Employee Id is required</div>
+                                        <div *ngIf="f.empId.errors.minlength">mobile must be at least 5 characters</div>
+
+                                        <div *ngIf="f.empId.errors.maxlength">Employee Id Maxinum length 25</div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" tabindex="2" class="input-group__field" formControlName="lname" placeholder="Last Name" required>
+                                    <label for="Last Name" class="input-group__label">Last Name</label>
+                                    <div *ngIf="f.lname.touched && f.lname.errors" style="color:red">
+                                        <div *ngIf="f.lname.errors.required">Last Name is required</div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <input type="text" tabindex="4" max="5" (keypress)="numberOnly($event)" class="input-group__field" formControlName="mobile" placeholder="Phone Number" required>
+                                    <label for="Password" class="input-group__label">Phone Number</label>
+                                    <div *ngIf="f.mobile.touched && f.mobile.errors" style="color:red">
+                                        <div *ngIf="f.mobile.errors.required">Phone Number is required</div>
+                                        <div *ngIf="f.mobile.errors.minlength">mobile must be at least 10 characters</div>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <select name="cars" tabindex="6" class="custom-select-sm" formControlName="dep" class="input-group__field" required>
+                                        <option [ngValue]="null" disabled>Choose your Department *</option>
+                                        <option *ngFor="let c of departmentList" [ngValue]="c.departmentName">
+                                            {{c.departmentName}}
+                                        </option>
+                                    </select>
+                                    <label for="email" class="input-group__label">Department</label>
+                                    <div *ngIf="f.dep.touched && f.dep.errors" style="color:red">
+                                        <div *ngIf="f.dep.errors.required">Department is required</div>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <input type="password" tabindex="8" class="input-group__field" formControlName="confiramPwd" placeholder="Confirm Password" required>
+                                    <label for="email" class="input-group__label">Confirm Password</label>
+                                    <div *ngIf="(f.confiramPwd.touched) && (employeeRegistaionForm.value.pwd !== employeeRegistaionForm.value.confiramPwd)">
+                                        <span style="color: red;">must match </span>
+                                    </div>
+
+                                    <div *ngIf="f.confiramPwd.touched && f.confiramPwd.errors" style="color:red">
+                                        <div *ngIf="f.confiramPwd.errors.required">Confirm Password is required</div>
+                                    </div>
+                                </div>
+                                <input type="submit" [disabled]="!employeeRegistaionForm.valid" class="btnRegister" value="Register" />
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

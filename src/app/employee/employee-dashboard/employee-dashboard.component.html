@@ -1,0 +1,68 @@
+
+<div class="container-fluid">
+
+<div class="row" style="border-bottom: 1px solid #dee2e6;">
+
+      <div class="col-md-6">
+
+      <div class="card-header" style="padding: .75rem 0 !important">
+          <label i18n="@@userListTitle">
+              <h4>Refferal 
+                <span *ngIf="">
+                <i class="fas fa-plus-circle"></i>
+                </span>
+              </h4>
+          </label>      
+      </div>
+    </div>
+<div class="col-md-6 text-right">
+    <!-- <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#uploadResumeModal" >
+        <i class="fa fa-upload"></i>&nbsp;Upload Resume</button>
+    <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#viewResumeModal">
+        <i class="fa fa-eye"></i>&nbsp;View Resumes</button> -->
+
+</div>
+
+</div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+      <div class="ibox">
+          <div class="ibox-body">
+            <ag-grid-angular style="height: 500px;" [rowHeight]="rowHeight" 
+            class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs"
+            [rowClassRules]="rowClassRules"  enableFilter enableSorting>
+           </ag-grid-angular>
+             
+          </div>
+      </div>
+  </div>
+
+</div>
+
+
+
+<div class="modal right fade" id="uploadResumeModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+           
+            <div class="modal-header">
+                <h4 class="modal-title">Upload Resume</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)="clearValidations()" #uploadResumeBtn>&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="ibox-body">                   
+                    
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+

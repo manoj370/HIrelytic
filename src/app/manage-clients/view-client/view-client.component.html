@@ -1,0 +1,615 @@
+<simple-notifications></simple-notifications>
+<div class="container-fluid">
+    <div class="row" style="padding: 15px 0;
+    border-bottom: 1px solid #3333332e;">
+
+        <div class="col-md-6">
+            <label i18n="@@userListTitle" *ngIf="viewClientDetails">
+                <h3><span class="mngClient"> <i class="fas fa-arrow-circle-left" title="Back To List"
+                            (click)="backToClients()"></i></span>
+                    Manage Client <span style="font-size: 16px;color:#29b765" *ngIf="viewClientDetails.status===1">
+
+                        (Active)
+
+                    </span>
+                    <span style="font-size: 16px;color:red" *ngIf="viewClientDetails.status===0">
+
+                        (InActive)
+
+                    </span>
+
+                </h3>
+            </label>
+        </div>
+        <div class="col-md-6 text-right">
+            <!-- <button type="button" class="btn btn-info" id="btnEditManager" ><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;List Of Managers</button> -->
+            <button type="button" class="btn btn-warning" id="btnEditClient" data-toggle="modal"
+                data-target="#editClientModal" (click)="onEditClient($event.target.value)"
+                [disabled]="disableEditClient"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;Edit
+                Client</button>
+            <button type="button" class="btn btn-info" id="btnAssignUser" data-toggle="modal"
+                data-target="#assignUserModal" [disabled]="disableAssignClientToUser"><i class="fa fa-plus"
+                    aria-hidden="true"></i>&nbsp;Assign Client To User</button>
+            <button type="button" class="btn btn-success"  (click)="addMng()" id="addManager" data-toggle="modal"
+                data-target="#addManagerModal" [disabled]="hideAddManager"><i class="fa fa-plus"
+                    aria-hidden="true"></i>&nbsp;Add Manager</button>
+            <button type="button" data-toggle="modal" data-target="#modalForchangeStatus" [hidden]="true"
+                #modalForchangeStatus role="dialog">Change Status</button>
+            <select class="btn btn-outline-default" id="change-status" [disabled]="disabledChangeStatus"
+                (change)="onChangeStatus($event.target.value)">
+                <option selected value=''>Change Status</option>
+                <option value="1">Active</option>
+                <option value="0">InActive</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox" style="height:auto">
+            <div class="ibox-body" style="margin-top: 10px;">
+                <div class="continer-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span style="font-size: 25px;font-weight:400;">Client Details</span>
+
+                            <table class="table table-borderless" style="border-right:1px solid #ff700033;"
+                                *ngIf="viewClientDetails">
+                                <tr>
+                                    <th>
+                                        Client Name
+                                    </th>
+                                    <td>
+                                        {{viewClientDetails.clientName}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>
+                                        Client Contact Name
+                                    </th>
+                                    <td>
+                                        {{viewClientDetails.personFirstName}}&nbsp;{{viewClientDetails.personLastName}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Email Id
+                                    </th>
+                                    <td>
+                                        {{this.viewClientDetails.emailId}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Phone Number
+                                    </th>
+                                    <td>
+                                        {{viewClientDetails.contactNumber}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Designation
+                                    </th>
+                                    <td>
+                                        {{viewClientDetails.designation}}
+                                    </td>
+                                </tr>
+                                <!-- <span *ngIf="addressData>1"> -->
+                                <tr *ngFor="let list of viewClientDetails.addresses;let i=index">
+                                    <th>
+                                        Address {{i+1}}
+                                    </th>
+                                    <td>
+                                        <span *ngIf="addressData>=1">
+
+                                            {{list.line1}},{{list.landmark}},<br>{{list.city}},
+                                            {{list.state}},
+                                            <br>{{list.zipCode}},
+                                            <span *ngFor="let item of countryList">
+                                                <span *ngIf="item.countryId===list.country">
+                                                    {{item.countryName}}
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!-- </span> -->
+
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <span style="font-size: 25px;font-weight:400;">Manager Details</span>
+
+                            <table class="table table-borderless">
+                                <tr *ngFor="let manager of getManagerName;let i=index">
+                                    <th>
+                                        Manager {{i+1}}
+                                    </th>
+                                    <td>
+                                        {{manager.coOrdinatorFirstName}}&nbsp;{{manager.coOrdinatorLastName}} <br>
+                                        {{manager.clientCoOrdinatorEmailId}}
+                                        <br> {{manager.clientCoOrdinatorPhoneNo}}
+                                    </td>
+                                    <td><i class="fas fa-edit" title="Edit Manager" data-toggle="modal"
+                                            style="color:#276EB5;cursor:pointer" data-target="#addManagerModal" (click)="editManager(manager.clientContactsId)" *ngIf="disableEditManager"></i></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add MANAGERS MODEL STARTS -->
+<div class="modal fade" id="addManagerModal">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" *ngIf="editMngBtn">Update Manager</h4>
+                <h4 class="modal-title" *ngIf="!editMngBtn">Add Manager</h4>
+
+                <button type="button" id="close_button" class="close" data-dismiss="modal" (click)="formClose()"
+                    #addManagerBtn>&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="card" style="width:100%;">
+                    <div class="card-body">
+                        <form [formGroup]="addManagerForm" (ngSubmit)="createManager()">
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label>First Name *</label>
+                                    <input id="firstName" class="form-control input-rounded" tabindex="4" type="text"
+                                        formControlName="coOrdinatorFirstName" maxlength="255" placeholder="First Name">
+                                    <div *ngIf="addManagerForm.controls['coOrdinatorFirstName'].hasError('required') && addManagerForm.controls['coOrdinatorFirstName'].touched"
+                                        class="failed-validation">
+                                        First Name Required
+                                    </div>
+                                    <div *ngIf="addManagerForm.controls['coOrdinatorFirstName'].hasError('pattern')"
+                                        class="failed-validation">
+                                        Invalid First Name
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label>Last Name *</label>
+                                    <input id="lastName" class="form-control input-rounded" tabindex="5" type="text"
+                                        formControlName="coOrdinatorLastName" maxlength="255" placeholder="Last Name">
+                                    <div *ngIf="addManagerForm.controls['coOrdinatorLastName'].hasError('required') && addManagerForm.controls['coOrdinatorLastName'].touched"
+                                        class="failed-validation">
+                                        Last Name Required
+                                    </div>
+                                    <div *ngIf="addManagerForm.controls['coOrdinatorLastName'].hasError('pattern')"
+                                        class="failed-validation">
+                                        Invalid Last Name
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label>Email Id *</label>
+                                    <input id="emailId" class="form-control input-rounded" tabindex="6" type="text"
+                                        formControlName="clientCoOrdinatorEmailId" placeholder="Email Id">
+                                    <div *ngIf="addManagerForm.controls['clientCoOrdinatorEmailId'].hasError('pattern')"
+                                        class="failed-validation">
+                                        Invalid Email Id
+                                    </div>
+
+                                    <div *ngIf="addManagerForm.controls['clientCoOrdinatorEmailId'].hasError('required') && addManagerForm.controls['clientCoOrdinatorEmailId'].touched"
+                                        class="failed-validation">
+                                        Email Id Required
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label>Phone Number *</label>
+                                    <input id="phoneNo" class="form-control input-rounded" tabindex="7" type="text"
+                                        formControlName="clientCoOrdinatorPhoneNo" (keypress)="keyPress($event)"
+                                        maxlength="10" placeholder="Phone Number">
+                                    <div *ngIf="addManagerForm.controls['clientCoOrdinatorPhoneNo'].hasError('required') && addManagerForm.controls['clientCoOrdinatorPhoneNo'].touched"
+                                        class="failed-validation">
+                                        Contact Number Required
+                                    </div>
+                                    <div *ngIf="addManagerForm.controls['clientCoOrdinatorPhoneNo'].hasError('maxlength')"
+                                        class="failed-validation">
+                                        Contact number should have minimum 10 characters
+                                    </div>
+                                    <div *ngIf="addManagerForm.controls['clientCoOrdinatorPhoneNo'].hasError('minlength')"
+                                        class="failed-validation">
+                                        Contact number should have minimum 10 characters
+                                    </div>
+                                    <div *ngIf="addManagerForm.controls['clientCoOrdinatorPhoneNo'].hasError('pattern')"
+                                        class="failed-validation">
+                                        Invalid Contact Number
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="btnPost" class="btn btn-info float-right" type="submit" *ngIf="!editMngBtn"
+                                [disabled]="!addManagerForm.valid" (click)="createManager()" tabindex="8"
+                                data-dismiss="modal">Submit</button>
+                                <button type="button" class="btn btn-info float-right" data-dismiss="modal" *ngIf="editMngBtn" (click)="edit()"   [disabled]="!addManagerForm.valid">Update</button>
+                        </form>
+
+                    </div>
+                </div><br>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Add MANAGER MODEL ENDS -->
+
+
+
+<!-- Assign  Client to user Modal -->
+<div class="modal right fade" id="assignUserModal">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">List Of Users</h4>
+                <button type="button" class="close" data-dismiss="modal" #assignClientBtn>&times;</button>
+            </div>
+            <div class="modal-body">
+                <button type="button" class="btn btn-primary float-right" [disabled]="disabledAssignClient"
+                    (click)="AssignClientToUser()" data-toggle="modal" data-dismiss="modal" data-target="#confirmBox"
+                    role="dialog">Assign</button><br /><br />
+                <ag-grid-angular style="height:75%" class="ag-theme-balham"
+                    (paginationChanged)="onPaginationChanged($event)" [suppressPaginationPanel]="true"
+                    [suppressScrollOnNewData]="true" pagination="true" paginationPageSize="15"
+                    [rowData]="getlistofusers" [columnDefs]="columnDefsToUsers" [gridOptions]="gridOptions"
+                    [rowSelection]="rowSelection" (gridReady)="onGridReady($event)"
+                    (selectionChanged)="onSelectionChangedAssignClient($event)" enableFilter enableSorting enableFilter
+                    enableSorting>
+                </ag-grid-angular>
+                <div class="float-right">
+                    <button (click)="onBtPreviousag()" class="btn btn-outline-primary"><i class="fa fa-angle-left"
+                            aria-hidden="true"></i></button>
+                    <b>{{changePage}}/{{totalPages}}&nbsp;</b>
+                    <button (click)="onBtNextag()" class="btn btn-outline-primary"><i class="fa fa-angle-right"
+                            aria-hidden="true"></i></button>
+                </div>
+
+
+
+
+
+
+                <h6 class="m-0">List of users working on the selected Client</h6><small class="text-muted">
+                </small><br>
+                <ag-grid-angular style="height:75%" class="ag-theme-balham" [rowData]="clientuserss"
+                    [columnDefs]="columnDefsTousers" [gridOptions]="gridOptions" [rowSelection]="rowSelection"
+                    (gridReady)="onGridReadyAssignClient($event)" (paginationChanged)="onPaginationChangedd($event)"
+                    [suppressPaginationPanel]="true" paginationPageSize="15" [suppressScrollOnNewData]="true"
+                    enableFilter enableSorting enableFilter enableSorting>
+                </ag-grid-angular>
+                <div class="float-right" *ngIf="paginationrecords>15">
+                    <button (click)="onBtPreviousagrid()" class="btn btn-outline-primary"><i class="fa fa-angle-left"
+                            aria-hidden="true"></i></button>
+                    <b>{{changePages}}/{{totalPagess}}&nbsp;</b>
+                    <button (click)="onBtNextagrid()" class="btn btn-outline-primary"><i class="fa fa-angle-right"
+                            aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Assign Client to user modal ends -->
+
+
+
+
+<!-- Edit Client Modal Starts -->
+<div class="modal fade" id="editClientModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title">Edit Client</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="clientCreationForm">
+
+                    <div class="row">
+                        <div class="col-sm-12 form-group">
+                            <label>Client Name *</label>
+                            <input id="clientName" class="form-control input-rounded" type="text" maxlength="75"
+                                (blur)="checkClientName($event.target.value)" placeholder="Client Name "
+                                formControlName="clientName">
+                            <span
+                                *ngIf="clientCreationForm.controls['clientName'].hasError('required') && clientCreationForm.controls['clientName'].touched"
+                                class="failed-validation">
+                                Client Name Required
+                            </span>
+
+                            <span *ngIf="clientCreationForm.controls['clientName'].hasError('pattern')"
+                                class="failed-validation">
+                                Invalid Client Name
+                            </span>
+
+                        </div>
+
+                    </div>
+                    <br>
+
+                    <h4>Client Details</h4>
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            <label>First Name *</label>
+                            <input type="text" class="form-control input-rounded"
+                                (keypress)="this.global.keyPresss($event)" placeholder="First Name" maxlength="75"
+                                formControlName="personFirstName" [(ngModel)]="personFirstName">
+                            <span
+                                *ngIf="clientCreationForm.controls['personFirstName'].hasError('required') && clientCreationForm.controls['personFirstName'].touched"
+                                style="color:red" class="failed.validation">
+                                First Name Required
+                            </span>
+                            <span *ngIf="clientCreationForm.controls['personFirstName'].hasError('pattern')"
+                                class="failed-validation">
+                                First Name Should be in alphabets Only
+                            </span>
+                            <span *ngIf="clientCreationForm.controls['personFirstName'].hasError('minlength')"
+                                class="failed-validation">
+                                First Name Should not be less than 3 Characters
+                            </span>
+
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label>Last Name *</label>
+                            <input type="text" class="form-control input-rounded"
+                                (keypress)="this.global.keyPresss($event)" placeholder="Last Name" maxlength="75"
+                                formControlName="personLastName" [(ngModel)]="personLastName">
+                            <span
+                                *ngIf="clientCreationForm.controls['personLastName'].hasError('required') && clientCreationForm.controls['personLastName'].touched"
+                                style="color:red" class="failed.validation">
+                                Last Name Required
+                            </span>
+                            <span *ngIf="clientCreationForm.controls['personLastName'].hasError('pattern')"
+                                class="failed-validation">
+                                Last Name Should be in alphabets Only
+                            </span>
+                            <span *ngIf="clientCreationForm.controls['personLastName'].hasError('minlength')"
+                                class="failed-validation">
+                                Last Name Should not be less than 3 Characters
+                            </span>
+                            <span *ngIf="clientCreationForm.controls['personLastName'].hasError('maxlength')"
+                                class="failed-validation">
+                                Last Name Should not be greater than 75 Characters
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Contact Number *</label>
+                            <input type="text" class="form-control input-rounded" placeholder="Contact Number"
+                                formControlName="contactNumber" (keypress)="this.global.keyPress($event)" maxlength="10"
+                                [(ngModel)]="contactNumber">
+                            <span
+                                *ngIf="clientCreationForm.controls['contactNumber'].hasError('required') && clientCreationForm.controls['contactNumber'].touched"
+                                style="color:red" class="failed.validation">
+                                Contact Number Required
+                            </span>
+                            <span *ngIf="clientCreationForm.controls['contactNumber'].hasError('pattern')"
+                                class="failed-validation">
+                                Contact Number Should be in Numbers Only
+                            </span>
+                            <span *ngIf="clientCreationForm.controls['contactNumber'].hasError('minlength')"
+                                class="failed-validation">
+                                Contact Number Must be 10 Digits
+                            </span>
+                            <span *ngIf="clientCreationForm.controls['contactNumber'].hasError('maxlength')"
+                                class="failed-validation">
+                                Contact Number Should be in greather than 10 Characters
+                            </span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Email Id *</label>
+                            <input type="text" id="emailId" class="form-control input-rounded" placeholder="Email Id"
+                                formControlName="emailId" maxlength="250" >
+                            <span *ngIf="clientCreationForm.controls['emailId'].hasError('pattern')"
+                                class="failed-validation">
+                                Email Id Should be in Specific Pattern
+                            </span>
+                            <span
+                                *ngIf="clientCreationForm.controls['emailId'].hasError('required') && clientCreationForm.controls['emailId'].touched"
+                                style="color:red" class="failed.validation">
+                                Email Id Required
+                            </span>
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Designation *</label>
+                            <input type="text" class="form-control input-rounded"
+                                (keypress)="keyPresss($event)" placeholder="Designation" maxlength="75"
+                                formControlName="designation">
+                            <span
+                                *ngIf="clientCreationForm.controls['designation'].hasError('required') && clientCreationForm.controls['designation'].touched"
+                                style="color:red" class="failed.validation">
+                                Designation Required
+                            </span>
+                            <span *ngIf="clientCreationForm.controls['designation'].hasError('pattern')"
+                                class="failed-validation">
+                                Designation Name Should be in alphabets Only
+                            </span>
+                            <span *ngIf="clientCreationForm.controls['designation'].hasError('minlength')"
+                                class="failed-validation">
+                                Designation Name Should not be less than 3 Characters
+                            </span>
+                            <span *ngIf="clientCreationForm.controls['designation'].hasError('maxlength')"
+                                class="failed-validation">
+                                Designation Name Should not be in greather than 25 Characters
+                            </span>
+                        </div>
+                    </div>
+                    <div formArrayName="addresses" style="margin-top: 20px;">
+                        <h5>Address <span (click)="addAdresses()" class="mngClient"><i class="fas fa-plus-circle"
+                                    title="Add Adress"></i></span></h5>
+
+                        <div *ngFor="let address of addresses.controls; let i=index" [formGroupName]="i">
+
+                            <h6>Address #{{i + 1}}</h6>
+                            <div class="row">
+                                <div class="col-sm-12 form-group">
+                                    <label>Address Line 1 * </label>
+                                    <textarea class="form-control input-rounded" formControlName="line1"
+                                        placeholder="Address Line 1" maxlength="250">
+</textarea>
+                                    <div *ngIf="address.get('line1').hasError('required')&&address.get('line1').touched"
+                                        style="color:red">
+                                        Address Line 1 Required
+                                    </div>
+                                    <div *ngIf="address.get('line1').hasError('maxlength')" style="color:red">
+                                        Address Line 1 max length should be 250
+                                    </div>
+                                    <div *ngIf="address.get('line1').hasError('pattern')" class="failed-validation">
+                                        Invalid Address Line 1
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label for="sel1">Country *</label>
+                                    <select class="form-control input-rounded" id="Country"
+                                        (change)="onCountryChange($event.target.value)" formControlName="country">
+                                        <option disabled value="">Select Country *</option>
+                                        <option *ngFor="let country of countryList" [value]="country.countryId">
+                                            {{country.countryName}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="address.get('country').hasError('required')&&address.get('country').touched"
+                                        style="color:red">
+                                        Country Required
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label for="sel1">State *</label>
+                                    <select formControlName="state" class="form-control input-rounded" id="addLocState">
+
+                                        <option disabled value="">Select State *
+                                        </option>
+                                        <option *ngFor="let states of stateList" [value]="states">
+                                            {{states}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="address.get('state').hasError('required')&&address.get('state').touched"
+                                        style="color:red">
+                                        State Required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label>City * </label>
+                                    <input class="form-control input-rounded" formControlName="city" placeholder="City"
+                                        maxlength="250" (keypress)="keyPress($event)">
+
+                                    <div *ngIf="address.get('city').hasError('required')&&address.get('city').touched"
+                                        style="color:red">
+                                        City Required
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6  form-group">
+                                    <label>Land Mark</label>
+                                    <input class="form-control input-rounded" formControlName="landmark"
+                                        placeholder="Land Mark">
+
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6  form-group ">
+                                    <label>Zip Code * </label>
+                                    <input class="form-control input-rounded" formControlName="zipCode"
+                                        placeholder="Zip Code" maxlength="6" (keypress)="keyPresss($event)">
+
+
+                                    <div *ngIf="address.get('zipCode').hasError('required')&&address.get('zipCode').touched"
+                                        style="color:red">
+                                        Zip Code Required
+                                    </div>
+
+                                    <div *ngIf="address.get('zipCode').hasError('pattern')" class="failed-validation">
+                                        Invalid Zip Code
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 float-right">
+                                    <button *ngIf="addresses.controls.length>1" (click)="removeAddress(i)"
+                                        class="btn btn-danger" type="button">Remove Address</button>
+                                </div>
+                            </div>
+
+                            <br>
+                        </div>
+
+
+                    </div>
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-success" (click)="updateClient()"
+                            [disabled]="!clientCreationForm.valid" data-toggle="modal" data-target="#myModal"
+                            data-dismiss="modal">Update</button> &nbsp;&nbsp;
+                        <!-- <button type="button" class="btn btn-primary" (click)="onReset()">Cancel</button> -->
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Edit Client MOdal Ends -->
+
+
+
+
+<div class="modal fade" id="modalForchangeStatus" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title">Change Status</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="card" style="width:100%;">
+
+                    <div class="card-body">
+
+                        <p class="card-text">Are you sure, you want to change the status ?</p>
+
+                        <button class="btn btn-secondary float-right" id="modal_close" type="submit"
+                            data-dismiss="modal">&nbsp;No</button>
+                        <button class="btn btn-info float-right" id="submitbtn" type="submit" data-dismiss="modal"
+                            (click)="submitStatus()">&nbsp;Yes</button>
+
+                    </div>
+                </div><br>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- modal for edit manager starts -->
+
+<!-- Modal -->
+
+
+<!-- modal for edit manager ends -->

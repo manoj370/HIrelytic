@@ -1,0 +1,376 @@
+<div class="card-header">
+    <div class="row">
+        <div class="col-lg-6" style="margin-top: auto; margin-bottom: 8px;">
+            <div class="ibox-head">
+                <div class="ibox-title">
+                    <h4 *ngIf="!showvendorpayments">Manage Incentives
+                        <span *ngIf="showAdminIncentives"> <i class="fas fa-plus-circle addIcon"
+                                (click)="clearValidations()" data-toggle="modal" title="Incentive creation"
+                                data-target="#Incentive"></i>
+                        </span>
+                    </h4>
+                    <h4 *ngIf="showvendorpayments">My Payments
+                    </h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" *ngIf="showRecruiterIncentives">
+            <div style="position: absolute;right: 30px;top: 1%;display: inline-flex;">
+                <div class="dropdown" style="margin: 0 10px;">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="width:100%">
+                        Export As <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" (click)="downloadIncentiveReportPdf()">PDF</a>
+                        <a class="dropdown-item" (click)="downloadIncentiveReportExcel()">Excel</a>
+                    </div>
+                </div>
+                <input type="text" style="border-radius:15px;margin-top:4px" class="form-control" id="inputValidation" placeholder="Search" [ngModelOptions]="{standalone: true}" (keyup)="quickSearch()" [(ngModel)]="searchvalue" />
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="ibox page-content fade-in-up" style="top: 10px;" *ngIf="showAdminIncentives">
+    <ul class="nav nav-tabs" role="tablist" style="border: none;margin-bottom: 55px;">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Settings</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab" (click)="getallCandidateJoined()">Reports</a>
+        </li>
+    </ul>
+    <!-- Tab panes  [rowHeight]="rowHeight"-->
+    <div class="tab-content">
+        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+            <section>
+                <div style="position: absolute;right: 30px;top: 1%;display: inline-flex;">
+                    <div class="dropdown" style="margin: 0 10px;">
+                        <button type="button" class="btn btn-default dropdown-toggle" style="background-color: #ffffff;" data-toggle="dropdown" style="width:100%">
+                            Export As <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="javascript:;">PDF</a>
+                            </li>
+                            <li class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="javascript:;">Excel</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <input type="text" style="border-radius:15px;margin-top:4px" class="form-control" id="inputValidation" placeholder="Search" [ngModelOptions]="{standalone: true}" (keyup)="quickSearch()" [(ngModel)]="searchvalue" />
+                </div>
+
+                <div class="container-fluid">
+                    <ag-grid-angular style="height: 500px;" (cellClicked)="editData($event)" [rowHeight]="rowHeight" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs" [rowClassRules]="rowClassRules" [rowSelection]="rowSelection" enableFilter enableSorting>
+                    </ag-grid-angular>
+                </div>
+            </section>
+        </div>
+        <div class="tab-pane" id="tabs-2" role="tabpanel">
+            <section>
+                <div style="position: absolute;right: 30px;top: 1%;display: inline-flex;">
+                    <div class="dropdown" style="margin: 0 10px;">
+                        <button type="button" class="btn btn-default dropdown-toggle" style="background-color: #ffffff;" data-toggle="dropdown" style="width:100%">
+                            Export As <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" (click)="downloadIncentiveReportPdf()">PDF</a>
+                            <a class="dropdown-item" (click)="downloadIncentiveReportExcel()">Excel</a>
+                        </div>
+                    </div>
+                    <input type="text" style="border-radius:15px;margin-top:4px" class="form-control" id="inputValidation" placeholder="Search" [ngModelOptions]="{standalone: true}" (keyup)="quickSearch()" [(ngModel)]="searchvalue" />
+                </div>
+                <div class="container-fluid">
+                    <ag-grid-angular style="height: 500px;" [rowHeight]="rowHeight" (cellClicked)="update($event)" class="ag-theme-balham" [rowData]="allCandidateData" [columnDefs]="getallCandidateJoinedcolumnDef" [rowClassRules]="rowClassRules" [rowSelection]="rowSelection"
+                        enableFilter enableSorting>
+                    </ag-grid-angular>
+                </div>
+                <div class="float-right" *ngIf="totalCount>20">
+                    <button (click)="onBtPrevious()" class="btn btn-outline-primary" [disabled]="disablePreviousButton"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+                    <b>{{pageid+1}}/{{responsePageCount}}&nbsp;</b>
+                    <button (click)="onBtNext()" class="btn btn-outline-primary" [disabled]="disableNextButton"><i
+                            class="fa fa-angle-right" aria-hidden="true"></i></button>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div class="ibox page-content fade-in-up" style="top: 51px;" *ngIf="(!showAdminIncentives) && (!showvendorpayments)">
+    <section>
+        <div class="container-fluid" style="padding-top:15px">
+            <ag-grid-angular style="height: 700px;" [rowHeight]="rowHeight" class="ag-theme-balham" [rowData]="JoinedCandidates" [columnDefs]="getallCandidateJoinedcolumnDef" [rowClassRules]="rowClassRules" [rowSelection]="rowSelection" enableFilter enableSorting>
+            </ag-grid-angular>
+        </div>
+        <div class="float-right" *ngIf="totalCount>15">
+            <button (click)="onBtPrevious()" class="btn btn-outline-primary" [disabled]="disablePreviousButton"><i
+                    class="fa fa-angle-left" aria-hidden="true"></i></button>
+            <b>{{pageid+1}}/{{responsePageCount}}&nbsp;</b>
+            <button (click)="onBtNext()" class="btn btn-outline-primary" [disabled]="disableNextButton"><i
+                    class="fa fa-angle-right" aria-hidden="true"></i></button>
+        </div>
+    </section>
+</div>
+
+
+
+<div class="ibox page-content fade-in-up" style="top: 51px;" *ngIf="showvendorpayments">
+    <section>
+        <div class="container-fluid" style="padding-top:15px">
+            <ag-grid-angular style="height: 700px;" [rowHeight]="rowHeight" class="ag-theme-balham" [rowData]="mypaymentinfo" [columnDefs]="myPaymentsForCandidatesJoined" [rowClassRules]="rowClassRules" [rowSelection]="rowSelection" enableFilter enableSorting>
+            </ag-grid-angular>
+        </div>
+        <div class="float-right" *ngIf="totalCount>15">
+            <button (click)="onBtPrevious()" class="btn btn-outline-primary" [disabled]="disablePreviousButton"><i
+                    class="fa fa-angle-left" aria-hidden="true"></i></button>
+            <b>{{pageid+1}}/{{responsePageCount}}&nbsp;</b>
+            <button (click)="onBtNext()" class="btn btn-outline-primary" [disabled]="disableNextButton"><i
+                    class="fa fa-angle-right" aria-hidden="true"></i></button>
+        </div>
+    </section>
+</div>
+
+
+<div class="modal fade" id="Incentive">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Incentive</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)="clearValidations()">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="container">
+                    <form [formGroup]="incentiveForm">
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <label>Role</label>
+                            </div>
+                            <div class="col-md-6">
+                                <select class="form-control input-rounded" formControlName="incentiverName">
+                                    <option [ngValue]="null" disabled>Select Roles *</option>
+                                    <option *ngFor="let c of userList" [ngValue]="c.roleName">
+                                        {{c.roleName }}
+                                    </option>
+                                </select>
+
+                                <div *ngIf="f.incentiverName.touched && f.incentiverName.errors" class="invalid-feedback">
+                                    <div *ngIf="f.incentiverName.errors.required">Incentiver Role is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <label>Incentive Type</label>
+                            </div>
+                            <div class="col-md-6">
+                                <select class="form-control input-rounded" formControlName="incentiveMode" (change)="selecetdValue($event.target.value)">
+                                    <option [ngValue]="null" disabled>Choose your profile *</option>
+                                    <option *ngFor="let c of enum_details" [ngValue]="c.name">
+                                        {{c.name }}
+                                    </option>
+                                </select>
+                                <!-- <label *ngFor="let radiobutton of radioItems" style="margin-right: 10px;cursor: pointer;">
+                                    <input type="radio" name="options" (click)="selecetdValue(radiobutton)"
+                                    [checked]="radiobutton" formControlName="incentiveMode" style="margin-right: 10px;">{{radiobutton}}
+                                  </label> -->
+
+                            </div>
+                        </div>
+
+                        <div *ngIf="showValues">
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label>Incentive Amount *</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" max="5" (keypress)="numberOnly($event)" formControlName="incentiveAmount" placeholder="Incentive Amount(Allow Only Numbers)" class="form-control" [ngClass]="{ 'is-invalid': f.incentiveAmount.touched && f.incentiveAmount.errors }" />
+                                    <div *ngIf="f.incentiveAmount.touched && f.incentiveAmount.errors" class="invalid-feedback">
+                                        <div *ngIf="f.incentiveAmount.errors.required">Incentive Amount is required
+                                        </div>
+                                        <div *ngIf="f.incentiveAmount.errors.maxlength">Incentive Amount maxlength is 5 </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label>Incentive Period *</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" max="2" placeholder="Incentive Period(Allow Only Numbers)" (keypress)="numberOnly($event)" formControlName="incentivePeriod" class="form-control" [ngClass]="{ 'is-invalid': f.incentivePeriod.touched && f.incentivePeriod.errors }" />
+                                    <div *ngIf="f.incentivePeriod.touched && f.incentivePeriod.errors" class="invalid-feedback">
+                                        <!-- <div *ngIf="f.incentivePeriod.errors.required">Incentiver Period is required
+                                        </div> -->
+                                        <div *ngIf="f.incentivePeriod.errors.maxlength">Incentive Amount maxlength is 3 </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="!showValues">
+                            <span style="font-size: 15px">No Of Recruitements <i class="fas fa-plus-circle"
+                                    style="color:#0e6faf;font-size: 20px;" (click)="addItem()"></i></span>
+                            <div formArrayName="items" *ngFor="let item of incentiveForm.get('items').controls; let i = index;">
+                                <div [formGroupName]="i" class="form-group row">
+                                    <table class="table table-borderless">
+                                        <tr class="row">
+                                            <td class="col-md-4">
+                                                <label>No of Placements *</label>
+                                                <input type="text" max="2" placeholder="From (Allow Only Numbers)" (change)="getvalue()" (keypress)="numberOnly($event)" formControlName="recruitesLow" class="form-control" />
+                                                <div style="color:red;" *ngIf="item.controls.recruitesLow.errors">
+                                                    <div *ngIf="item.controls.recruitesLow.errors.unique">
+                                                        Uniques Values Required
+                                                    </div>
+                                                    <div *ngIf="item.controls.recruitesLow.errors.lessThan">
+                                                        From Values is lesstan To Value
+                                                    </div>
+
+                                                </div>
+                                            </td>
+                                            <td class="col-md-4">
+                                                <label>No Of Placements *</label>
+                                                <input type="text" max="2" placeholder="From (Allow Only Numbers)" (change)="getvalue()" (keypress)="numberOnly($event)" formControlName="recruitesHigh" class="form-control" />
+                                                <div style="color:red;" *ngIf="item.controls.recruitesHigh.errors">
+                                                    <div *ngIf="item.controls.recruitesHigh.errors.unique">
+                                                        Uniques Values Required
+                                                    </div>
+                                                    <div *ngIf="item.controls.recruitesHigh.errors.lessThan">
+                                                        From Values is lesstank To Value
+                                                    </div>
+
+                                                </div>
+                                            </td>
+                                            <td class="col-md-3">
+                                                <div>
+                                                    <label>Amount *</label>
+                                                    <input type="text" max="2" placeholder="From (Allow Only Numbers)" (change)="getvalue()" (keypress)="numberOnly($event)" formControlName="incentivePayment" class="form-control" />
+                                                    <div style="color:red;" *ngIf="item.controls.incentivePayment.errors">
+                                                        <div *ngIf="item.controls.incentivePayment.errors.unique">
+                                                            Uniques Values Required
+                                                        </div>
+                                                        <div *ngIf="item.controls.incentivePayment.errors.maxLength">
+                                                            Max length is 5
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <span *ngIf="i>=1" (click)="deleteFieldValue(i)" style="font-size: 25px;"> <i
+                                                            class="fas fa-minus-circle"
+                                                            style="margin:30px 0 0 0;color: #ff00009e;"></i></span>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="updateIncentive()" *ngIf="!btnValues">Update</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="createIncentive()" *ngIf="btnValues">Submit</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="clearValidations()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="incentiveStatus" #dismissModal>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Incetive Status</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)="clearValidations()">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="offset-2 col-md-6">
+                            <table class="table table-borderless" *ngIf="settlementData">
+                                <tr>
+                                    <th>
+                                        candidateName
+                                    </th>
+                                    <td>
+                                        {{settlementData.candidateName}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Date Of Joining
+                                    </th>
+                                    <td>
+                                        {{settlementData.dateOfJoin}}
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Incentive Amount
+                                    </th>
+                                    <td>
+                                        {{settlementData.incentiveAmount}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Recruiter Name
+                                    </th>
+                                    <td>
+                                        {{settlementData.recruiterName}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Settlement Date
+                                    </th>
+                                    <td>
+                                        {{settlementData.settlementDate}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Status
+                                    </th>
+                                    <td>
+                                        <form [formGroup]="incentiveStatusForm">
+
+                                            <select class="form-control input-rounded" formControlName="incetiveStatus" (change)="changeStatus($event.target.value)">
+                                        <option [ngValue]="null" disabled>Choose your profile *</option>
+                                        <option *ngFor="let c of statusList" [ngValue]="c" >
+                                            {{c }}
+                                        </option>
+                                    </select>
+                                            <div *ngIf="g.incetiveStatus.touched && g.incetiveStatus.errors" class="invalid-feedback">
+                                                <div *ngIf="g.incetiveStatus.errors.required">Status is required</div>
+                                            </div>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

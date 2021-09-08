@@ -1,0 +1,135 @@
+header {
+    position: relative;
+    /* background-color: black; */
+    height: 100vh;
+    min-height: 25rem;
+    width: 100%;
+    overflow: hidden;
+    /* background-image: url('./../../assets/images/footerbg.jpg') !important;
+    background-size: cover;
+    background-repeat: no-repeat; */
+}
+
+header video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: 0;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+header .container {
+    position: relative;
+    z-index: 2;
+    left: 25%;
+}
+
+
+
+.global-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+}
+
+form {
+    padding-top: 10px;
+    font-size: 14px;
+    margin-top: 30px;
+}
+
+.card-title {
+    font-weight: 300;
+}
+
+.btn {
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.login-form {
+    width: 330px;
+    /*margin:20px;*/
+}
+
+.sign-up {
+    text-align: center;
+    padding: 20px 0 0;
+}
+
+.alert {
+    margin-bottom: -30px;
+    font-size: 13px;
+    margin-top: 20px;
+}
+
+@media (pointer: coarse) and (hover: none) {
+    header {
+        background: url('https://source.unsplash.com/XT5OInaElMw/1600x900') black no-repeat center center scroll;
+    }
+    header video {
+        display: none;
+    }
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+::placeholder {
+    color: #8f8585cc;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.input-group__label {
+    background: #fff;
+    color: #8f8585;
+    font-size: 0.75rem;
+    left: 0;
+    margin-left: 0.5rem;
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    position: absolute;
+    top: 0;
+    transform: translateY(1rem);
+}
+
+.input-group__field {
+    border-color: #8f8585;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    padding: 10px;
+    width: 100%;
+    /* padding-bottom: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem; */
+}
+
+.input-group__field:focus {
+    outline: 0;
+}
+
+.input-group__field:valid+label,
+.input-group__field:focus+label {
+    opacity: 1;
+    transform: translateY(-0.45rem);
+}

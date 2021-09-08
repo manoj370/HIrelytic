@@ -1,0 +1,830 @@
+<div class="row">
+    <div class="col-md-12">
+        <!-- <div class="card"> -->
+        <div class="card-header">
+            <label i18n="@@userListTitle">
+                <h4>Reports</h4>
+            </label>
+
+        </div>
+    </div>
+</div>
+<div class="row" id="reportOverviewPdf">
+    <div class="col-md-6">
+        <div class="page-content fade-in-up">
+            <div class="card" style="height:922px">
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th id="right">Count</th>
+                                <!-- <th id="decpart">%</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of recruiterData">
+                                <td class="textfont">{{item.Status}}</td>
+                                <td id="right">{{item.Count}}</td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td id="right">{{totalcount}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="page-content fade-in-up">
+            <div class="card" style="height:840px">
+                <div class="card-body">
+                    <div id="canvas2" style="width:500;height:500px">
+                        {{noData}}
+                    </div>
+                    <div class="licence">
+                    </div>
+                    <!-- <div>
+            {{noData}}
+          </div> -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- </div> -->
+</div>
+<br>
+<br>
+
+<!-- CARD BOXES //////////  CARD BOXES/////CARD BOXES/////CARD BOXES///////////CARD BOXES///////////////CARD BOXES//////// -->
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body" style="height:auto;" (click)="getTeamPerformanceReport()">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="../../assets/images/Profile.png" style="font-size:80px;align-self:center;">
+                    </div>
+                    <div class="col-md-8">
+                        <h2>
+                            <p class="card-text-dictionary greyColor" id="card-name">Candidate Profiles</p>
+                            <div class="widget-footer">
+
+                            </div>
+                        </h2>
+                        <h3 class="widget-title">
+                            <a data-target="#teamPerformance" data-toggle="modal" data-toggle="modal"
+                                style="margin-top: 24px">View Report</a>
+                        </h3>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- </div> -->
+    <br>
+    <!-- ///////////Card-Joinees Report-Monthly///////////////Card-Joinees Report-Monthly////////////////////Card-Joinees Report-Monthly////////////Card-Joinees Report-Monthly -->
+    <!-- <div class="row"> -->
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body" style="height:auto;" (click)="getMonthWiseRecMetrics()">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="../../assets/images/joinees-report.png" style="font-size:80px; align-self:center;" />
+                    </div>
+                    <div class="col-md-8">
+                        <h2>
+                            <p class=" greyColor" id="card-name">Joinees Report-Monthly</p>
+                            <div class="widget-footer">
+
+                            </div>
+                        </h2>
+                        <h3 class="widget-title">
+                            <a data-target="#joineesReport" data-toggle="modal">View Report</a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- </div> -->
+    <br>
+
+
+    <!-- ///////////Card-Open Positions///////////////Card-Open Positions////////////////////Card-Open Positions////////////Card-Open Positions -->
+
+    <!-- <div class="row"> -->
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body" (click)="getOpenPositionReport()">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="../../assets/images/open-positions.png" id="card-name"
+                            style="font-size:80px; align-self:center;" />
+                    </div>
+                    <div class="col-md-8">
+                        <h2>
+                            <p class=" greyColor" id="card-name">Open Positions</p>
+                            <div class="widget-footer">
+                                <h3 class="widget-title openpos">
+                                    <a data-target="#openPositions" data-toggle="modal">View Report</a>
+                                </h3>
+                            </div>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- </div> -->
+    <br>
+
+    <!-- ///////////Card-performanceTracker///////////////Card-performanceTracker////////////////////Card-performanceTracker////////////Card-performanceTracker -->
+    <!-- <div class="row"> -->
+    <div class="col-md-3" *ngIf="userRoles=='ADMIN'">
+
+        <div class="card">
+            <div class="card-body">
+
+
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="../../assets/images/individual-recruiter-performance.png"
+                            style="font-size:80px;align-self:center;">
+                    </div>
+                    <div class="col-md-8">
+                        <h2>
+                            <p class="card-text-dictionary greyColor" id="card-name">Individual Performance</p>
+
+                        </h2>
+                        <h3 class="widget-title">
+                            <a data-target="#performanceTracker" data-toggle="modal">View Report</a>
+                        </h3>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- </div> -->
+
+    <!-- </div>  -->
+
+    <!-- </div> -->
+
+    <!-- </div> -->
+    <!-- </div> -->
+    <!-- </div> -->
+    <br>
+
+    <!-- card 5 -->
+    <!-- <div class="row" > --><br>
+    <div class="col-md-3" *ngIf="userRoles=='ADMIN'">
+
+
+
+        <div class="card" style="margin-top:10px;">
+            <div class="card-body" (click)="getRecruiterPerformanceReport()">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="../../assets/images/recruiter-performance.png"
+                            style="font-size:80px; align-self:center;">
+                    </div>
+                    <div class="col-md-8">
+                        <h2>
+                            <p class="card-text-dictionary greyColor" id="card-name">Team Performance</p>
+                            <div class="widget-footer">
+                                <h3 class="widget-title">
+                                    <a data-target="#recruiterPerformanceModal" data-toggle="modal"
+                                        style="margin-top: 32px;">View
+                                        Report</a>
+                                </h3>
+                            </div>
+                        </h2>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+    <!-- </div> -->
+    <!-- card5 ends -->
+
+
+    <!-- Card 6 starts -->
+    <div class="col-md-3" *ngIf="userRoles=='ADMIN'">
+
+
+
+        <div class="card" style="margin-top:10px;">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="../../assets/images/recruiter-performance.png"
+                            style="font-size:80px; align-self:center;">
+                    </div>
+                    <div class="col-md-8">
+                        <h2>
+                            <p class="card-text-dictionary greyColor" id="card-name">Vendor Reports</p>
+                            <div class="widget-footer">
+                                <h3 class="widget-title">
+                                    <a data-target="#vendortab" data-toggle="modal"
+                                        style="margin-top: 32px;">View
+                                        Report</a>
+                                </h3>
+                            </div>
+                        </h2>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+    <!-- Card 6 Ends -->
+    <!-- </div> -->
+    <!-- ////////////////REPORT CHART/////////////REPORT CHART//////////////REPORT CHART//////////////////////REPORT CHART//// -->
+    <!-- <div class="row"> -->
+
+    <!-- </div> -->
+
+
+
+    <!-- Card 5 modal -->
+    <div class="modal fade-in-up" id="recruiterPerformanceModal" role="dialog">
+        <div class="modal-dialog modalMaxWidth">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Team Performance Report</h4>
+
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+
+                    <ul class="nav nav-tabs tabs-line">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#tab-4" data-toggle="tab">
+                                Team Performance</a>
+                        </li>
+
+                    </ul>
+
+                    <div class="tab-content">
+
+                        <div class="tab-pane fade show active" id="tab-2">
+                            <div class="float-right">
+                                <button class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown">Export As
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="javascript:;"
+                                            (click)="downloadPdfReportTeamPerformance()">PDF</a>
+                                    </li>
+                                    <li class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" href="javascript:;"
+                                            (click)="downloadExcelReportTeamPerformance()">Excel</a>
+                                    </li>
+
+
+                                </ul>
+
+                            </div><br>
+
+                            <ag-grid-angular style="height:500px;margin-top:20px;" class="ag-theme-balham"
+                                [rowData]="recruiterPerformanceData" [columnDefs]="recruiterPerformaneColumns"
+                                (gridReady)="onGridReadyRecPerformance($event)" enableColResize enableFilter
+                                enableSorting [gridOptions]='gridOptions'>
+                            </ag-grid-angular><br>
+                            <hr>
+                            <br>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- </div> -->
+        </div>
+
+    </div>
+    <!-- Card 5 modal ends -->
+
+    <!-- ////////////////////////////////Candidates Profile Report/////////////////////Candidates Profile Report//////////////////////Candidates Profile Report/// -->
+    <!-- <div class="col-md-6"> -->
+    <div class="modal fade-in-up" id="teamPerformance" role="dialog">
+        <div class="modal-dialog modalMaxWidth">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Candidates Profile Report</h4>
+
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+
+                    <ul class="nav nav-tabs tabs-line">
+
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#tab-2" data-toggle="tab">
+                                Candidates Profile</a>
+                        </li>
+
+
+                    </ul>
+
+                    <div class="tab-content">
+
+                        <div class="tab-pane fade show active" id="tab-2">
+                            <div class="float-right">
+                                <button class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown">Export As
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="javascript:;"
+                                            (click)="downlaodPdfReportCandidate()">PDF</a>
+                                    </li>
+                                    <li class="dropdown-divider"></li>
+                                    <!-- <li>
+                  <a class="dropdown-item" href="javascript:;" (click)="exportexcel('Excel')">Excel</a>
+                </li> -->
+
+                                    <li>
+                                        <a class="dropdown-item" href="javascript:;"
+                                            (click)="downloadExcelReportForCandidate()">Excel</a>
+                                    </li>
+                                </ul>
+
+                            </div><br>
+
+                            <ag-grid-angular style="height: 500px;margin-top:20px;" class="ag-theme-balham"
+                                [rowData]="teamPerformanceData" [columnDefs]="teamPerformanceColumns"
+                                (gridReady)="onGridReadyforTeamPerformance($event)" enableColResize enableFilter
+                                enableSorting [gridOptions]='gridOptions'>
+                            </ag-grid-angular><br>
+                            <hr>
+                            <br>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- </div> -->
+        </div>
+
+    </div>
+
+
+
+    <!-- //////////////////////////Joinees Report-Monthly////////////////////Joiness Report-Monthly///////////////////////Joiness Report-Monthly/// -->
+    <div class="modal fade-in-up" id="joineesReport" role="dialog">
+        <div class="modal-dialog modalMaxWidthh">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Joinees Report</h4>
+
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+
+                    <ul class="nav nav-tabs tabs-line">
+
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#tab-1-3-5" data-toggle="tab">
+                                Joinees Report(Month Wise)</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="#tab-4-5-6" data-toggle="tab" (click)="joineeReportAdmin()">
+                                Joinees Candidate Report</a>
+                        </li>
+
+
+                    </ul>
+
+                    <div class="tab-content">
+
+
+
+                        <div class="tab-pane fade  show active" id="tab-1-3-5">
+                            <!-- <h6>Recruitment Metrics</h6><hr> -->
+
+
+                            <div class="row" id="contentToConvertttt">
+                                <div class="col-md-7">
+                                    <div class="ibox">
+                                        <div class="ibox-head">
+                                            <!-- <div class="ibox-title">Joinees Report(Month Wise)</div> -->
+                                        </div>
+                                        <div class="ibox-body">
+
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Year</th>
+                                                        <th>Month</th>
+                                                        <th style="text-align:center">Joinees</th>
+                                                        <th style="text-align:center">Average Experience</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let monthWiseData of MonthWiseRecMetricsData">
+
+                                                        <td>{{monthWiseData.Year}}</td>
+                                                        <td>{{monthWiseData.Month}}</td>
+                                                        <td style="text-align:center">{{monthWiseData.joinees}}</td>
+                                                        <td style="text-align:center">
+                                                            {{monthWiseData.experience | number:'1.2-2'}}</td>
+
+                                                    </tr>
+                                                    <div>
+                                                        {{noData}}
+                                                    </div>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="ibox">
+                                        <div class="ibox-body">
+                                            <!-- <h6>Joinees Report(Month Wise) </h6> -->
+                                            <div id="chartdiv" style="width:500px;height:500px">
+                                                {{noData}}
+                                            </div>
+                                            <div class="licences">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade  show " id="tab-4-5-6">
+                            <!-- <h6>Recruitment Metrics</h6><hr> -->
+                            <div class="float-right">
+                                <button class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown">Export As
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="javascript:;"
+                                            (click)="downlaodPdfReportJoinees()">PDF</a>
+                                    </li>
+                                    <li class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" href="javascript:;"
+                                            (click)="downloadExcelReportJoinees()">Excel</a>
+                                    </li>
+                                </ul>
+
+                            </div><br><br><br>
+
+                            <div class="row" id="contentToConvertttt">
+                                <div class="col-md-12">
+                                    <div class="ibox">
+                                        <div class="ibox-body">
+                                            <!-- <table class="table table-striped" width="90%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Email Id</th>
+                                                        <th>Skills</th>
+                                                        <th>Phone Number</th>
+                                                        <th>Experience</th>
+                                                        <th>Current Location</th>
+                                                        <th>Date Of Joining</th>
+                                                        <th *ngIf="userRoles=='ADMIN'">Recruited By</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let report of joineeAdmin">
+
+                                                        <td>{{report.name}}</td>
+                                                        <td>{{report.email_id}}</td>
+                                                        <td>{{report.skill}}</td>
+                                                        <td style="text-align:center">{{report.phone_number}}</td>
+                                                        <td style="text-align:center">{{report.experience | number:'1.2-2'}}</td>
+                                                        <td style="text-align:center">{{report.current_location}}</td>
+                                                        <td style="text-align:center">{{report.date_of_joining}}</td>
+                                                        <td style="text-align:center">{{report.RecruiterName}}</td>
+                                                       
+
+                                                    </tr>
+                                                </tbody>
+                                            </table> -->
+                                            <ag-grid-angular style="height: 500px;margin-top:-45px;"
+                                                class="ag-theme-balham" [rowData]="joineeAdmin"
+                                                [columnDefs]="joineesColumns" (gridReady)="GridForJoineesReport($event)"
+                                                enableColResize enableFilter enableSorting [gridOptions]='gridOptions'>
+                                            </ag-grid-angular><br>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- </div> -->
+        </div>
+
+    </div>
+
+    <!-- ////////////////OPEN POSITIONS////////////////////OPEN POSITIONS////////////////////////////////////////////////// -->
+    <div class="modal fade-in-up" id="openPositions" role="dialog">
+        <div class="modal-dialog modalMaxWidth">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Open Positions Report</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+
+                    <div class="float-right">
+
+                        <button class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown">Export As
+                            <span class="caret"></span>
+                        </button>
+
+                        <ul class="dropdown-menu">
+                            <!-- <li>
+                        <a class="dropdown-item" href="javascript:;" (click)="exportexcelOpenPos('PDF')">PDF</a>
+                    </li>
+                    <li class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item" href="javascript:;" (click)="exportexcelOpenPos('Excel')">Excel</a>
+                    </li> -->
+
+                            <li>
+                                <a class="dropdown-item" href="javascript:;"
+                                    (click)="downlaodPdfReportOpenPositions()">PDF</a>
+                            </li>
+                            <li class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="javascript:;"
+                                    (click)="downloadExcelReportFoOpenPositions()">Excel</a>
+                            </li>
+
+
+                        </ul>
+
+                    </div><br>
+
+
+
+
+
+                    <ag-grid-angular style="height: 500px;margin-top:20px;" class="ag-theme-balham"
+                        [rowData]="openPositionsData" [columnDefs]="openPositionsColumns"
+                        (gridReady)="onGridReadyForOpenPosition($event)" enableColResize enableFilter enableSorting
+                        [gridOptions]='gridOptions'>
+                    </ag-grid-angular>
+                </div>
+
+                <!-- Modal footer -->
+                <!-- <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-success"
+          data-dismiss="modal"
+        >
+          Upload
+        </button>
+      </div> -->
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- ////////////////////////Individual PERFORMANCE///////////////////////////Individual PERFORMANCE//////////////////// Individual PERFORMANCE///////////////-->
+    <!-- Modal for performance track report -->
+
+    <div class="modal fade-in-up" id="performanceTracker" role="dialog">
+        <div class="modal-dialog modalMaxWidth">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Individual Recruiter Performance Report</h4>
+
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+
+                    <ul class="nav nav-tabs tabs-line">
+
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#tab-5" data-toggle="tab">
+                                Individual Recruiter Performance
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+
+                    <div class="tab-content">
+
+
+                        <div class="tab-pane fade show active " id="tab-5">
+
+                            <!-- <h6>Recruitment Metrics</h6><hr> -->
+                            <div class="row" id="contentToConverttt">
+                                <div class="col-md-7">
+                                    <div class="col-sm-3">
+                                        <select id="clientname" class="form-control input-rounded" tabindex="14"
+                                            maxlength="255" (change)="RecruiterChangeEvent($event.target.value)">
+                                            <option *ngFor="let recruiter of  recruiterPerformanceDataaa;let i = index;"
+                                                [value]="recruiter.userId">{{recruiter.firstName}}{{recruiter.lastName}}
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                    <div class="ibox">
+
+                                        <div class="ibox-body">
+                                            <table class="table table-striped">
+                                                <tr>
+                                                    <th>Status</th>
+                                                    <th>Count</th>
+                                                </tr>
+                                                <tbody *ngFor="let item of individaulaRecruiterData">
+                                                    <tr>
+                                                        <td> {{item.Status}}</td>
+                                                        <td>{{item.Count}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="row">
+
+                                        <div id="donutchartdiv" style="width:500px;height:500px">
+                                            {{noData}}
+                                        </div>
+                                        <div class="licencess">
+                                        </div>
+
+                                        <!-- <div>
+                      {{noData}}
+                    </div> -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for vendor report starts-->
+    <div class="modal fade-in-up" id="vendortab" role="dialog">
+        <div class="modal-dialog modalMaxWidth">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Vendor Performance Report</h4>
+
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+
+                    <ul class="nav nav-tabs tabs-line">
+
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#tab-5" data-toggle="tab">
+                                Venodor Performance
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+
+                    <div class="tab-content">
+
+
+                        <div class="tab-pane fade show active " id="tab-5">
+
+                            <!-- <h6>Recruitment Metrics</h6><hr> -->
+                            <div class="row" id="contentToConverttt">
+                                <div class="col-md-7">
+                                    <div class="col-sm-3">
+                                        <select id="clientname" class="form-control input-rounded" tabindex="14"
+                                            maxlength="255" (change)="RecruiterChangeEvent($event.target.value)">
+                                            <option *ngFor="let recruiter of  recruiterPerformanceDataaa;let i = index;"
+                                                [value]="recruiter.userId">{{recruiter.firstName}}{{recruiter.lastName}}
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                    <div class="ibox">
+
+                                        <div class="ibox-body">
+                                            <table class="table table-striped">
+                                                <tr>
+                                                    <th>Status</th>
+                                                    <th>Count</th>
+                                                </tr>
+                                                <tbody *ngFor="let item of individaulaRecruiterData">
+                                                    <tr>
+                                                        <td> {{item.Status}}</td>
+                                                        <td>{{item.Count}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="row">
+
+                                        <div id="donutchartdiv" style="width:500px;height:500px">
+                                            {{noData}}
+                                        </div>
+                                        <div class="licencess">
+                                        </div>
+
+                                        <!-- <div>
+                  {{noData}}
+                </div> -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for vendor report ends -->

@@ -1,0 +1,526 @@
+<simple-notifications></simple-notifications>
+<div class="row">
+    <div class="col-md-12">
+        <!-- <div class="card"> -->
+        <div class="card-header">
+            <i class="fa fa-angle-double-left" style="font-size:26px;color:blue;cursor:pointer"
+                (click)="backToManageJobs()"></i>&nbsp;&nbsp;
+            <label i18n="@@userListTitle">
+                <h3 style="font-size: 22px;color:blue">Post Job</h3>
+            </label>
+        </div>
+    </div>
+</div>
+<div class="page-content fade-in-up">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ibox">
+                <!-- <div class="ibox-head">
+                    <div class="ibox-title"></div>
+
+                </div> -->
+                <div class="ibox-body">
+                    <form [formGroup]="jobPostForm" #f="ngForm">
+                        <div class="row">
+                            <!-- <div class="col-sm-6 form-group">
+                                <label>Job Code *</label>
+                                <input id="jobCode" class="form-control input-rounded" tabindex="1" formControlName="jobCode" readonly [(ngModel)]="jobposting.jobCode" type="text" placeholder="Job Code">
+                                <div *ngIf="jobPostForm.controls['jobCode'].hasError('pattern')" class="failed-validation">
+                                        Invalid Job Code
+                                 </div>
+                                 <div *ngIf="jobPostForm.controls['jobCode'].hasError('required') && jobPostForm.controls['jobCode'].touched" class="failed-validation">
+                                    Job Code Required
+                               </div>
+                            </div> -->
+                            <div class="col-sm-12 form-group">
+                                <label>Job Title *</label>
+                                <input id="jobTitle" class="form-control input-rounded" tabindex="2" maxlength="255"
+                                    formControlName="jobTitle" [(ngModel)]="jobposting.jobTitle" type="text"
+                                    placeholder="Job Title">
+
+                                <div *ngIf="jobPostForm.controls['jobTitle'].hasError('pattern')"
+                                    class="failed-validation">
+                                    No Blank Space Allowed
+                                </div>
+                                <div *ngIf="jobPostForm.controls['jobTitle'].hasError('required') && jobPostForm.controls['jobTitle'].touched"
+                                    class="failed-validation">
+                                    Job Title Required
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Job Description *</label>
+
+                                <textarea id="jobDescription" class="form-control" tabindex="3" rows="5"
+                                    formControlName="jobDesc" [(ngModel)]="jobposting.jobDescription"
+                                    placeholder="Your Text Goes Here..."></textarea>
+                                <div *ngIf="jobPostForm.controls['jobDesc'].hasError('pattern')"
+                                    class="failed-validation">
+                                    No Blank Space Allowed
+                                </div>
+                                <div *ngIf="jobPostForm.controls['jobDesc'].hasError('maxlength')"
+                                    class="failed-validation">
+                                    Maximum 4000 Characters Allowed
+                                </div>
+                                <div *ngIf="jobPostForm.controls['jobDesc'].hasError('required') && jobPostForm.controls['jobDesc'].touched"
+                                    class="failed-validation">
+                                    Job Description Required
+                                </div>
+                            </div>
+                        </div><br>
+                        <h5>Mandatory Fields</h5>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3 form-group">
+                                <label>Email *</label>
+                                <input id="emailId" class="form-control input-rounded" tabindex="4" type="text"
+                                    formControlName="jobPostEmail" [(ngModel)]="jobposting.jobContactToEmail"
+                                    placeholder="Email Id">
+                                <div *ngIf="jobPostForm.controls['jobPostEmail'].hasError('pattern')"
+                                    class="failed-validation">
+                                    Invalid Email Id
+                                </div>
+
+                                <div *ngIf="jobPostForm.controls['jobPostEmail'].hasError('required') && jobPostForm.controls['jobPostEmail'].touched"
+                                    class="failed-validation">
+                                    Email Id Required
+                                </div>
+                            </div>
+                            <div class="col-sm-3 form-group">
+
+                                <label>Contact Number *</label>
+                                <input id="contactNumber" class="form-control input-rounded" tabindex="5" type="text"
+                                    formControlName="jobContactPhone" (keypress)="keyPress($event)"
+                                    [(ngModel)]="jobposting.jobContactPhone" placeholder="Contact Number"
+                                    maxlength="10">
+
+                                <div *ngIf="jobPostForm.controls['jobContactPhone'].hasError('minlength')"
+                                    class="failed-validation">
+                                    Invalid Contact Number
+                                </div>
+                                <div *ngIf="jobPostForm.controls['jobContactPhone'].hasError('maxlength')"
+                                    class="failed-validation">
+                                    Invalid Contact Number
+                                </div>
+                                <div *ngIf="jobPostForm.controls['jobContactPhone'].hasError('required') && jobPostForm.controls['jobContactPhone'].touched"
+                                    class="failed-validation">
+                                    Contact Number Required
+                                </div>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label>Number Of Openings *</label>
+                                <input id="numberOfOpenings" class="form-control input-rounded" tabindex="6" type="text"
+                                    maxlength="3" (keypress)="keyPress($event)" formControlName="noOfOpenings"
+                                    [(ngModel)]="jobposting.noOfOpenings" placeholder="No. Of Openings">
+                                <div *ngIf="jobPostForm.controls['noOfOpenings'].hasError('pattern')"
+                                    class="failed-validation">
+                                    Invalid No. Of Openings
+                                </div>
+                                <div *ngIf="jobPostForm.controls['noOfOpenings'].hasError('required') && jobPostForm.controls['noOfOpenings'].touched"
+                                    class="failed-validation">
+                                    No. Of Openings Required
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3 form-group">
+                                <label>Location *</label>
+
+                                <ng-multiselect-dropdown id="location" class="input-rounded" tabindex="7"
+                                    style="border-radius:50px" [placeholder]="'Select Location'"
+                                    [data]="dropdownLocationn" [(ngModel)]="jobposting.jobLocation"
+                                    formControlName="Location" [settings]="dropdownSettings"></ng-multiselect-dropdown>
+                                <div *ngIf="jobPostForm.controls['Location'].hasError('required') && jobPostForm.controls['Location'].touched"
+                                    class="failed-validation">
+                                    Location Required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 form-group">
+                                <label>Min Experience *</label>
+                                <input id="minExperience" class="form-control input-rounded" tabindex="8" type="text"
+                                    maxlength="3" (keypress)="keyPress($event)" formControlName="minExp"
+                                    placeholder="Min Experience In Years" [(ngModel)]="jobposting.minJobExperience"
+                                    (change)="chkMinValidatn()">
+
+                                <div *ngIf="jobPostForm.controls['minExp'].hasError('required') && jobPostForm.controls['minExp'].touched"
+                                    class="failed-validation">
+                                    Min. Experience Required
+                                </div>
+                                <div *ngIf=messageforMaxfLAG class="failed-validation">
+                                    Min. Experience should not be more than Max. Experience
+                                </div>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label>Max Experience *</label>
+                                <input id="maxExperience" class="form-control input-rounded" tabindex="9" type="text"
+                                    maxlength="3" (keypress)="keyPress($event)" formControlName="maxExp"
+                                    placeholder="Max Experience In Years" [(ngModel)]="jobposting.maxJobExperience"
+                                    (change)="checkValidatin()">
+
+                                <div *ngIf="jobPostForm.controls['maxExp'].hasError('required') && jobPostForm.controls['maxExp'].touched"
+                                    class="failed-validation">
+                                    Max. Experience Required
+                                </div>
+                                <div *ngIf=messageforMaxfLAG class="failed-validation">
+                                    Max. Experience should not be less than Min. Experience
+                                </div>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label>Qualification *</label>
+
+                                <!-- <select id="qualification" class="form-control input-rounded" tabindex="10"
+                                    formControlName="jobPostQualification">
+
+                                    <option value="" selected disabled>Select Qualification</option>
+                                    <option *ngFor="let qualification of qualifications" [value]="qualification.name">
+                                        {{qualification.name}}</option>
+
+
+                                </select> -->
+                                <ng-multiselect-dropdown id="qualification" style="border-radius:50px !important"
+                                    [placeholder]="'Select Qualification'" [data]="dropdownQualification"
+                                    [(ngModel)]="jobposting.jobMinQualification" formControlName="jobPostQualification"
+                                    [settings]="dropdownSettings"></ng-multiselect-dropdown>
+
+
+                                <div *ngIf="jobPostForm.controls['jobPostQualification'].hasError('required') && jobPostForm.controls['jobPostQualification'].touched"
+                                    class="failed-validation">
+                                    Qualification Required
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3 form-group">
+                                <label>Mode Of Employment *</label>
+                                <select id="employmentMode" class="form-control input-rounded" tabindex="11"
+                                    formControlName="jobEmpMode" [(ngModel)]="jobposting.grade">
+                                    <option selected disabled value="">Select Mode</option>
+                                    <option>Full-Time</option>
+                                    <option>Contract-to-Hire </option>
+                                    <option>Contract</option>
+
+                                </select>
+
+                                <div *ngIf="jobPostForm.controls['jobEmpMode'].hasError('required') && jobPostForm.controls['jobEmpMode'].touched"
+                                    class="failed-validation">
+                                    Mode Of Employment Required
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-3 form-group">
+                                <label>Skills *</label>
+
+                                <input id="skills" data-container="body" tabindex="12" data-toggle="popover"
+                                    data-trigger="hover" data-placement="top"
+                                    data-content="Enter skills separated by semi-colon."
+                                    class="form-control input-rounded" type="text" formControlName="jobPostSkills"
+                                    [(ngModel)]="items" placeholder="Skill1;Skill2;Skill3">
+
+                                <div *ngIf="jobPostForm.controls['jobPostSkills'].hasError('pattern')"
+                                    class="failed-validation">
+                                    No Blank Space Allowed
+                                </div>
+                                <div *ngIf="jobPostForm.controls['jobPostSkills'].hasError('required') && jobPostForm.controls['jobPostSkills'].touched"
+                                    class="failed-validation">
+                                    Skills Required
+                                </div>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label>Primary Skill *</label>
+
+                                <input id="primarySkill" class="form-control input-rounded" type="text" maxLength="250"
+                                    tabindex="13" formControlName="jobPostPrimarySkill" placeholder=" Primary Skill "
+                                    [(ngModel)]="jobposting.primarySkill">
+
+                                <div *ngIf="jobPostForm.controls['jobPostPrimarySkill'].hasError('pattern')"
+                                    class="failed-validation">
+                                    No Blank Space Allowed
+                                </div>
+                                <div *ngIf="jobPostForm.controls['jobPostPrimarySkill'].hasError('required') && jobPostForm.controls['jobPostPrimarySkill'].touched"
+                                    class="failed-validation">
+                                    Primary Skill Required
+                                </div>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label>Client Name *</label>
+                                <select id="clientname" class="form-control input-rounded" tabindex="14"
+                                    (change)="getClient($event.target.value)" maxlength="255"
+                                    formControlName="clientname">
+                                    <option selected disabled value="">Select Client Name</option>
+
+                                    <option *ngFor="let client of this.getClientName" [value]="client.clientId">
+                                        {{client.clientName}}</option>
+
+                                </select>
+                                <div *ngIf="jobPostForm.controls['clientname'].hasError('required') && jobPostForm.controls['clientname'].touched"
+                                    class="failed-validation">
+                                    Client Name Required
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label>Hiring Manager *</label>
+                                <!-- <input id="mangerName" class="form-control input-rounded" type="text" tabindex="13" maxlength="255" formControlName="hiringManager" [(ngModel)]="jobposting.hiringManager" placeholder="Hiring Manager"> -->
+                                <select id="mangerName" class="form-control input-rounded" tabindex="15"
+                                    (change)="getManagerId($event.target.value)" maxlength="255"
+                                    formControlName="hiringManager">
+                                    <option selected disabled value="">Select Manager Name</option>
+
+                                    <option *ngFor="let Manager of this.getManagerName"
+                                        [value]="Manager.clientContactsId">{{Manager.coOrdinatorFirstName}}</option>
+
+                                </select>
+                                <div *ngIf="jobPostForm.controls['hiringManager'].hasError('required') && jobPostForm.controls['hiringManager'].touched"
+                                    class="failed-validation">
+                                    Hiring Manager Required
+                                </div>
+                                <div *ngIf="jobPostForm.controls['hiringManager'].hasError('pattern')"
+                                    class="failed-validation">
+                                    Invalid Hiring Manager Name
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 form-group">
+                                <label>About Company *</label>
+                                <textarea id="aboutCompany" class="form-control" tabindex="16"
+                                    formControlName="aboutCompany" [(ngModel)]="jobposting.aboutCompany" rows="2"
+                                    placeholder="Your Text Goes Here..."></textarea>
+                                <div *ngIf="jobPostForm.controls['aboutCompany'].hasError('pattern')"
+                                    class="failed-validation">
+                                    No Blank Space Allowed
+                                </div>
+                                <div *ngIf="jobPostForm.controls['aboutCompany'].hasError('required') && jobPostForm.controls['aboutCompany'].touched"
+                                    class="failed-validation">
+                                    About Company Required
+                                </div>
+                            </div>
+                        </div>
+                        <h5>Optional Fields</h5>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3 form-group">
+                                <label>Functional Area</label>
+                                <select id="functionalArea" class="form-control input-rounded" tabindex="17"
+                                    formControlName="functionalArea" [(ngModel)]="jobposting.jobFunctionalArea"
+                                    #functionalArea>
+                                    <option selected disabled value="">Select Functional Area</option>
+                                    <option value="empty"></option>
+                                    <option *ngFor="let c of FunctionalAreaList" [value]="c.label">{{c.label}}</option>
+
+                                </select>
+
+
+                            </div>
+
+                            <div class="col-sm-3 form-group">
+                                <label>Department</label>
+                                <select id="department" class="form-control input-rounded" tabindex="18"
+                                    formControlName="department" [(ngModel)]="jobposting.department" #department>
+                                    <option selected disabled value="">Select Department</option>
+                                    <option value="empty"></option>
+                                    <option *ngFor="let c of DepartmentList" [value]="c.label">{{c.label}}</option>
+
+                                </select>
+
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label>Designation</label>
+                                <select id="designation" class="form-control input-rounded" tabindex="19"
+                                    formControlName="jobDesig" [(ngModel)]="jobposting.designation">
+                                    <option selected disabled value="">Select Designation</option>
+                                    <option value="empty"></option>
+                                    <option *ngFor="let r of DesignationList" [value]="r.label">{{r.label}}</option>
+
+                                </select>
+
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label>Notice Period In Days</label>
+                                <input id="noticePeriod" class="form-control input-rounded" tabindex="20" type="text"
+                                    maxlength="3" (keypress)="keyPress($event)" formControlName="maxNoticePeriod"
+                                    [(ngModel)]="jobposting.maxNoticePeriod" placeholder="Notice Period In Days">
+                                <div *ngIf="jobPostForm.controls['maxNoticePeriod'].hasError('pattern')"
+                                    class="failed-validation">
+                                    Invalid Notice Period
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 form-group" *ngIf="functionalArea.value == 'Other'">
+                                <input type="text " class="form-control input-rounded"
+                                    placeholder="Mention Functional Area" [(ngModel)]="jobposting.otherFunctionalArea"
+                                    [ngModelOptions]="{standalone: true}">
+                            </div>
+                            <div class="col-sm-3 form-group" *ngIf="department.value == 'Other'">
+                                <input type="text " class="form-control input-rounded" placeholder="Mention Department"
+                                    [(ngModel)]="jobposting.otherDepartment" [ngModelOptions]="{standalone: true}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 form-group">
+                                <label>Minimum Annual Salary</label>
+                                <div class="input-group">
+                                    <select class="dropdown" [(ngModel)]="jobposting.currency" tabindex="21"
+                                        [ngModelOptions]="{standalone: true}">
+                                        <option value="" selected disabled>Currency</option>
+                                        <option>INR</option>
+                                        <option>USD</option>
+
+                                    </select>&nbsp;&nbsp;
+                                    <input id="minSalary" type="text" style="border-radius:2px"
+                                        class="form-control input-rounded" tabindex="21" formControlName="minSalary"
+                                        placeholder="Minimum Annual Salary" (keypress)="keyPress($event)" maxlength="10"
+                                        [(ngModel)]="jobposting.minSalary" (keyup)="checkValidationSal()">
+                                    <div *ngIf=messageforMinSalaryFlag class="failed-validation">
+                                        Minimum Annual Salary should not be greater than Maximun Annual Salary
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-3 form-group">
+                                <label>Maximum Annual Salary</label>
+                                <input id="maxSalary" type="text" class="form-control input-rounded" tabindex="22"
+                                    formControlName="maxSalary" placeholder="Maximum Annual Salary"
+                                    (keypress)="keyPress($event)" maxlength="10" [(ngModel)]="jobposting.maxSalary"
+                                    (keyup)="checkValidationSal()">
+                                <div *ngIf=messageforMaxSalaryFlag class="failed-validation">
+                                    Maximum Annual Salary should not be less than Minimum Annual Salary
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-1 form-group">
+                                <br>
+                                <div class="checkbox">
+                                    <label> <input type="checkbox" id="piscine" name="piscine" (change)="refereecheck($event)">Publish To Referee</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 form-group" *ngIf="hideTextBox">
+                                <label>Referee Amount</label>
+                                <input type="text" id="refereamount" class="form-control input-rounded" formControlName="refereeAmount"
+                                    placeholder="Referee Amount" />
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                        <div class="col-sm-3 form-group">
+                       <input type="checkbox">
+                       <label>
+                          &nbsp;Publish to Vendor
+                       </label>
+                       </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-sm-3 form-group">
+                          <select class="form-control"  (change)="onVendorNameChange($event.target.value)">
+                            <option disabled selected value=''>List Of Active Vendors</option>
+                            <option  *ngFor="let vendorName of allVendorsNames" [value]='vendorName.vendorId'>{{vendorName.vendorName}}</option>
+                          </select>
+                       </div>
+                     </div> -->
+
+                        <div class="form-group">
+                            <button id="btnPost" (click)="post()" class="btn btn-primary float-right" type="submit"
+                                [disabled]="!jobPostForm.valid || !postbutton" tabindex="23">Post</button>
+                            <button id="btnView" class="btn btn-success float-right" type="button"
+                                data-target="#viewJobPostModal" tabindex="24" data-toggle="modal" (click)="viewResume()"
+                                [disabled]="!jobPostForm.valid">View</button>
+
+                        </div>
+                        <br>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- view job before posting modal -->
+
+<div class="modal right fade" id="viewJobPostModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">View Details </h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+
+
+            <div class="modal-body">
+                <div class="card" style="width:100%;">
+                    <div class="card-header">
+                        <h6 class="m-0" style="padding: 2px">Basic details for the position of '{{jobposting.jobTitle}}'
+                        </h6>
+                    </div>
+                    <div class="card-body">
+
+                        <!-- <p class="card-text">Job Code : {{jobposting.jobCode}}</p> -->
+                        <p class="card-text">Job Title : {{jobposting.jobTitle}}</p>
+                        <p class="card-text">Job Description : {{jobposting.jobDescription}}
+                        </p>
+                        <p class="card-text">Number Of Openings : {{jobposting.noOfOpenings}}</p>
+                        <p class="card-text">Min. Experience In Years : {{jobposting.minJobExperience}}</p>
+                        <p class="card-text">Max. Experience In Years : {{jobposting.maxJobExperience}}</p>
+                        <p class="card-text">Skills Required : {{items}}</p>
+                        <p class="card-text">Notice Period In Days : {{jobposting.maxNoticePeriod}}</p>
+                    </div>
+                </div><br>
+                <div class="card" style="width:100%;">
+                    <div class="card-header">
+                        <h6 class="m-0" style="padding: 2px">Job Details</h6>
+                    </div>
+                    <div class="card-body">
+
+                        <p class="card-text">Email Id : {{jobposting.jobContactToEmail}}</p>
+                        <p class="card-text">Contact Number : {{jobposting.jobContactPhone}}</p>
+                        <p class="card-text">Location : {{jobposting.jobLocation}}&nbsp;
+                            <!-- <span *ngFor="let loc of jobposting.jobLocation ; last as islast"> {{loc.item_text}}
+                                <span *ngIf="!islast">, </span>
+                            </span> -->
+                        </p>
+                        <p class="card-text">Qualification : {{jobposting.jobMinQualification}}
+                            <!-- <span *ngFor="let qual of jobposting.jobMinQualification ; last as islast"> {{qual.item_text}}
+                                <span *ngIf="!islast">, </span>
+                            </span> -->
+                        </p>
+                        <!-- <p class="card-text">Hiring Manager : {{hiringManagername}}</p> -->
+
+                    </div>
+                </div><br>
+                <div class="card" style="width:100%;">
+                    <div class="card-header">
+                        <h6 class="m-0" style="padding: 2px">Other Details</h6>
+                    </div>
+                    <div class="card-body">
+
+                        <p class="card-text">Functional Area : {{jobposting.jobFunctionalArea}}</p>
+                        <p class="card-text">Department : {{jobposting.department}}</p>
+                        <p class="card-text">Designation : {{jobposting.designation}}</p>
+                        <p class="card-text">Min. Annual Salary : <span
+                                *ngIf="jobposting.minSalary!=null && jobposting.minSalary!=''">{{jobposting.minSalary}}
+                            </span></p>
+                        <p class="card-text">Max. Annual Salary : <span
+                                *ngIf="jobposting.maxSalary!=null && jobposting.maxSalary!=''">{{jobposting.maxSalary}}</span>
+                        </p>
+
+                    </div>
+                </div><br>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- ends -->

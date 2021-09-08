@@ -1,0 +1,49 @@
+<!-- <ngx-spinner bdOpacity="0.9" size="medium" color="#fff" type="line-scale" fullScreen="true">
+</ngx-spinner> -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card-header">
+            <label i18n="@@userListTitle">
+                <h3>Manage Demos
+
+                </h3>
+            </label>
+            <ul class="jobsearch">
+                <li>
+                    <form>
+                        <input type="text" style="border-radius:15px" class="form-control" id="inputValidation" placeholder="Search" [ngModelOptions]="{standalone: true}" (keyup)="quickSearch()" [(ngModel)]="searchvalue" />
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </form>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="page-content fade-in-up">
+
+    <div class="col-md-12">
+        <div class="ibox">
+            <!-- <div class="ibox-head">
+                <div class="ibox-title">Manage Demos</div>&nbsp;&nbsp;
+
+            </div> -->
+
+            <div class="ibox-body">
+                <!-- <canvas id="canvas" >{{chart}}</canvas> -->
+
+                <ag-grid-angular style="height: 600px;" [rowData]="demoData" [columnDefs]="demoColumnDefs" (paginationChanged)="onPaginationChanged($event)"  class="ag-theme-balham"
+                 [pagination]="true" paginationPageSize="15" enableColResize
+                enableFilter enableSorting  (gridReady)="onGridReady($event)"  [suppressPaginationPanel]="true" [suppressScrollOnNewData]="true">
+            </ag-grid-angular>
+            <div class="float-right" *ngIf="totalPages>1" style="position: relative;right: 12px;">
+                <button (click)="onBtPreviousag()" class="btn btn-outline-primary"><i class="fa fa-angle-left"
+                        aria-hidden="true"></i></button>
+                <b>{{changePage}}/{{totalPages}}&nbsp;</b>
+                <button (click)="onBtNextag()" class="btn btn-outline-primary"><i class="fa fa-angle-right"
+                        aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+</div>

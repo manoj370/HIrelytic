@@ -1,0 +1,1205 @@
+<ngx-spinner bdOpacity="0.9" size="medium" color="#fff" type="line-scale" fullScreen="true">
+</ngx-spinner>
+
+
+
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card-header">
+            <label i18n="@@userListTitle">
+                <h4>Manage Resumes
+                </h4>
+            </label>
+
+            <ul class="jobsearch">
+                <li>
+                    <form [formGroup]="searchForm">
+                        <input type="text" class="form-control" id="inputValidation" placeholder="Search" formControlName="searchinput" (keyup)="searchJobList()" />
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container">
+</div>
+<div *ngIf="display">
+
+    <div class="page-content fade-in-up">
+        <div class="ibox  gridTopMargin">
+            <div class="ibox-head">
+                <div class="ibox-title">
+                </div>
+                <div class="float-right" style="margin-left:-144px;">
+                    <button type="button" data-toggle="modal" data-target="#confirmBoxProfile" [hidden]="true" #confirmBoxProfile role="dialog">show</button>
+                    <button type="button" data-toggle="modal" data-target="#confirmBox" [hidden]="true" #confirmBoxForUpload role="dialog">show</button>
+                    <button type="button" data-toggle="modal" data-target="#confirmBoxNull" [hidden]="true" #confirmBoxUpload role="dialog">show</button>
+                    <button type="button" data-toggle="modal" data-target="#confirmBoxPan" [hidden]="true" #confirmBoxUploadPan role="dialog">show</button>
+                    <!-- <button type="button" data-toggle="modal" data-target="#modalForDatepicker" [hidden]="true"
+                        #modalForDate role="dialog">date</button> -->
+                    <button type="button" data-toggle="modal" data-target="#modalForComment" [hidden]="true" #modalForComment role="dialog">Comment</button>
+                    <button type="button" class="btn btn-success" id="btnJobsPostedByMe" *ngIf="roleButton" (click)="getAlljoblist()"><i class="fa fa-upload"></i>&nbsp;Jobs Posted By Me</button>
+                    <button type="button" class="btn btn-info" id="btnClientJobs" *ngIf="roleButton" (click)="clientJobsPerUser()"><i class="fa fa-upload"></i>&nbsp;Client Jobs</button>
+                    <button type="button" class="btn btn-success" id="btnUploadTenant" (click)="uploadResumeEvent()" [disabled]="disableUploadResume" data-toggle="modal" data-target="#uploadResumeModal" *ngIf="uploadResumeee"><i class="fa fa-upload" (click)="formClose()"></i>&nbsp;Upload
+                        Resume</button>
+                    <button type="button" class="btn btn-info" id="btnViewResume" (click)="viewResumeEvent()" [disabled]="disableViewResume" data-toggle="modal" data-target="#viewResumeModal" *ngIf="viewResumeee"><i class="fa fa-eye"></i>&nbsp;View Resumes</button>
+                    <button type="button" class="btn btn-warning" id="btnSearchResume" data-toggle="modal" data-target="#searchResumeModal"><i class="fa fa-outline-search"></i>&nbsp;Search
+                        Resumes</button>
+                        <button type="button" class="btn btn-info" *ngIf="refferCandidate" [disabled]="disableUploadResume"  data-toggle="modal" data-target="#referResumeModal"><i class="fa fa-outline-search"></i>&nbsp;Refer</button>
+                    <button class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown">Export As
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="javascript:;" (click)="downloadJobReportPdf()">PDF</a>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="javascript:;" (click)="downloadExcelReportJobsReport()">Excel</a>
+                        </li>
+                    </ul>
+
+
+                </div>
+            </div>
+
+            <div class="ibox-body " style="padding-top: 15px;">
+                
+                <ag-grid-angular style="height:600px;" [rowData]="rowData" [columnDefs]="columnDefs" class="ag-theme-balham" [gridOptions]='gridOptions' (cellClicked)="cellClick($event)" (rowSelected)="onJobReferRowClick($event)" (gridReady)="onGridReady($event)" (selectionChanged)="onSelectionChanged($event)"
+                    enableColResize enableFilter enableSorting>
+                </ag-grid-angular>
+                <!-- <ag-grid-angular style="height:600px;" [rowData]="rowData" [columnDefs]="columnDefs" class="ag-theme-balham" [gridOptions]='gridOptions' (cellClicked)="cellClick($event)" (rowSelected)="onJobReferRowClick($event)" (gridReady)="onGridReady($event)" (selectionChanged)="onSelectionChanged($event)"
+                enableColResize enableFilter enableSorting> -->
+            <!-- </ag-grid-angular> -->
+                <div class="float-right">
+                    <button (click)="onBtPrevious()" class="btn btn-outline-primary" [disabled]="disablePreviousButton"><i class="fa fa-angle-left"
+                            aria-hidden="true"></i></button>&nbsp;
+                    <b>{{pageid+1}}/{{responsePageCount}} </b><button (click)="onBtNext()" class="btn btn-outline-primary" [disabled]="disableNextButton"><i class="fa fa-angle-right"
+                            aria-hidden="true"></i></button><br><br>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+
+
+</div>
+
+<!-- View Resume Modal -->
+<div class="modal right fade" id="viewResumeModal">
+    <div class="modal-dialog" style="max-width: 1060px !important;">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">List Of Resumes</h4>
+                <button type="button" class="close" data-dismiss="modal" #downloadBtn #shortlistBtn #discardBtn>&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="float-right">
+                            <button type="button" class="btn btn-warning" id="btnEditResumeModal" data-toggle="modal" data-target="#editResumeModal" [disabled]="hideEditResume" (click)="onClickUpdate()"><i
+                                    class="fa fa-pencil"></i>&nbsp;Edit</button>
+                            <button type="button" class="btn btn-success" id="btnViewFullResume" (click)="viewfullresume()" data-toggle="modal" data-target="#viewDetailedResume" [disabled]="hideViewResume"><i class="fa fa-eye"></i>&nbsp;View</button>
+                            <button type="button" class="btn btn-info" id="btnDownloadResume" (click)="resumedownload()" [disabled]="hideDownloadResume"><i class="fa fa-download"></i> &nbsp;<a
+                                style="color:white;text-decoration: none;cursor:pointer"
+                                href="{{resumurl}}">Download</a></button>
+                            <button type="button" class="btn btn-success" id="btnViewFormatedJob" data-toggle="modal" (click)="viewFormatedfullresume()" data-target="#viewDetailedResume" [disabled]="hideviewFormated"><i class="fa fa-eye"></i>&nbsp;View
+                                Formatted</button>
+                            <button type="button" class="btn btn-info" id="btnDownloadFormatedJob" data-toggle="modal" (click)="resumedownloadd()" [disabled]="hideDownloadFull"><i class="fa fa-download"></i>
+                                &nbsp;
+                                <span *ngIf="!showName"> Download Formatted</span>
+                                <span *ngIf="showName">
+                                    <a style="color:white;text-decoration: none;cursor:pointer" href="{{resumurll}}">
+                                        Download Formatted</a>
+                                </span>
+                            </button>
+
+
+
+                            <!-- <span> <i class="fa fa-refresh" (click)="reInstateStatus()" style="cursor:pointer" title="Reinstate Status" *ngIf="userRole!=='VENDOR'"></i>
+                            </span> -->
+
+                            <!-- <button type="button" class="btn btn-primary" id="vendorresumes" *ngIf="vendorResumes" (click)="vendorResumess()"><i class="fa fa-file-text"></i>&nbsp;Vendor Resumes</button> -->
+                            <!-- <button type="button" class="btn btn-info" id="allresumes" *ngIf="vendorResumes" (click)="allResumess()"><i class="fa fa-file-text"></i>&nbsp;{{getallresumes}}</button> -->
+                          
+                            <select *ngIf="vendorResumes" class="form-control input-rounded" (change)="selecetdValue($event.target.value)">
+                                <option [ngValue]="null" disabled>Choose your profile *</option>
+                                <option *ngFor="let c of listOfNames" [ngValue]="c">
+                                    <span> {{c}}</span> 
+                                </option>
+                            </select>
+                          
+                            <select id="statusType" class="btn btn-default" *ngIf="userRole!=='VENDOR' && userRole!=='EMPLOYEE'" (change)="onSelectStatus($event.target.value)" [disabled]="hideSelectStatus" style="padding: 5px; width:12%;" [(ngModel)]="resumeStatusValue">
+
+                                <option value="" disabled selected>Select Status</option>
+                                <option *ngFor="let status of allResumeStatus" [value]="status.resumeStatus">
+                                    {{status.resumeStatus}}
+                               
+                                
+                                </option>
+
+                            </select>
+                        </div>
+
+                    </div>
+
+                </div><br>
+
+                <div class="ibox-body">
+
+                    <ag-grid-angular style="height: 600px" [rowData]="rowDataResume" [columnDefs]="columnDefsResume" class="ag-theme-balham" [gridOptions]='gridOptions' (rowSelected)="onResumeRowClick($event)" enableColResize enableFilter enableSorting (selectionChanged)="onSelectChanged($event)"
+                        (gridReady)="onGridRead($event)">
+                    </ag-grid-angular>
+
+                </div>
+
+                <div class="float-right">
+                    <button (click)="onBtPreviousresume()" class="btn btn-outline-primary" [disabled]="disablePreviousResumeButton"><i class="fa fa-angle-left"
+                            aria-hidden="true"></i></button>&nbsp;
+                    <b>{{pageidForResume+1}}/{{responseResumePageCount}}&nbsp;</b>
+                    <button (click)="onBtNextResume()" class="btn btn-outline-primary" [disabled]="disableNextResumeButton"><i class="fa fa-angle-right"
+                            aria-hidden="true"></i></button><br><br>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmBoxPan" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Compare Candidate Details</h4>
+                <button type="button" class="close" data-dismiss="modal" #closeConfirmModelPan>&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <br> {{Confirmdetails}}
+                <br>
+            </div>
+            <div class="modal-footer" id="panid">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+    <!-- 
+    </div> -->
+</div>
+
+
+<!-- Your Profile Has Already Been Submitted POPUP -->
+<div class="modal fade" id="confirmBoxProfile" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content" style="z-index:1;">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal" #closeProfileModel>&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <br> {{confirmProfileDetails}}
+                <br>
+            </div>
+            <div class="modal-footer" id="panid">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+    <!-- 
+    </div> -->
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalForComment" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title">Mention Comments</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" placeholder="Please Enter Comment" class="form-control" class="form-control input-rounded" #commentValue><br>
+                <input type="text" placeholder="Date" class="form-control" class="form-control input-rounded" [ngModel]="systemdate">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="submitComment(commentValue.value)">Submit</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Posted To Client Modal -->
+<div class="modal fade" id="postedToClient">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Posted To Client</h4>
+                <button type="button" id="close_button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+
+
+            <div class="modal-body">
+
+
+                <div class="card" style="width:100%;">
+
+                    <div class="card-body">
+
+                        <div class="col-sm-6">
+                            <p class="card-text">Select Client Name</p>
+                            <select id="clientname" class="form-control input-rounded" tabindex="14" maxlength="255" (change)="clientChangeEvent($event.target.value)">
+                                <option selected disabled value="">Select Client</option>
+
+                                <option *ngFor="let client of  getClientName" value={{client.clientId}}>
+                                    {{client.clientName}}</option>
+
+                            </select>
+                        </div>
+
+                    </div>
+                </div><br>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--   Posted To Client Modal Ends-->
+<!-- upload resume modal -->
+<div class="modal right fade" id="uploadResumeModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Upload Resume</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)="clearValidations()" #uploadResumeBtn>&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="ibox-body">                   
+                    <form [formGroup]="uploadResumeForm" (ngSubmit)="postResume()">
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                <label>Upload Resume *</label>
+                                <input id="uploadResume" class="form-control input-rounded" type="file" placeholder="Upload Resume" (change)="selectFileChange($event)" formControlName="resumefilename"><br>
+                                <div *ngIf="uploadResumeForm.controls['resumefilename'].hasError('pattern')" class="failed-validation">
+                                    File name should not contain ([],*,;,
+                                    <,>) and it accepts only .doc, .docx and .pdf format.
+                                </div>
+
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label>Formatted Resume </label>
+                                <input id="formattedResume" class="form-control input-rounded" type="file" placeholder="Upload Resume" (change)="selectFormatedFile($event)" formControlName="formatedresume"><br>
+
+                                <div *ngIf="uploadResumeForm.controls['formatedresume'].hasError('pattern')" class="failed-validation">
+                                    File name should not contain ([],*,;,
+                                    <,>) and it accepts only .doc, .docx and .pdf format.
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row"> -->
+
+                        <!-- </div> -->
+                        <div class="row">
+                            <div class="col-sm-4 form-group">
+                                <label>First Name *</label>
+                                <input id="firstName" class="form-control input-rounded" type="text" maxlength="100" placeholder="First Name" [(ngModel)]="candidateObj.user.firstName" formControlName="candidateName">
+                                <div *ngIf="uploadResumeForm.controls['candidateName'].hasError('pattern')" class="failed-validation">
+                                    Invalid Candidate First Name
+                                </div>
+                                <div *ngIf="uploadResumeForm.controls['candidateName'].hasError('required') && uploadResumeForm.controls['candidateName'].touched" class="failed-validation">
+                                    Candidate First Name Required
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 form-group">
+                                <label>Last Name *</label>
+                                <input id="lastName" class="form-control input-rounded" maxlength="100" type="text" placeholder="Last Name" [(ngModel)]="candidateObj.user.lastName" formControlName="candidateLastName">
+                                <div *ngIf="uploadResumeForm.controls['candidateLastName'].hasError('pattern')" class="failed-validation">
+                                    Invalid Candidate Last Name
+                                </div>
+                                <div *ngIf="uploadResumeForm.controls['candidateLastName'].hasError('required') && uploadResumeForm.controls['candidateLastName'].touched" class="failed-validation">
+                                    Candidate Last Name Required
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 form-group">
+                                <label>Email Id *</label>
+                                <input id="emailId" class="form-control input-rounded" type="text" maxlength="255" placeholder="Email Id" [(ngModel)]="candidateObj.user.emailId" formControlName="candidateEmail">
+                                <!-- <div *ngIf="uploadResumeForm.controls['candidateEmail'].hasError('email')"
+                                    class="failed-validation">
+                                    Invalid Email Id
+                                </div>
+                                <div *ngIf="uploadResumeForm.controls['candidateEmail'].hasError('required') && uploadResumeForm.controls['candidateEmail'].touched"
+                                    class="failed-validation">
+                                    Email Id Required
+                                </div> -->
+                                <div *ngIf="uploadResumeForm.controls['candidateEmail'].hasError('pattern')" class="failed-validation">
+                                    Invalid Email Id
+                                </div>
+                                <div *ngIf=" uploadResumeForm.controls['candidateEmail'].hasError('required') && uploadResumeForm.controls['candidateEmail'].touched " class="failed-validation">
+                                    Email Id Required
+
+                                </div>
+                                <div *ngIf="emailExist" class="failed-validation">
+                                    Email Id Already Exists
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 form-group">
+                                <label>Contact Number *</label>
+                                <input id="contactNumber" class="form-control input-rounded" type="text" (keypress)="keyPress($event)" placeholder="Contact Number" [(ngModel)]="candidateObj.user.phoneNumber" formControlName="candidatePhone" maxlength="10">
+
+                                <!-- <div *ngIf="uploadResumeForm.controls['candidatePhone'].hasError('maxlength')"
+                                    class="failed-validation">
+                                   Max Length 10 Required
+                                </div> -->
+                                <div *ngIf="uploadResumeForm.controls['candidatePhone'].hasError('minlength')" class="failed-validation">
+                                    Min Length 10 Required
+                                </div>
+                                <div *ngIf="uploadResumeForm.controls['candidatePhone'].hasError('required') && uploadResumeForm.controls['candidatePhone'].touched" class="failed-validation">
+                                    Contact Number Required
+                                </div>
+                                <div *ngIf="uploadResumeForm.controls['candidatePhone'].hasError('pattern')" class="failed-validation">
+                                    Invalid Contact Number
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Current Company *</label>
+                                <input id="currentCompany" class="form-control input-rounded" maxlength="50" type="text" placeholder="Current Company" [(ngModel)]="candidateObj.currentCompany" formControlName="currentCompany">
+                                <div *ngIf="uploadResumeForm.controls['currentCompany'].hasError('pattern')" class="failed-validation">
+                                    Invalid Current Company
+                                </div>
+                                <div *ngIf="uploadResumeForm.controls['currentCompany'].hasError('required') && uploadResumeForm.controls['currentCompany'].touched" class="failed-validation">
+                                    Current Company Required
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Previous Company</label>
+                                <input id="previousCompany" class="form-control input-rounded" maxlength="50" type="text" placeholder="Previous Company" [(ngModel)]="candidateObj.previousCompany" formControlName="prevCompany">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 form-group">
+                                <label>Current Location *</label>
+                                <input id="currentLocation" class="form-control input-rounded" maxlength="50" type="text" placeholder="Current Location" [(ngModel)]="candidateObj.currentLocation" formControlName="currentLocation">
+
+                                <div *ngIf="uploadResumeForm.controls['currentLocation'].hasError('required') && uploadResumeForm.controls['currentLocation'].touched" class="failed-validation">
+                                    Current Location Required
+                                </div>
+                                <div *ngIf="uploadResumeForm.controls['currentLocation'].hasError('pattern')" class="failed-validation">
+                                    Invalid Current Location
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Preferred Location *</label>
+                                <input id="preferredLocation" class="form-control input-rounded" maxlength="50" type="text" placeholder="Preferred Location" [(ngModel)]="candidateObj.preferredLocation" formControlName="prefLocation">
+
+                                <div *ngIf="uploadResumeForm.controls['prefLocation'].hasError('required') && uploadResumeForm.controls['prefLocation'].touched" class="failed-validation">
+                                    Preferred Location Required
+                                </div>
+
+                                <div *ngIf="uploadResumeForm.controls['prefLocation'].hasError('pattern')" class="failed-validation">
+                                    Invalid Preferred Location
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Experience in years *</label>
+                                <input id="experience" class="form-control input-rounded" type="text" (keypress)="keyPress($event)" maxlength="4" placeholder="Experience" [(ngModel)]="candidateObj.experience" formControlName="experience">
+                                <div *ngIf="uploadResumeForm.controls['experience'].hasError('pattern')" class="failed-validation">
+                                    Invalid Experience
+                                </div>
+                                <div *ngIf="uploadResumeForm.controls['experience'].hasError('required') && uploadResumeForm.controls['experience'].touched" class="failed-validation">
+                                    Experience Required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 form-group">
+                                <label>Current CTC per Annum*</label>
+                                <input id="CurrentCTC" class="form-control input-rounded" maxlength="5" type="text" placeholder="Current CTC in Lakhs" (keypress)="keyPress($event)" [(ngModel)]="candidateObj.currentCTC" formControlName="currentCtc">
+
+                                <div *ngIf="uploadResumeForm.controls['currentCtc'].hasError('required') && uploadResumeForm.controls['currentCtc'].touched" class="failed-validation">
+                                    Current CTC Required
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Expected CTC per Annum*</label>
+                                <input id="expectedCTC" class="form-control input-rounded" maxlength="5" type="text" placeholder="Expected CTC in Lakhs" (keypress)="keyPress($event)" [(ngModel)]="candidateObj.expectedCTC" formControlName="expectedCtc">
+
+                                <div *ngIf="uploadResumeForm.controls['expectedCtc'].hasError('required') && uploadResumeForm.controls['expectedCtc'].touched" class="failed-validation">
+                                    Expected CTC Required
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Notice Period *</label>
+                                <input id="noticePeriod" class="form-control input-rounded" type="text" [(ngModel)]="candidateObj.noticePeriod" formControlName="noticePeriod" placeholder="Notice Period In Days" maxlength="3">
+                                <div *ngIf="uploadResumeForm.controls['noticePeriod'].hasError('pattern')" class="failed-validation">
+                                    Invalid Notice Period
+                                </div>
+                                <div *ngIf="uploadResumeForm.controls['noticePeriod'].hasError('required') && uploadResumeForm.controls['noticePeriod'].touched" class="failed-validation">
+                                    Notice Period Required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 form-group">
+                                <label>Qualification *</label>
+                                <select (change)="getSpecializations($event.target.value)" id="qualification" class="form-control input-rounded" [(ngModel)]="candidateObj.educationalQualification" formControlName="qualification">
+
+                                    <option value="" selected disabled>Select Qualification</option>
+                                    <option *ngFor="let qualification of qualifications"
+                                        [value]="qualification.qualificationId">
+                                        {{qualification.name}}</option>
+
+
+                                </select>
+
+                                <div *ngIf="uploadResumeForm.controls['qualification'].hasError('required') && uploadResumeForm.controls['qualification'].touched" class="failed-validation">
+                                    Qualification Required
+                                </div>
+
+                                <div *ngIf="candidateObj.EducationalQualification=='Any Degree'">
+                                    <input class="form-control input-rounded" type="text" maxlength="3">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 form-group">
+                                <label>Specialization </label>
+                                <select id="specialization" class="form-control input-rounded" [(ngModel)]="candidateObj.specialization" formControlName='specialization'>
+                                    <option value="TEST" selected disabled>Select
+                                        Specialization</option>
+
+                                    <option *ngFor="let specialization of specializations"
+                                        [value]="specialization.name">{{specialization.name}}</option>
+                                </select>
+
+
+
+                                <div *ngIf="candidateObj.Specialization=='Any Degree'">
+                                    <input class="form-control input-rounded" type="text" maxlength="3">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 form-group">
+                                <label>PAN Number *</label>
+                                <input id="panNumber" class="form-control input-rounded" type="text" placeholder="PAN Number" [(ngModel)]="candidateObj.user.panNumber" formControlName="panNumber" maxlength="10">
+                                <div *ngIf="uploadResumeForm.controls['panNumber'].hasError('pattern')" class="failed-validation">
+                                    Invalid PAN Number
+                                </div>
+                                <div *ngIf="uploadResumeForm.controls['panNumber'].hasError('required') && uploadResumeForm.controls['panNumber'].touched" class="failed-validation">
+                                    PAN Number Required
+                                </div>
+                                <div *ngIf="panExist" class="failed-validation">
+                                    PAN Number Already Exists
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 form-group">
+                                <label>Source Type *</label>
+                                <select id="sourceType" class="form-control input-rounded" formControlName="sourceType" [(ngModel)]="candidateObj.sourceType">
+                                    <option value="Job Portal">Job Portal</option>
+                                    <option value="Vendor">Vendor</option>
+                                    <option value="Company Website">Company Website</option>
+                                    <option value="Employee Referral">Employee Referral</option>
+                                </select>
+                                <div *ngIf="uploadResumeForm.controls['sourceType'].hasError('required') && uploadResumeForm.controls['sourceType'].touched" class="failed-validation">
+                                    Source Type Required
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Source Details*</label>
+                                <input id="source" class="form-control input-rounded" type="text" placeholder="Source" maxlength="100" [(ngModel)]="candidateObj.source" formControlName="source">
+                                <div *ngIf="uploadResumeForm.controls['source'].hasError('pattern')" class="failed-validation">
+                                    Invalid Source
+                                </div>
+                                <div *ngIf="uploadResumeForm.controls['source'].hasError('required') && uploadResumeForm.controls['source'].touched" class="failed-validation">
+                                    Source Required
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 form-group" *ngIf="userRole=='Vendor Recruitment'">
+                                <label>Uploaded By</label>
+                                <input id="uploaded" class="form-control input-rounded" [(ngModel)]='resume.uploadedBy' type="text" placeholder="Email Id" maxlength="100" formControlName="uploadedBy">
+                                <div *ngIf="uploadResumeForm.controls['uploadedBy'].hasError('email')" class="failed-validation">
+                                    Invalid Email Id
+                                </div>
+                                <div *ngIf="uploadResumeForm.controls['uploadedBy'].hasError('required') && uploadResumeForm.controls['uploadedBy'].touched" class="failed-validation">
+                                    Email Id Required
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-12 form-group">
+                                <label>Skills *</label>
+
+                                <input id="Skills" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Enter skills separated by semi-colon." class="form-control input-rounded" type="text" formControlName="skill" [(ngModel)]="candidateObj.skill"
+                                    placeholder="Skill1;Skill2;Skill3">
+
+                                <div *ngIf="uploadResumeForm.controls['skill'].hasError('pattern')" class="failed-validation">
+                                    Invalid Skills
+                                </div>
+                                <div *ngIf="uploadResumeForm.controls['skill'].hasError('required') && uploadResumeForm.controls['skill'].touched" class="failed-validation">
+                                    Skills Required
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <button id="btnUploadResume" [disabled]="!uploadResumeForm.valid || !uploadCompleted" class="btn btn-info float-right" type="submit">Submit</button>
+                            <button type="button" class="btn btn-success float-right" id="btnPreviewResume" data-toggle="modal" data-target="#previewResume" (click)="preview()" [disabled]="!uploadResumeForm.valid">Preview</button>
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<!-- upload resume modal ends -->
+
+<!-- Preview Resume modal -->
+<div class="modal right fade" id="previewResume">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Resume Details</h4>
+                <button type="button" id="viewResumeDetails" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+
+
+            <div class="modal-body">
+                <div class="card" style="width:100%;">
+                    <!-- <div class="card-header">
+                            style="width:22px;" />
+
+                    </div> -->
+                    <div class="card-body">
+
+                        <p class="card-text">First Name : {{candidateObj.user.firstName}}</p>
+                        <p class="card-text">Last Name : {{candidateObj.user.lastName}}</p>
+                        <p class="card-text">Email Id : {{candidateObj.user.emailId}} </p>
+                        <p class="card-text">Contact Number : {{candidateObj.user.phoneNumber}}</p>
+                        <p class="card-text">Current Company : {{candidateObj.currentCompany}}</p>
+                        <p class="card-text">Previous Company : {{candidateObj.previousCompany}}</p>
+
+                    </div>
+                </div>
+                <div class="card" style="width:100%;">
+                    <!-- 
+                    <div class="card-header">
+                            style="width:22px;" />
+
+                    </div> -->
+                    <div class="card-body">
+                        <p class="card-text">Current Location : {{candidateObj.currentLocation}}</p>
+                        <p class="card-text">Preferred Location : {{candidateObj.preferredLocation}}</p>
+                        <p class="card-text">Experience in Years : {{candidateObj.experience}}</p>
+                        <p class="card-text">Current CTC per Annum : {{candidateObj.currentCTC}}</p>
+                        <p class="card-text">Expected CTC per Annum : {{candidateObj.expectedCTC}}</p>
+                        <p class="card-text">Notice Period : {{candidateObj.noticePeriod}}</p>
+                    </div>
+                </div>
+
+                <div class="card" style="width:100%;">
+                    <div class="card-body">
+                        <p class="card-text">Qualification : {{qualification}}</p>
+                        <p class="card-text">Specialization : {{specilaization}}</p>
+                        <p class="card-text">PAN Number : {{candidateObj.user.panNumber}}</p>
+                        <p class="card-text">Source Type : {{candidateObj.sourceType}}</p>
+                        <p class="card-text">Source : {{candidateObj.source}}</p>
+                        <p class="card-text">Skills : {{candidateObj.skill}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Preview Resume modal ends -->
+<!-- Search Resume Modal -->
+<div class="modal right fade" id="searchResumeModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Search Resumes</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)="Formclose()">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <form [formGroup]="searchResumeForm">
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            Location <input id="location" class="form-control input-rounded" placeholder="Location" formControlName="location">
+                            <div *ngIf="searchResumeForm.controls['location'].hasError('pattern')" class="failed-validation">
+                                Invalid Location
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            Experience <input id="exp" class="form-control input-rounded" placeholder="Experience" formControlName="exp" maxlength="3">
+                            <div *ngIf="searchResumeForm.controls['exp'].hasError('pattern')" class="failed-validation">
+                                Invalid Experience
+                            </div>
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            Skills
+
+                            <input id="skill" class="form-control input-rounded" type="text" placeholder="skill" formControlName="skill">
+
+                        </div>
+                    </div>
+                </form>
+
+
+
+                <div class="float-right">
+                    <button id="btnSearch" class="btn btn-info" (click)="searchResume(searchResumeForm.value)">Search</button>
+                    <button type="button" *ngIf="viewdownFlag" class="btn btn-success" id="btnviewDetailedResume_id" (click)="viewResumeAfterSearchResume()" data-toggle="modal" data-target="#viewDetailedResume" [disabled]="hideViewResume"><i class="fa fa-eye"></i>&nbsp;View</button>
+                    <!-- <button type="button" *ngIf="viewdownFlag" class="btn btn-info" id="btnDownloadResume_id"
+                        (click)="downloadResumeAfterSearchResume()" [disabled]="hideDownloadResume"><i
+                            class="fa fa-download"></i>&nbsp;Download</button>
+                            
+                             -->
+
+                    <button type="button" class="btn btn-info" id="btnDownloadResume_id" (click)="downloadResumeAfterSearchResume()" [disabled]="hideDownloadResume"><i
+                            class="fa fa-download"></i>
+                        <span *ngIf="showdownload">Download span</span>
+                        <span *ngIf="!showdownload">
+                            {{searchurl}}
+                            <!-- &nbsp;<a style="color:white;text-decoration: none;cursor:pointer"
+                                href="{{searchurl}}">Download  href</a> -->
+                        </span>
+                    </button>
+                </div><br><br>
+
+
+
+                <div class="ibox-body">
+
+                    <ag-grid-angular *ngIf="searchResumeFlag" style="height: 500px;" [rowData]="resumeDataPostSearch" [columnDefs]="columnDefsSearchResume" class="ag-theme-balham" [gridOptions]='gridOptions' enableColResize enableFilter enableSorting (gridReady)="onGridRead($event)"
+                        (selectionChanged)="onSelectionChanges($event)" pagination="true" paginationPageSize="15" (gridReady)="onGridReadyforsearchResumes($event)">
+                    </ag-grid-angular>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Search Resume Modal ends -->
+<!-- refer Resume Modal ends -->
+<div class="modal" id="referResumeModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Refeer Candidate</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)="Formclose()">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form [formGroup]="sendInvitationCandiadte">
+                    <div class="continer">
+                        <div class="row">
+                            <div class="col-sm-10 offset-2 form-group">
+<div class="row">
+    <div class="col-md-4">
+        <label>Email Id *</label>
+    </div>
+    <div class="col-md-6">
+        <input id="emailId" class="form-control input-rounded" type="text" maxlength="255" placeholder="Email Id"  formControlName="canEmailId">
+        <div *ngIf="sendInvitationCandiadte.controls['canEmailId'].hasError('pattern')" class="failed-validation">
+            Invalid Email Id
+        </div>
+        <div *ngIf=" sendInvitationCandiadte.controls['canEmailId'].hasError('required') && sendInvitationCandiadte.controls['canEmailId'].touched " class="failed-validation">
+            Email Id Required
+
+        </div>
+    </div>
+
+</div>
+                                
+                            </div>
+                            
+                        </div>
+                    </div>              
+                
+            </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="sendInvitation()" data-dismiss="modal">Send</button>
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- view specific resume modal -->
+<div *ngIf="showResumeModal">
+    <div class="modal fade" id="viewDetailedResume" role="dialog">
+
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Resume Details</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                </div>
+                <div class="modal-body">
+                    <div *ngIf="viewFullResume">
+                        <div [innerHtml]="resumeHtmlData"></div>
+                        <!-- <div class="col-md-12 text-center">
+                                <button type="submit" class="btn btn-info" (click)="doublebackPage()">
+                                    <font face="Times New Roman" size="4">Back</font>
+                                </button>
+                            </div> -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- view pecific resume ends -->
+<div class="modal fade" id="confirmBox" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm Resume Update</h4>
+                <button type="button" class="close" data-dismiss="modal" #closeConfirmUploadModel>&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                Your resume already exist. Are you sure you want to update your existing resume ?
+            </div>
+            <div class="modal-footer">
+                <button type="submit" id="delAppSubmit" class="btn btn-default float-right" (click)="yes()">
+                    Yes</button>
+                <button type="button" data-dismiss="modal" class="btn btn-default float-right" (click)="no()">No</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- yes or no for candidate id null -->
+<div class="modal fade" id="confirmBoxNull" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm Resume Update</h4>
+                <button type="button" class="close" data-dismiss="modal" #closeConfirmModel>&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                Resume With These Candidate With Same MailId Exist
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- Ends-->
+<!-- Edit resume modal -->
+<div class="modal fade" id="editResumeModal" role="dialog">
+
+    <div class="modal-dialog">
+
+
+        <div class="modal-content" style="width:130%">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Resume</h4>
+                <button type="button" class="close" data-dismiss="modal" #downloadBtn #shortlistBtn #discardBtn>&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="ibox-body">
+                    <form [formGroup]="editResumeForm">
+
+
+                        <div class="row">
+                            <div class="col-sm-4 form-group">
+                                <label>First Name *</label>
+                                <input id="firstName" class="form-control input-rounded" type="text" maxlength="250" placeholder="First Name" [(ngModel)]="candidateObj.user.firstName" formControlName="editCandidateName">
+                                <div *ngIf="editResumeForm.controls['editCandidateName'].hasError('pattern')" class="failed-validation">
+                                    Invalid Candidate First Name
+                                </div>
+                                <div *ngIf="editResumeForm.controls['editCandidateName'].hasError('required') && editResumeForm.controls['editCandidateName'].touched" class="failed-validation">
+                                    Candidate First Name Required
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 form-group">
+                                <label>Last Name *</label>
+                                <input id="lastName" class="form-control input-rounded" maxlength="250" type="text" placeholder="Last Name" [(ngModel)]="candidateObj.user.lastName" formControlName="editCandidateLastName">
+                                <div *ngIf="editResumeForm.controls['editCandidateLastName'].hasError('pattern')" class="failed-validation">
+                                    Invalid Candidate Last Name
+                                </div>
+                                <div *ngIf="editResumeForm.controls['editCandidateLastName'].hasError('required') && editResumeForm.controls['editCandidateLastName'].touched" class="failed-validation">
+                                    Candidate Last Name Required
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 form-group">
+                                <label>Email Id *</label>
+                                <input id="emailId" class="form-control input-rounded" type="text" maxlength="250" placeholder="Email Id" [(ngModel)]="candidateObj.user.emailId" formControlName="editCandidateEmail">
+                                <div *ngIf="editResumeForm.controls['editCandidateEmail'].hasError('email')" class="failed-validation">
+                                    Invalid Email Id
+                                </div>
+                                <div *ngIf="editResumeForm.controls['editCandidateEmail'].hasError('required') && editResumeForm.controls['editCandidateEmail'].touched" class="failed-validation">
+                                    Email Id Required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 form-group">
+                                <label>Contact Number *</label>
+                                <input id="contactNumber" class="form-control input-rounded" type="text" (keypress)="keyPress($event)" placeholder="Contact Number" [(ngModel)]="candidateObj.user.phoneNumber" formControlName="editCandidatePhone" maxlength="10">
+
+                                <div *ngIf="editResumeForm.controls['editCandidatePhone'].hasError('maxlength')" class="failed-validation">
+                                    Invalid Contact Number
+                                </div>
+                                <div *ngIf="editResumeForm.controls['editCandidatePhone'].hasError('minlength')" class="failed-validation">
+                                    Invalid Contact Number
+                                </div>
+                                <div *ngIf="editResumeForm.controls['editCandidatePhone'].hasError('required') && editResumeForm.controls['editCandidatePhone'].touched" class="failed-validation">
+                                    Contact Number Required
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Current Company *</label>
+                                <input id="currentCompany" class="form-control input-rounded" maxlength="50" type="text" placeholder="Current Company" [(ngModel)]="candidateObj.currentCompany" formControlName="editCurrentCompany">
+                                <div *ngIf="editResumeForm.controls['editCurrentCompany'].hasError('pattern')" class="failed-validation">
+                                    Invalid Current Company
+                                </div>
+                                <div *ngIf="editResumeForm.controls['editCurrentCompany'].hasError('required') && editResumeForm.controls['editCurrentCompany'].touched" class="failed-validation">
+                                    Current Company Required
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Previous Company</label>
+                                <input id="previousCompany" class="form-control input-rounded" maxlength="50" type="text" placeholder="Previous Company" [(ngModel)]="candidateObj.previousCompany" formControlName="editPrevCompany">
+                                <!-- <div *ngIf="editResumeForm.controls['editPrevCompany'].hasError('required') && editResumeForm.controls['editPrevCompany'].touched"
+                                    class="failed-validation">
+                                    Previous Company Required
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 form-group">
+                                <label>Current Location *</label>
+                                <input id="currentLocation" class="form-control input-rounded" maxlength="50" type="text" placeholder="Current Location" [(ngModel)]="candidateObj.currentLocation" formControlName="editCurrentLocation">
+
+                                <div *ngIf="editResumeForm.controls['editCurrentLocation'].hasError('required') && editResumeForm.controls['editCurrentLocation'].touched" class="failed-validation">
+                                    Current Location Required
+                                </div>
+                                <div *ngIf="editResumeForm.controls['editCurrentLocation'].hasError('pattern')" class="failed-validation">
+                                    Invalid Current Location
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Preferred Location *</label>
+                                <input id="preferredLocation" class="form-control input-rounded" maxlength="50" type="text" placeholder="Preferred Location" [(ngModel)]="candidateObj.preferredLocation" formControlName="editPrefLocation">
+
+                                <div *ngIf="editResumeForm.controls['editPrefLocation'].hasError('required') && editResumeForm.controls['editPrefLocation'].touched" class="failed-validation">
+                                    Preferred Location Required
+                                </div>
+
+                                <div *ngIf="editResumeForm.controls['editPrefLocation'].hasError('pattern')" class="failed-validation">
+                                    Invalid Preferred Location
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Experience in years *</label>
+                                <input id="experience" class="form-control input-rounded" type="text" (keypress)="keyPress($event)" maxlength="4" placeholder="Experience" [(ngModel)]="candidateObj.experience" formControlName="editExperience">
+                                <div *ngIf="editResumeForm.controls['editExperience'].hasError('pattern')" class="failed-validation">
+                                    Invalid Experience
+                                </div>
+                                <div *ngIf="editResumeForm.controls['editExperience'].hasError('required') && editResumeForm.controls['editExperience'].touched" class="failed-validation">
+                                    Experience Required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 form-group">
+                                <label>Current CTC per Annum*</label>
+                                <input id="CurrentCTC" class="form-control input-rounded" maxlength="5" type="text" placeholder="Current CTC in Lakhs" (keypress)="keyPress($event)" [(ngModel)]="candidateObj.currentCTC" formControlName="editCurrentCtc">
+
+                                <div *ngIf="editResumeForm.controls['editCurrentCtc'].hasError('required') && editResumeForm.controls['editCurrentCtc'].touched" class="failed-validation">
+                                    Current CTC Required
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Expected CTC per Annum*</label>
+                                <input id="expectedCTC" class="form-control input-rounded" maxlength="5" type="text" placeholder="Expected CTC in Lakhs" (keypress)="keyPress($event)" [(ngModel)]="candidateObj.expectedCTC" formControlName="editExpectedCtc">
+
+                                <div *ngIf="editResumeForm.controls['editExpectedCtc'].hasError('required') && editResumeForm.controls['editExpectedCtc'].touched" class="failed-validation">
+                                    Expected CTC Required
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Notice Period *</label>
+                                <input id="editNoticePeriod" class="form-control input-rounded" type="text" [(ngModel)]="candidateObj.noticePeriod" formControlName="editNoticePeriod" placeholder="Notice Period In Days" maxlength="3">
+                                <div *ngIf="editResumeForm.controls['editNoticePeriod'].hasError('pattern')" class="failed-validation">
+                                    Invalid Notice Period
+                                </div>
+                                <div *ngIf="editResumeForm.controls['editNoticePeriod'].hasError('required') && editResumeForm.controls['editNoticePeriod'].touched" class="failed-validation">
+                                    Notice Period Required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 form-group">
+                                <label>Qualification *</label>
+                                <select (change)="getSpecializations($event.target.value)" id="editQualification" class="form-control input-rounded" [(ngModel)]="candidateObj.educationalQualification" formControlName="editQualification">
+
+                                    <option value="" selected disabled>Select Qualification</option>
+                                    <option *ngFor="let qualification of qualifications"
+                                        [value]="qualification.qualificationId">
+                                        {{qualification.name}}</option>
+
+
+                                </select>
+
+                                <div *ngIf="editResumeForm.controls['editQualification'].hasError('required') && editResumeForm.controls['editQualification'].touched" class="failed-validation">
+                                    Qualification Required
+                                </div>
+
+                                <div *ngIf="candidateObj.EducationalQualification=='Any Degree'">
+                                    <input class="form-control input-rounded" type="text" maxlength="3">
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Specialization </label>
+                                <select id="editSpecialization" class="form-control input-rounded" [(ngModel)]="candidateObj.specialization" formControlName='editSpecialization'>
+                                    <option value="TEST" selected disabled *ngIf="!disableSpecialisation">
+                                        Select
+                                        Specialization</option>
+                                    <option value="TEST" selected disabled *ngIf="disableSpecialisation">Not
+                                        Available
+                                    </option>
+                                    <option *ngFor="let specialization of specializations"
+                                        [value]="specialization.name">{{specialization.name}}</option>
+                                </select>
+
+
+
+                                <div *ngIf="candidateObj.Specialization=='Any Degree'">
+                                    <input class="form-control input-rounded" type="text" maxlength="3">
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>PAN Number *</label>
+                                <input id="editPanNumber" class="form-control input-rounded" type="text" placeholder="PAN Number" [(ngModel)]="candidateObj.user.panNumber" (blur)="checkPanNum($event.target.value)" formControlName="editPanNumber">
+                                <div *ngIf="editResumeForm.controls['editPanNumber'].hasError('pattern')" class="failed-validation">
+                                    Invalid PAN Number
+                                </div>
+                                <div *ngIf="editResumeForm.controls['editPanNumber'].hasError('required') && editResumeForm.controls['editPanNumber'].touched" class="failed-validation">
+                                    PAN Number Required
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-4 form-group">
+                                <label>Source Type *</label>
+                                <select id="editSourceType" class="form-control input-rounded" formControlName="editSourceType" [(ngModel)]="candidateObj.sourceType">
+                                    <option value="Job Portal">Job Portal</option>
+                                    <option value="Vendor">Vendor</option>
+                                    <option value="Company Website">Company Website</option>
+                                    <option value="Employee Referral">Employee Referral</option>
+                                </select>
+                                <div *ngIf="editResumeForm.controls['editSourceType'].hasError('required') && editResumeForm.controls['editSourceType'].touched" class="failed-validation">
+                                    Source Type Required
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Source *</label>
+                                <input id="editSource" class="form-control input-rounded" type="text" placeholder="Source" [(ngModel)]="candidateObj.source" formControlName="editSource">
+                                <div *ngIf="editResumeForm.controls['editSource'].hasError('pattern')" class="failed-validation">
+                                    Invalid Source
+                                </div>
+
+
+                                <div *ngIf="editResumeForm.controls['editSource'].hasError('required') && editResumeForm.controls['editSource'].touched" class="failed-validation">
+                                    Source Required
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-12 ">
+                                <label>Skills *</label>
+
+                                <input id="editResumeSkills" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Enter skills separated by semi-colon." class="form-control input-rounded" type="text" formControlName="editResumeSkills" [(ngModel)]="candidateObj.skill"
+                                    placeholder="Skill1;Skill2;Skill3">
+
+                                <div *ngIf="editResumeForm.controls['editResumeSkills'].hasError('pattern')" class="failed-validation">
+                                    Invalid Skills
+                                </div>
+                                <div *ngIf="editResumeForm.controls['editResumeSkills'].hasError('required') && editResumeForm.controls['editResumeSkills'].touched" class="failed-validation">
+                                    Skills Required
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success" (click)="postUpdatedResume()" [disabled]="!editResumeForm.valid" data-dismiss="modal">Update</button>
+                            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Edit Resume modal ends -->
+
+
+
+
+
+<!-- Modal to discard -->
+<div class="modal fade" id="discardModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Discard Resume</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="ibox-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label> Mention reason for discarding the selected profile.</label>
+
+                            <textarea id="discard" placeholder="Comments" rows="3" style="width:100%" required maxlength="500" name="reasonToDiscard" #discardComments></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnDiscard" type="button" class="btn btn-default" data-dismiss="modal" (click)="discard(discardComments.value)">Discard</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--  -->
+
+
+<div *ngIf="viewResume">
+
+
+    <!-- view pecific resume modal -->
+    <div *ngIf="showResumeModal">
+        <div class="modal fade" id="viewResumeModal" role="dialog">
+
+            <div class="modal-dialog">
+
+
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Resume</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    </div>
+                    <div class="modal-body">
+                        <div *ngIf="viewFullResume">
+                            <div [innerHtml]="resumeHtmlData"></div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!--  -->
+    </div>
+
+
+

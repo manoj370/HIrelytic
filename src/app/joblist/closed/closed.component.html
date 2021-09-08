@@ -1,0 +1,47 @@
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card-header" style="padding: .75rem 0 !important">
+            <label i18n="@@userListTitle">
+                <h4>Closed Jobs </h4>
+            </label>
+            <div class="float-right">
+                <button class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown">Export As
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" href="javascript:;" (click)="downloadClosedJobReportPdf()">PDF</a>
+                    </li>
+                    <li class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item" href="javascript:;" (click)="downloadClosedExcelReportJobsReport()">Excel</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="ibox">
+            <div class="ibox-body">
+                <ag-grid-angular style="height: 500px;" [rowHeight]="rowHeight" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs"
+                 [rowClassRules]="rowClassRules"  enableFilter enableSorting>
+                </ag-grid-angular>
+                <div class="col-md-12 float-right">
+                    <div class="float-right" *ngIf="totalCount>15">
+                        <button (click)="onBtPrevious()" class="btn btn-outline-primary" [disabled]="disablePreviousButton"><i class="fa fa-angle-left"
+                                aria-hidden="true"></i></button>
+                        <b>{{pageid+1}}/{{responsePageCount}}&nbsp;</b>
+                        <button (click)="onBtNext()" class="btn btn-outline-primary" [disabled]="disableNextButton"><i
+                                class="fa fa-angle-right" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

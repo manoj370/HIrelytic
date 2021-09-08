@@ -1,0 +1,45 @@
+<simple-notifications></simple-notifications>
+<ngx-spinner bdOpacity="0.9" size="medium" color="#fff" type="line-scale" fullScreen="true">
+</ngx-spinner>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card-header">
+            <label i18n="@@userListTitle">
+                <h4>Manage Clients
+                    <span class="mngClient"> <i class="fas fa-plus-circle" title="Add Client" (click)="newClient()"></i></span>
+                </h4>
+            </label>
+            <ul class="jobsearch">
+
+                <li>
+                    <form>
+                        <input type="text" style="border-radius:15px" class="form-control" id="inputValidation" placeholder="Search" [ngModelOptions]="{standalone: true}" (keyup)="quickSearch()" [(ngModel)]="searchvalue" />
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </form>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="page-content fade-in-up">
+    <div class="ibox" style="top:5px">
+
+        <div class="ibox-body">
+            <ag-grid-angular style="height: 550px;" [rowHeight]="rowHeight" class="ag-theme-balham" [rowData]="getClientName" [columnDefs]="columnDefsToViewClients" [gridOptions]='gridOptionsAssignTo' (rowSelected)="onSelectionChangedForCreateManager($event)" (selectionChanged)="onSelectionChanged($event)"
+                (gridReady)="onGridReady($event)" [rowSelection]="rowSelection" [gridOptions]='gridOptions' (cellClicked)="editStatus($event)" enableColResize enableFilter enableSorting>
+            </ag-grid-angular><br>
+
+            <div class="float-right" *ngIf="totalCount>15">
+                <button (click)="onBtPrevious()" class="btn btn-outline-primary" [disabled]="disablePreviousButton"><i
+                        class="fa fa-angle-left" aria-hidden="true"></i></button>
+                <b>{{pageid+1}}/{{responsePageCount}}&nbsp;</b>
+                <button (click)="onBtNext()" class="btn btn-outline-primary" [disabled]="disableNextButton"><i
+                        class="fa fa-angle-right" aria-hidden="true"></i></button>
+            </div>
+        </div>
+       
+
+    </div>

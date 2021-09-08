@@ -1,0 +1,19 @@
+.table tbody tr th,
+.table tbody tr td {
+    border: none !important;
+    font-size: 15px;
+    width: 50%;
+}
+
+.table {
+    margin-top: 30px;
+}
+
+.mngClient {
+    color: #ff7000;
+    cursor: pointer;
+}
+
+.mngClient:hover {
+    color: #276EB5;
+}

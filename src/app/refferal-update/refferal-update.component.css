@@ -1,0 +1,19 @@
+.flex-container {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.flex-container .box {
+    /* background-color: #f1f1f1; */
+    width: 30%;
+    margin-top: 0px;
+}
+
+.table>tbody>tr>td {
+    border: none !important;
+}
+
+.table>tbody>tr>th {
+    border: none !important;
+    color: #055f9d;
+}

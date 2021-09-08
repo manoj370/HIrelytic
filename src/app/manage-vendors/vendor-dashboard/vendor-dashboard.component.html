@@ -1,0 +1,99 @@
+<simple-notifications> </simple-notifications>
+<div class="card-header">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="ibox-head">
+        <div class="ibox-title">
+          <h4>Vendor Dashboard</h4>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="row">
+        <div class="col-lg-6">
+          <span *ngIf="statusValue.value === 'Date Range'">
+            <input type="text" placeholder="Please Choose Date" ngxDaterangepickerMd (change)="datePicker($event)"
+              [(ngModel)]="filterName" name="filterName" class="form-control calendarrange"
+              style=" border-radius: 15px;cursor: pointer;" />
+          </span>
+        </div>
+
+        <div class="col-lg-6">
+          <select id="daterange" style=" border-radius: 15px;cursor: pointer;position: absolute;width: 95%;"
+            class="form-control input-rounded" tabindex="14" (change)="dateOption($event.target.value)" maxlength="255"
+            #statusValue>
+            <option selected disabled>Select Period</option>
+            <option>1 Month</option>
+            <option>3 Months</option>
+            <option>6 Months</option>
+            <option>1 Year</option>
+            <option>Date Range</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><br>
+
+<div class="ibox">
+  <div class="ibox-body">
+    <div class="row"  >
+      <div class="col-sm-2">
+        <h5 style="color: #535353;">SUCCESS
+          RATE/FAILURE RATE</h5>
+          <div id="successrate" style="height: 66px;position: relative;
+          width: 182px;"></div>
+          <div class="licenses"></div>
+      </div>
+      <span class="border-right"></span>
+      <div class="col-sm-2" *ngIf="vendorcardData">
+        <div class="padding">
+          <h5>ASSIGNED JOBS</h5>
+          <b style="font-size: 25px;color:#559DE5">  {{vendorcardData.assignedJobsCount}}</b>
+        </div>
+      </div>
+      <span class="border-right"></span>
+      <div class="col-sm-2" *ngIf="vendorcardData">
+        <div class="padding">
+          <h5>SELECTED CANDIDATES</h5>
+          <b style="font-size: 25px;color:#FDAC42">  {{vendorcardData.selectedCandidatesCount}}</b>
+        </div>
+      </div>
+      <span class="border-right"></span>
+      <div class="col-sm-2" *ngIf="vendorcardData">
+        <div class="padding">
+          <h5>PAYMENT APPROVALS</h5>
+          <b style="font-size: 25px;color:#0593A1"> {{vendorcardData.paymentApprovals}}</b>
+        </div>
+      </div>
+      <span class="border-right"></span>
+      <div class="col-sm-2" *ngIf="vendorcardData">
+        <div class="padding">
+          <h5>PENDING PAYMENTS</h5>
+          <b style="font-size: 25px;color:#E94E1B"> {{vendorcardData.paymentPending}}</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="ibox">
+    <div class="ibox-body">
+      <div class="col-md-12">
+        <ag-grid-angular style="width: 1350px; height:500px;" [rowData]="vendordashboardjobdata" [pagination]="true" class="ag-theme-balham" paginationPageSize="15" [columnDefs]="columnDefsJobs" enableFilter enableSorting 
+            rowSelection="single" [suppressPaginationPanel]="true" [suppressScrollOnNewData]="true">
+        </ag-grid-angular>
+        <div class="col-md-12 " *ngIf="totalcount>15">
+            <div class="float-right" style="margin-top: 10px;" >
+                <button (click)="onBtPrevious()" class="btn btn-outline-primary" [disabled]="disablePreviousButton"><i class="fa fa-angle-left"
+                        aria-hidden="true"></i></button>
+                <b>{{pageid+1}}/{{responsePageCount}}&nbsp;</b>
+                <button (click)="onBtNext()" class="btn btn-outline-primary" [disabled]="disableNextButton"><i class="fa fa-angle-right"
+                        aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+    </div>
+  </div>
+</div>
